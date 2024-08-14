@@ -4,8 +4,13 @@ import Typography from '@mui/material/Typography'
 
 // Component Imports
 import ThirdPartyDetail from '@/views/pages/third-parties/detail'
+import { getThirdParty } from '@/libs/api/third-parties'
+import Files from '@/views/pages/third-parties/detail/Files'
+import LatestEvents from '@/views/pages/third-parties/detail/LatestEvents'
 
-const ThirdParty = () => {
+const ThirdParty = async ({ params: { id } }) => {
+  const thirdParty = await getThirdParty(id)
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -14,7 +19,15 @@ const ThirdParty = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <ThirdPartyDetail />
+        <ThirdPartyDetail data={thirdParty} />
+      </Grid>
+
+      <Grid item xs={12} lg={6}>
+        <Files />
+      </Grid>
+
+      <Grid item xs={12} lg={6}>
+        <LatestEvents />
       </Grid>
     </Grid>
   )

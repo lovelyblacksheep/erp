@@ -29,3 +29,13 @@ export async function addThirdParty(data) {
     return { success: false, ...error.response.data }
   }
 }
+
+export async function getThirdParty(id) {
+  const result = await axios.get(`${url}/${id}`, {
+    params: {
+      DOLAPIKEY: apiKey
+    }
+  })
+
+  return result
+}
