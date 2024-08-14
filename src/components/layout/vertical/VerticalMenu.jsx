@@ -81,6 +81,25 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           </SubMenu>
         </SubMenu>
 
+        <SubMenu
+          label={dictionary['navigation'].mrp}
+          icon={<i className='ri-building-4-line' />}
+          href={`/${locale}/mrp`}
+        >
+          <SubMenu label={dictionary['navigation'].bom}>
+            <MenuItem href={`/${locale}/mrp/bom/add`}>{dictionary['navigation'].new_bom}</MenuItem>
+            <MenuItem href={`/${locale}/mrp/bom/list`}>{dictionary['navigation'].list}</MenuItem>
+          </SubMenu>
+          <SubMenu label={dictionary['navigation'].mo}>
+            <MenuItem href={`/${locale}/mrp/mo/add`}>{dictionary['navigation'].new_mo}</MenuItem>
+            <MenuItem href={`/${locale}/mrp/mo/list`}>{dictionary['navigation'].list}</MenuItem>
+          </SubMenu>
+          <SubMenu label={dictionary['navigation'].workstations}>
+            <MenuItem href={`/${locale}/mrp/workstations/add`}>{dictionary['navigation'].new_workstation}</MenuItem>
+            <MenuItem href={`/${locale}/mrp/workstations/list`}>{dictionary['navigation'].list}</MenuItem>
+          </SubMenu>
+        </SubMenu>
+
         <SubMenu label={dictionary['navigation'].frontPages} icon={<i className='ri-file-copy-line' />}>
           <MenuItem href='/front-pages/landing-page' target='_blank'>
             {dictionary['navigation'].landing}
