@@ -100,7 +100,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           </SubMenu>
         </SubMenu>
 
-        <SubMenu label={dictionary['navigation'].frontPages} icon={<i className='ri-file-copy-line' />}>
+        {/* <SubMenu label={dictionary['navigation'].frontPages} icon={<i className='ri-file-copy-line' />}>
           <MenuItem href='/front-pages/landing-page' target='_blank'>
             {dictionary['navigation'].landing}
           </MenuItem>
@@ -396,7 +396,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             </SubMenu>
             <MenuItem disabled>{dictionary['navigation'].disabledMenu}</MenuItem>
           </SubMenu>
-        </MenuSection>
+        </MenuSection> */}
       </Menu>
       {/* <Menu
           popoutMenuOffset={{ mainAxis: 17 }}
