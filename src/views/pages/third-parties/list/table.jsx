@@ -119,7 +119,11 @@ const ThirdPartiesTable = () => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('name', {
-        cell: info => info.getValue(),
+        cell: info => (
+          <Link href={'/third-parties/' + info.row.original.id} className='text-primary'>
+            {info.getValue()}
+          </Link>
+        ),
         header: 'Third-party Name'
       }),
       columnHelper.accessor('name_alias', {

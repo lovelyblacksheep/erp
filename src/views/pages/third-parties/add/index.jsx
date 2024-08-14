@@ -24,9 +24,9 @@ const AddThirdPartyForm = () => {
     name: '',
     name_alias: '',
     client: '',
-    customer_code: '',
+    customer_code: `CU${new Date().toISOString().slice(2, 7)}-00000`,
     fournisseur: '',
-    supplier_code: '',
+    supplier_code: `SU${new Date().toISOString().slice(2, 7)}-00000`,
     status: '1',
     barcode: '',
     address: '',
@@ -90,60 +90,64 @@ const AddThirdPartyForm = () => {
     try {
       const result = await addThirdParty(formData)
 
-      setFormData({
-        name: '',
-        name_alias: '',
-        client: '',
-        customer_code: '',
-        fournisseur: '',
-        supplier_code: '',
-        status: '1',
-        barcode: '',
-        address: '',
-        zipcode: '',
-        town: '',
-        country_id: '26',
-        state_id: '',
-        phone: '',
-        fax: '',
-        email: '',
-        url: '',
-        no_email: '0',
+      if (result.success) {
+        setFormData({
+          name: '',
+          name_alias: '',
+          client: '',
+          customer_code: `CU${new Date().toISOString().slice(2, 7)}-00000`,
+          fournisseur: '',
+          supplier_code: `SU${new Date().toISOString().slice(2, 7)}-00000`,
+          status: '1',
+          barcode: '',
+          address: '',
+          zipcode: '',
+          town: '',
+          country_id: '26',
+          state_id: '',
+          phone: '',
+          fax: '',
+          email: '',
+          url: '',
+          no_email: '0',
 
-        facebook: '',
-        instagram: '',
-        linkedin: '',
-        snapchat: '',
-        skype: '',
-        twitter: '',
-        whatsapp: '',
-        youtube: '',
+          facebook: '',
+          instagram: '',
+          linkedin: '',
+          snapchat: '',
+          skype: '',
+          twitter: '',
+          whatsapp: '',
+          youtube: '',
 
-        idprof1: '',
-        idprof2: '',
-        idprof3: '',
-        idprof4: '',
-        idprof5: '',
-        idprof6: '',
+          idprof1: '',
+          idprof2: '',
+          idprof3: '',
+          idprof4: '',
+          idprof5: '',
+          idprof6: '',
 
-        assujtva_value: '1',
-        tva_intra: '',
-        typent_id: '',
-        effectif_id: '',
-        forme_juridique_code: '',
-        capital: '',
-        default_lang: '',
-        incoterm_id: '',
-        location_incoterms: '',
-        custcats: [],
-        suppcats: [],
-        multicurrency_code: '',
-        parent_company_id: '',
-        commercial: [],
-        photo: null
-      })
+          assujtva_value: '1',
+          tva_intra: '',
+          typent_id: '',
+          effectif_id: '',
+          forme_juridique_code: '',
+          capital: '',
+          default_lang: '',
+          incoterm_id: '',
+          location_incoterms: '',
+          custcats: [],
+          suppcats: [],
+          multicurrency_code: '',
+          parent_company_id: '',
+          commercial: [],
+          photo: null
+        })
 
-      alert('Form Submitted successfully')
+        alert('Form Submitted successfully')
+      } else {
+        alert('Something went wrong')
+      }
     } catch (error) {
       console.log(error)
     }
@@ -178,12 +182,19 @@ const AddThirdPartyForm = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label='Prospect / Customer'
-                  value={formData.client}
-                  onChange={e => setFormData({ ...formData, client: e.target.value })}
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Prospect / Customer</InputLabel>
+                  <Select
+                    label='Prospect / Customer'
+                    value={formData.client}
+                    onChange={e => setFormData({ ...formData, client: e.target.value })}
+                  >
+                    {/* <MenuItem value='2'>Prospect</MenuItem>
+                    <MenuItem value='3'>Prospect / Customer</MenuItem>
+                    <MenuItem value='1'>Customer</MenuItem> */}
+                    <MenuItem value='0'>Not prospect, nor customer</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -196,12 +207,17 @@ const AddThirdPartyForm = () => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label='Vendor'
-                  value={formData.fournisseur}
-                  onChange={e => setFormData({ ...formData, fournisseur: e.target.value })}
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Vendor</InputLabel>
+                  <Select
+                    label='Vendor'
+                    value={formData.fournisseur}
+                    onChange={e => setFormData({ ...formData, fournisseur: e.target.value })}
+                  >
+                    <MenuItem value='0'>Closed</MenuItem>
+                    <MenuItem value='1'>Open</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12} sm={6}>
