@@ -17,10 +17,6 @@ import axios from 'axios'
 // Style Imports
 import styles from '@core/styles/table.module.css'
 
-// API Configs
-// const apiUrl = 'https://qnerp.com/erp/api/index.php'
-// const apiKey = 'cDIoWFiQIAB0'
-
 // Column Definitions
 const columnHelper = createColumnHelper()
 
