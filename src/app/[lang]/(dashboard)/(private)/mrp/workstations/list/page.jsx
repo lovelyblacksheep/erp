@@ -1,23 +1,23 @@
 // MUI Imports
-import BOMTable from '@/views/pages/mrp/list/bom_table'
+import WorkstationsTable from '@/views/pages/mrp/list/workstations_table'
 import Grid from '@mui/material/Grid'
 
 // Component Imports
 import Typography from '@mui/material/Typography'
 
-const MRP = () => {
+const MRP_Workstations_List = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h4' className='flex items-center gap-2'>
-          <i className='ri-building-4-fill text-primary text-3xl' /> Bills of material - BOM
+          <i className='ri-building-4-fill text-primary text-3xl' /> Workstations
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <BOMTable />
+        <WorkstationsTable />
       </Grid>
     </Grid>
   )
 }
 
-export default MRP
+export default MRP_Workstations_List

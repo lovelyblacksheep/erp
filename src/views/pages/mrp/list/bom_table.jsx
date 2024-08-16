@@ -32,7 +32,7 @@ import ChevronRight from '@menu/svg/ChevronRight'
 import styles from '@core/styles/table.module.css'
 import Image from 'next/image'
 import Link from '@/components/Link'
-import { getThirdParties } from '@/libs/api/third-parties'
+import { getBoms, getBom } from '@/libs/api/bom'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -118,44 +118,28 @@ const BOMTable = () => {
   // Hooks
   const columns = useMemo(
     () => [
-      columnHelper.accessor('name', {
+      columnHelper.accessor('ref', {
         cell: info => info.getValue(),
-        header: 'Third-party Name'
+        header: 'Ref'
       }),
-      columnHelper.accessor('name_alias', {
+      columnHelper.accessor('label', {
         cell: info => info.getValue(),
-        header: 'Alias Name'
+        header: 'Label'
       }),
-      columnHelper.accessor('barcode', {
+      columnHelper.accessor('type', {
         cell: info => info.getValue(),
-        header: 'Barcode'
+        header: 'Type'
       }),
-      columnHelper.accessor('code_client', {
+      columnHelper.accessor('product', {
         cell: info => info.getValue(),
-        header: 'Customer Code'
+        header: 'Product'
       }),
-      columnHelper.accessor('salesRepresentatives', {
+      columnHelper.accessor('quantity', {
         cell: info => info.getValue(),
-        header: 'Sales representatives'
-      }),
-      columnHelper.accessor('zipcode', {
-        cell: info => info.getValue(),
-        header: 'Zip Code'
-      }),
-      columnHelper.accessor('typent_id', {
-        cell: info => info.getValue(),
-        header: 'Third-party type'
-      }),
-      columnHelper.accessor('phone', {
-        cell: info => info.getValue(),
-        header: 'Phone'
-      }),
-      columnHelper.accessor('natureOfThirdParty', {
-        cell: info => info.getValue(),
-        header: 'Nature of Third Party'
+        header: 'Quantity'
       }),
       columnHelper.accessor('status', {
-        cell: info => <>{info.getValue() ? 'Open' : 'Close'}</>,
+        cell: info => info.getValue(),
         header: 'Status'
       })
     ],
@@ -187,7 +171,7 @@ const BOMTable = () => {
 
   async function fetchData() {
     try {
-      const result = await getThirdParties({ limit: table.pageSize, page: table.pageIndex })
+      const result = await getBoms({ limit: table.pageSize, page: table.pageIndex })
 
       setData(result.data)
       console.log(result)

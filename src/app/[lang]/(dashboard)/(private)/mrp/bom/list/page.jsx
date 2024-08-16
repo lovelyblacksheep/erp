@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 // Component Imports
 import Typography from '@mui/material/Typography'
 
-const MRP = () => {
+const MRP_BOM_List = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -20,4 +20,4 @@ const MRP = () => {
   )
 }
 
-export default MRP
+export default MRP_BOM_List
