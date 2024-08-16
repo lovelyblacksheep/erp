@@ -18,20 +18,30 @@ const donutColors = {
   series2: '#00d4bd',
   series3: '#826bf8',
   series4: '#32baff',
-  series5: '#ffa1a1'
+  series5: '#ffa1a1',
+  series6: '#ffb74d',
+  series7: '#4db6ac',
+  series8: '#9575cd'
 }
 
 const Statistics = () => {
-  // Hooks
   const theme = useTheme()
 
-  // Vars
   const textSecondary = 'var(--mui-palette-text-secondary)'
 
   const options = {
     stroke: { width: 0 },
-    labels: ['Prospects', 'Customers', 'Vendors', 'Others'],
-    colors: [donutColors.series1, donutColors.series5, donutColors.series3, donutColors.series2],
+    labels: ['draft', 'validated', 'approved', 'running', 'received_start', 'received_end', 'cancelled', 'refused'],
+    colors: [
+      donutColors.series1,
+      donutColors.series2,
+      donutColors.series3,
+      donutColors.series4,
+      donutColors.series5,
+      donutColors.series6,
+      donutColors.series7,
+      donutColors.series8
+    ],
     dataLabels: {
       enabled: true,
       formatter: val => `${parseInt(val, 10)}%`
@@ -60,13 +70,6 @@ const Statistics = () => {
               color: textSecondary,
               formatter: val => `${parseInt(val, 10)}`
             }
-            // total: {
-            //   show: true,
-            //   fontSize: '1.2rem',
-            //   label: 'Operational',
-            //   formatter: () => '31%',
-            //   color: 'var(--mui-palette-text-primary)'
-            // }
           }
         }
       }
@@ -99,9 +102,6 @@ const Statistics = () => {
                   },
                   value: {
                     fontSize: '1rem'
-                  },
-                  total: {
-                    fontSize: '1rem'
                   }
                 }
               }
@@ -112,7 +112,7 @@ const Statistics = () => {
     ]
   }
 
-  const series = [85, 16, 50, 50]
+  const series = [85, 16, 50, 50, 10, 5, 25, 30]
 
   return (
     <Card>
@@ -121,7 +121,7 @@ const Statistics = () => {
         <AppReactApexCharts type='donut' width='100%' height={400} options={options} series={series} />
 
         <div className='border-t pt-5 mt-5 flex items-center justify-between'>
-          <span>Total number of Third Parties </span>
+          <span>Total number of Third Parties</span>
           <span className='font-bold'>
             {series.reduce((accumulator, currentValue) => accumulator + currentValue, 0)}
           </span>
