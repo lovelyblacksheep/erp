@@ -2,6 +2,9 @@
 
 // Next Imports
 import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { apiKey, apiUrl } from '@/config'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -18,14 +21,48 @@ const donutColors = {
   series2: '#00d4bd',
   series3: '#826bf8',
   series4: '#32baff',
-  series5: '#ffa1a1',
-  series6: '#ffb74d',
-  series7: '#4db6ac',
-  series8: '#9575cd'
+  series5: '#ff7043',
+  series6: '#8e24aa',
+  series7: '#ffca28',
+  series8: '#66bb6a'
 }
 
 const Statistics = () => {
   const theme = useTheme()
+  const [series, setSeries] = useState([0, 0, 0, 0, 0, 0, 0, 0])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const statuses = [
+        'draft',
+        'validated',
+        'approved',
+        'running',
+        'received_start',
+        'received_end',
+        'cancelled',
+        'refused'
+      ]
+      const fetchStatusCount = async status => {
+        const result = await axios.get(`${apiUrl}/supplierorders`, {
+          params: {
+            sortfield: 't.rowid',
+            sortorder: 'ASC',
+            limit: 100,
+            page: 0,
+            status,
+            DOLAPIKEY: apiKey
+          }
+        })
+        return result.data.length
+      }
+
+      const data = await Promise.all(statuses.map(fetchStatusCount))
+      setSeries(data)
+    }
+
+    fetchData()
+  }, [])
 
   const textSecondary = 'var(--mui-palette-text-secondary)'
 
@@ -111,8 +148,6 @@ const Statistics = () => {
       }
     ]
   }
-
-  const series = [85, 16, 50, 50, 10, 5, 25, 30]
 
   return (
     <Card>
