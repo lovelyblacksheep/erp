@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 
-const MRP_BOM_List = () => {
+const MRP_MO_List = () => {
   const [selectedRows, setSelectedRows] = useState([])
   const [action, setAction] = useState('')
 
@@ -25,7 +25,7 @@ const MRP_BOM_List = () => {
     if (action === 'delete' && selectedRows.length > 0) {
       try {
         for (const row of selectedRows) {
-          await fetch(`https://qnerp.com/erp/api/index.php/boms/${row.id}`, {
+          await fetch(`https://qnerp.com/erp/api/index.php/mos/${row.id}`, {
             method: 'DELETE',
             headers: {
               Accept: 'application/json',
@@ -47,7 +47,7 @@ const MRP_BOM_List = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h4' className='flex items-center gap-2'>
-          <i className='ri-building-4-fill text-primary text-3xl' /> Bills of material - BOM
+          <i className='ri-building-4-fill text-primary text-3xl' /> Manufacturing Orders
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -66,10 +66,12 @@ const MRP_BOM_List = () => {
             </>
           )}
         </Box>
-        <BOMTable onSelectionChange={handleSelectionChange} />
+        <Box sx={{ overflowX: 'auto', width: '100%' }}>
+          <BOMTable onSelectionChange={handleSelectionChange} />
+        </Box>
       </Grid>
     </Grid>
   )
 }
 
-export default MRP_BOM_List
+export default MRP_MO_List

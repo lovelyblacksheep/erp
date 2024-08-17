@@ -2,6 +2,7 @@
 
 // React Imports
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -165,10 +166,14 @@ const BOMTable = ({ onSelectionChange }) => {
             onChange={row.getToggleSelectedHandler()}
           />
         ),
-        size: 50 // Reduce the width of the select column
+        size: 50
       }),
       columnHelper.accessor('ref', {
-        cell: info => info.getValue(),
+        cell: info => (
+          <Link href={`/bom/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+            {info.getValue()}
+          </Link>
+        ),
         header: 'Ref',
         size: 80
       }),
@@ -183,7 +188,11 @@ const BOMTable = ({ onSelectionChange }) => {
         size: 80
       }),
       columnHelper.accessor('product', {
-        cell: info => info.getValue(),
+        cell: info => (
+          <Link href={`/product/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+            {info.getValue()}
+          </Link>
+        ),
         header: 'Product',
         size: 120
       }),

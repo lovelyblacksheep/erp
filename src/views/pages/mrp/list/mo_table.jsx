@@ -2,12 +2,19 @@
 
 // React Imports
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 
 // MUI Imports
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import TextField from '@mui/material/TextField'
 import TablePagination from '@mui/material/TablePagination'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import Checkbox from '@mui/material/Checkbox'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 // Third-party Imports
 import classnames from 'classnames'
@@ -23,142 +30,313 @@ import {
   flexRender,
   createColumnHelper
 } from '@tanstack/react-table'
-import { rankItem } from '@tanstack/match-sorter-utils'
 
 // Icon Imports
+import { rankItem } from '@tanstack/match-sorter-utils'
 import ChevronRight from '@menu/svg/ChevronRight'
 
 // Style Imports
 import styles from '@core/styles/table.module.css'
-import Image from 'next/image'
-import Link from '@/components/Link'
-import { getMos } from '@/libs/api/mo'
+import { getBoms } from '@/libs/api/mo'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
 
 const fuzzyFilter = (row, columnId, value, addMeta) => {
-  // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value)
-
-  // Store the itemRank info
-  addMeta({
-    itemRank
-  })
-
-  // Return if the item should be filtered in/out
+  addMeta({ itemRank })
   return itemRank.passed
 }
 
-// A debounced input react component
+// Debounced Input
 const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...props }) => {
-  // States
   const [value, setValue] = useState(initialValue)
 
   useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       onChange(value)
     }, debounce)
 
     return () => clearTimeout(timeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   return <TextField {...props} size='small' value={value} onChange={e => setValue(e.target.value)} />
 }
 
-const Filter = ({ column, table }) => {
-  // Vars
-  const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
-  const columnFilterValue = column.getFilterValue()
+const TypeFilter = ({ column, table }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
 
-  return typeof firstValue === 'number' ? (
-    <div className='flex gap-x-2'>
-      <TextField
-        fullWidth
-        type='number'
-        size='small'
-        sx={{ minInlineSize: 100, maxInlineSize: 125 }}
-        value={columnFilterValue?.[0] ?? ''}
-        onChange={e => column.setFilterValue(old => [e.target.value, old?.[1]])}
-        placeholder={`Min ${column.getFacetedMinMaxValues()?.[0] ? `(${column.getFacetedMinMaxValues()?.[0]})` : ''}`}
-      />
-      <TextField
-        fullWidth
-        type='number'
-        size='small'
-        sx={{ minInlineSize: 100, maxInlineSize: 125 }}
-        value={columnFilterValue?.[1] ?? ''}
-        onChange={e => column.setFilterValue(old => [old?.[0], e.target.value])}
-        placeholder={`Max ${column.getFacetedMinMaxValues()?.[1] ? `(${column.getFacetedMinMaxValues()?.[1]})` : ''}`}
-      />
-    </div>
-  ) : (
-    <TextField
+  return (
+    <Select
       fullWidth
       size='small'
-      sx={{ minInlineSize: 100 }}
-      value={columnFilterValue ?? ''}
+      value={columnFilterValue}
       onChange={e => column.setFilterValue(e.target.value)}
-      placeholder='Search...'
-    />
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      <MenuItem value='Type1'>Type 1</MenuItem>
+      <MenuItem value='Type2'>Type 2</MenuItem>
+    </Select>
   )
 }
 
-const MOTable = () => {
-  // States
+const ThirdPartyFilter = ({ column, table }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
+  const uniqueValues = table.getPreFilteredRowModel().flatRows.map(row => row.getValue(column.id))
+
+  return (
+    <Select
+      fullWidth
+      size='small'
+      value={columnFilterValue}
+      onChange={e => column.setFilterValue(e.target.value)}
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      {Array.from(new Set(uniqueValues)).map((value, index) => (
+        <MenuItem key={index} value={value}>
+          {value}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
+const WarehouseFilter = ({ column, table }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
+  const uniqueValues = table.getPreFilteredRowModel().flatRows.map(row => row.getValue(column.id))
+
+  return (
+    <Select
+      fullWidth
+      size='small'
+      value={columnFilterValue}
+      onChange={e => column.setFilterValue(e.target.value)}
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      {Array.from(new Set(uniqueValues)).map((value, index) => (
+        <MenuItem key={index} value={value}>
+          {value}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
+const StatusFilter = ({ column, table }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
+  const uniqueValues = table.getPreFilteredRowModel().flatRows.map(row => row.getValue(column.id))
+
+  return (
+    <Select
+      fullWidth
+      size='small'
+      value={columnFilterValue}
+      onChange={e => column.setFilterValue(e.target.value)}
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      {Array.from(new Set(uniqueValues)).map((value, index) => (
+        <MenuItem key={index} value={value}>
+          {value}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
+const DateRangeFilter = ({ column }) => {
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
+
+  useEffect(() => {
+    column.setFilterValue({ from: fromDate, to: toDate })
+  }, [fromDate, toDate, column])
+
+  return (
+    <div className='flex gap-x-4'>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label='From'
+          value={fromDate}
+          onChange={newValue => setFromDate(newValue)}
+          renderInput={params => <TextField {...params} size='small' />}
+          PopperProps={{
+            placement: 'bottom-start'
+          }}
+        />
+        <DatePicker
+          label='To'
+          value={toDate}
+          onChange={newValue => setToDate(newValue)}
+          renderInput={params => <TextField {...params} size='small' />}
+          PopperProps={{
+            placement: 'bottom-start'
+          }}
+        />
+      </LocalizationProvider>
+    </div>
+  )
+}
+
+const Filter = ({ column, table }) => {
+  const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
+  const columnFilterValue = column.getFilterValue()
+
+  if (column.id === 'bomtype') {
+    return <TypeFilter column={column} table={table} />
+  } else if (column.id === 'third_party') {
+    return <ThirdPartyFilter column={column} table={table} />
+  } else if (column.id === 'warehouse_ref') {
+    return <WarehouseFilter column={column} table={table} />
+  } else if (column.id === 'status') {
+    return <StatusFilter column={column} table={table} />
+  } else if (column.id === 'date_creation') {
+    return <DateRangeFilter column={column} />
+  } else if (column.id !== 'select') {
+    return (
+      <TextField
+        fullWidth
+        size='small'
+        sx={{ minInlineSize: 100 }}
+        value={columnFilterValue ?? ''}
+        onChange={e => column.setFilterValue(e.target.value)}
+        placeholder='Search...'
+      />
+    )
+  }
+  return null
+}
+
+const BOMTable = ({ onSelectionChange }) => {
   const [columnFilters, setColumnFilters] = useState([])
   const [globalFilter, setGlobalFilter] = useState('')
-
   const [data, setData] = useState([])
+  const [rowSelection, setRowSelection] = useState({})
 
-  // Hooks
   const columns = useMemo(
     () => [
+      columnHelper.accessor('select', {
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+        size: 80
+      }),
       columnHelper.accessor('ref', {
-        cell: info => info.getValue(),
-        header: 'Ref'
+        cell: info => (
+          <Link href={`/bom/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+            {info.getValue()}
+          </Link>
+        ),
+        header: 'Ref',
+        size: 180
       }),
       columnHelper.accessor('label', {
         cell: info => info.getValue(),
-        header: 'Label'
+        header: 'Label',
+        size: 240
       }),
-      columnHelper.accessor('type', {
+      columnHelper.accessor('bomtype', {
         cell: info => info.getValue(),
-        header: 'Type'
+        header: 'Type',
+        size: 180
       }),
       columnHelper.accessor('product', {
-        cell: info => info.getValue(),
-        header: 'Product'
+        cell: info => (
+          <Link href={`/product/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+            {info.getValue()}
+          </Link>
+        ),
+        header: 'Product',
+        size: 240
       }),
-      columnHelper.accessor('quantity', {
+      columnHelper.accessor('qty', {
         cell: info => info.getValue(),
-        header: 'Quantity'
+        header: 'Quantity',
+        size: 180
+      }),
+      columnHelper.accessor('description', {
+        cell: info => info.getValue(),
+        header: 'Description',
+        size: 260
+      }),
+      columnHelper.accessor('note_public', {
+        cell: info => info.getValue(),
+        header: 'Note',
+        size: 240
+      }),
+      columnHelper.accessor('third_party', {
+        cell: info => info.getValue(),
+        header: 'Third Party',
+        size: 240
+      }),
+      columnHelper.accessor('warehouse_ref', {
+        cell: info => info.getValue(),
+        header: 'Warehouse for Production',
+        size: 280
+      }),
+      columnHelper.accessor('date_creation', {
+        cell: info => {
+          const date = new Date(info.getValue())
+          return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })
+        },
+        header: 'Creation Date',
+        size: 260,
+        sortingFn: (rowA, rowB) => {
+          const dateA = new Date(rowA.original.date_creation)
+          const dateB = new Date(rowB.original.date_creation)
+          return dateA - dateB
+        },
+        filterFn: (row, columnId, filterValue) => {
+          if (!filterValue.from || !filterValue.to) return true
+          const fromDate = new Date(filterValue.from)
+          const toDate = new Date(filterValue.to)
+          const rowDate = new Date(row.getValue(columnId))
+          return rowDate >= fromDate && rowDate <= toDate
+        }
       }),
       columnHelper.accessor('status', {
         cell: info => info.getValue(),
-        header: 'Status'
+        header: 'Status',
+        size: 180
       })
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
   const table = useReactTable({
     data,
     columns,
-    filterFns: {
-      fuzzy: fuzzyFilter
-    },
-    state: {
-      columnFilters,
-      globalFilter
-    },
+    filterFns: { fuzzy: fuzzyFilter },
+    state: { columnFilters, globalFilter, rowSelection },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
+    onRowSelectionChange: setRowSelection,
     globalFilterFn: fuzzyFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -171,27 +349,26 @@ const MOTable = () => {
 
   async function fetchData() {
     try {
-      const result = await getMos({ limit: table.pageSize, page: table.pageIndex })
-
+      const result = await getBoms({
+        limit: table.getState().pagination.pageSize,
+        page: table.getState().pagination.pageIndex
+      })
       setData(result.data)
-      console.log(result)
     } catch (error) {
       console.error(error)
     }
   }
 
   useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === 'fullName') {
-      if (table.getState().sorting[0]?.id !== 'fullName') {
-        table.setSorting([{ id: 'fullName', desc: false }])
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [table.getState().columnFilters[0]?.id])
+    fetchData()
+  }, [table.getState().pagination.pageSize, table.getState().pagination.pageIndex])
 
   useEffect(() => {
-    fetchData()
-  }, [table.pageSize, table.pageIndex])
+    if (onSelectionChange) {
+      const selectedRows = table.getSelectedRowModel().rows
+      onSelectionChange(selectedRows.map(row => row.original))
+    }
+  }, [rowSelection, onSelectionChange])
 
   return (
     <Card>
@@ -205,39 +382,45 @@ const MOTable = () => {
           />
         }
       />
-      <div className='overflow-x-auto'>
-        <table className={styles.table}>
+      <div className='overflow-x-auto' style={{ maxWidth: '100%' }}>
+        <table className={`${styles.table} w-full`} style={{ minWidth: '1700px' }}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <th key={header.id}>
-                      {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            className={classnames({
-                              'flex items-center': header.column.getIsSorted(),
-                              'cursor-pointer select-none': header.column.getCanSort()
-                            })}
-                            onClick={header.column.getToggleSortingHandler()}
-                          >
+                {headerGroup.headers.map(header => (
+                  <th
+                    key={header.id}
+                    className='p-2 text-left'
+                    style={{ width: header.column.columnDef.size, minWidth: header.column.columnDef.size }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <>
+                        <div
+                          className={classnames('flex flex-col items-start justify-center gap-1', {
+                            'cursor-pointer select-none': header.column.getCanSort()
+                          })}
+                        >
+                          <div className='flex items-center' onClick={header.column.getToggleSortingHandler()}>
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {{
-                              asc: <ChevronRight fontSize='1.25rem' className='-rotate-90' />,
-                              desc: <ChevronRight fontSize='1.25rem' className='rotate-90' />
+                              asc: <ChevronRight fontSize='1rem' className='-rotate-90' />,
+                              desc: <ChevronRight fontSize='1rem' className='rotate-90' />
                             }[header.column.getIsSorted()] ?? null}
                           </div>
-                          {header.column.getCanFilter() && <Filter column={header.column} table={table} />}
-                        </>
-                      )}
-                    </th>
-                  )
-                })}
+                          {header.column.getCanFilter() && (
+                            <div className='w-full'>
+                              <Filter column={header.column} table={table} />
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </th>
+                ))}
               </tr>
             ))}
           </thead>
-          {table.getFilteredRowModel().rows.length === 0 ? (
+          {table.getRowModel().rows.length === 0 ? (
             <tbody>
               <tr>
                 <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
@@ -247,15 +430,22 @@ const MOTable = () => {
             </tbody>
           ) : (
             <tbody>
-              {table.getRowModel().rows.map(row => {
-                return (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map(cell => {
-                      return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                    })}
-                  </tr>
-                )
-              })}
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <td
+                      key={cell.id}
+                      className='text-center p-2'
+                      style={{
+                        width: cell.column.columnDef.size,
+                        minWidth: cell.column.columnDef.size
+                      }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           )}
         </table>
@@ -263,7 +453,7 @@ const MOTable = () => {
       <TablePagination
         rowsPerPageOptions={[7, 10, 25, { label: 'All', value: data.length }]}
         component='div'
-        className='border-bs'
+        className='border-t'
         count={table.getFilteredRowModel().rows.length}
         rowsPerPage={table.getState().pagination.pageSize}
         page={table.getState().pagination.pageIndex}
@@ -276,4 +466,4 @@ const MOTable = () => {
   )
 }
 
-export default MOTable
+export default BOMTable
