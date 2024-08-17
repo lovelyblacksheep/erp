@@ -1,9 +1,12 @@
 'use client'
 
-// Next Imports
+//Next imports
 import dynamic from 'next/dynamic'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { apiKey, apiUrl } from '@/config'
 
-// MUI Imports
+// MUI imports
 import Card from '@mui/material/Card'
 import { useTheme } from '@mui/material/styles'
 import CardHeader from '@mui/material/CardHeader'
@@ -24,13 +27,65 @@ const donutColors = {
 const Statistics = () => {
   // Hooks
   const theme = useTheme()
+  const [series, setSeries] = useState([0, 0, 0, 0]) // Initial series state
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [customers, prospects, others, suppliers] = await Promise.all([
+          axios.get(`${apiUrl}/thirdparties`, {
+            params: {
+              sortfield: 't.rowid',
+              sortorder: 'ASC',
+              limit: 100,
+              mode: 1, // Customers
+              DOLAPIKEY: apiKey
+            }
+          }),
+          axios.get(`${apiUrl}/thirdparties`, {
+            params: {
+              sortfield: 't.rowid',
+              sortorder: 'ASC',
+              limit: 100,
+              mode: 2, // Prospects
+              DOLAPIKEY: apiKey
+            }
+          }),
+          axios.get(`${apiUrl}/thirdparties`, {
+            params: {
+              sortfield: 't.rowid',
+              sortorder: 'ASC',
+              limit: 100,
+              mode: 3, // Others
+              DOLAPIKEY: apiKey
+            }
+          }),
+          axios.get(`${apiUrl}/thirdparties`, {
+            params: {
+              sortfield: 't.rowid',
+              sortorder: 'ASC',
+              limit: 100,
+              mode: 4, // Suppliers
+              DOLAPIKEY: apiKey
+            }
+          })
+        ])
+
+        setSeries([customers.data.length, prospects.data.length, others.data.length, suppliers.data.length])
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   // Vars
   const textSecondary = 'var(--mui-palette-text-secondary)'
 
   const options = {
     stroke: { width: 0 },
-    labels: ['Prospects', 'Customers', 'Vendors', 'Others'],
+    labels: ['Customers', 'Prospects', 'Others', 'Suppliers'],
     colors: [donutColors.series1, donutColors.series5, donutColors.series3, donutColors.series2],
     dataLabels: {
       enabled: true,
@@ -111,8 +166,6 @@ const Statistics = () => {
       }
     ]
   }
-
-  const series = [85, 16, 50, 50]
 
   return (
     <Card>
