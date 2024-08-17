@@ -47,7 +47,7 @@ const MRP_MO_List = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h4' className='flex items-center gap-2'>
-          <i className='ri-building-4-fill text-primary text-3xl' /> Manufacturing Orders
+          <i className='ri-building-4-fill text-primary text-3xl' /> Bill Of Materials
         </Typography>
       </Grid>
       <Grid item xs={12}>
