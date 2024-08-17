@@ -502,10 +502,10 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
               <Grid width={"100%"} display={"flex"} flexDirection={"row"} columnGap={4} alignItems={"center"}>
                 <Typography>Doc template</Typography>
                 <Select>
-                  <Option>tmeplaye.odt</Option>
+                  <MenuItem>tmeplaye.odt</MenuItem>
                 </Select>
                 <Select>
-                  <Option>English</Option>
+                  <MenuItem>English</MenuItem>
                 </Select>
                 <Button variant='contained'>Generate</Button>
               </Grid>
