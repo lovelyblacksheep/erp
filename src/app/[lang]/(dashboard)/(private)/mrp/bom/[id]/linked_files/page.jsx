@@ -434,33 +434,6 @@ const MRP_BOM_ItemTabLinkedFiles = ({ }) => {
                     </Grid>
                 </Box>
 
-                <Grid container justifyContent="flex-end" columnGap={4} alignItems="center">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Modify
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Validate
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Clone
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="error"
-                    >
-                        Delete
-                    </Button>
-                </Grid>
-
                 <Grid container justifyContent={"space-between"} flexDirection={"row"} columnGap={2} rowGap={6}>
                     <Box width={"100%"}>
                         <Typography variant="h5" gutterBottom>

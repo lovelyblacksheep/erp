@@ -190,161 +190,6 @@ const BomProductsTable = () => {
 };
 
 
-const BomServicesTable = () => {
-
-  const [newRow, setNewRow] = useState({
-    description: '',
-    qty: 1,
-    frozenQty: 1,
-    stockChangeDisabled: 1,
-    manufacturingEfficiency: 1,
-    totalCost: 0,
-  });
-
-  const handleAddRow = () => {
-    setData([...data, newRow]);
-    setNewRow({
-      description: '',
-      qty: 1,
-      frozenQty: 1,
-      stockChangeDisabled: 1,
-      manufacturingEfficiency: 1,
-      totalCost: 0,
-    });
-  };
-
-
-  return (
-    <>
-      <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-        <Grid item>
-          <Box mb={2} display={"flex"} justifyContent={"flex-start"} flexDirection={"row"} gap={"20px"} alignItems={"center"}>
-            <Typography variant="h5" component="div">
-              BOM's services
-            </Typography>
-          </Box>
-        </Grid>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Description</TableCell>
-                <TableCell align="right">Qty</TableCell>
-                <TableCell align="right">Frozen Qty</TableCell>
-                <TableCell align="right">Stock change disabled</TableCell>
-                <TableCell align="right">Manufacturing efficiency</TableCell>
-                <TableCell align="right">Total cost</TableCell>
-                <TableCell align="center">Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {row.description}
-                  </TableCell>
-                  <TableCell align="right">{row.qty}</TableCell>
-                  <TableCell align="right">{row.frozenQty}</TableCell>
-                  <TableCell align="right">{row.stockChangeDisabled}</TableCell>
-                  <TableCell align="right">{row.manufacturingEfficiency}</TableCell>
-                  <TableCell align="right">{row.totalCost.toFixed(2)}</TableCell>
-                  <TableCell align="center">
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton>
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Product"
-                    value={newRow.description}
-                    onChange={(e) =>
-                      setNewRow({ ...newRow, description: e.target.value })
-                    }
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <TextField
-                    type="number"
-                    value={newRow.qty}
-                    onChange={(e) =>
-                      setNewRow({ ...newRow, qty: Number(e.target.value) })
-                    }
-                    variant="outlined"
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <TextField
-                    type="number"
-                    value={newRow.frozenQty}
-                    onChange={(e) =>
-                      setNewRow({ ...newRow, frozenQty: Number(e.target.value) })
-                    }
-                    variant="outlined"
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <TextField
-                    type="number"
-                    value={newRow.stockChangeDisabled}
-                    onChange={(e) =>
-                      setNewRow({
-                        ...newRow,
-                        stockChangeDisabled: Number(e.target.value),
-                      })
-                    }
-                    variant="outlined"
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <TextField
-                    type="number"
-                    value={newRow.manufacturingEfficiency}
-                    onChange={(e) =>
-                      setNewRow({
-                        ...newRow,
-                        manufacturingEfficiency: Number(e.target.value),
-                      })
-                    }
-                    variant="outlined"
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <TextField
-                    type="number"
-                    value={newRow.totalCost}
-                    onChange={(e) =>
-                      setNewRow({ ...newRow, totalCost: Number(e.target.value) })
-                    }
-                    variant="outlined"
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleAddRow}
-                    startIcon={<AddIcon />}
-                  >
-                    ADD
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
-    </>
-  );
-};
-
 
 const InfoItem = ({ label, value }) => (
   <Box display="flex" justifyContent="space-between" mb={1}>
@@ -401,8 +246,8 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
 
               {/* Details */}
               <Box mb={2}>
-                <Typography variant="subtitle2">Label</Typography>
-                <Typography variant="body2">XYZ</Typography>
+                <Typography variant="subtitle2">Bill Of Materials</Typography>
+                <Typography variant="body2">BOM2310-0002</Typography>
               </Box>
               <Box mb={2}>
                 <Typography variant="subtitle2">Type</Typography>
@@ -411,15 +256,15 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
               <Box mb={2}>
                 <Typography variant="subtitle2">Product</Typography>
                 <Link href="#" variant="body2">
-                  CANONC3520
+                LMIMN
                 </Link>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Quantity</Typography>
+                <Typography variant="subtitle2">Qty to produce</Typography>
                 <Typography variant="body2">100.00</Typography>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Description</Typography>
+                <Typography variant="subtitle2">Label</Typography>
                 <Typography variant="body2">-</Typography>
               </Box>
             </Grid>
@@ -427,29 +272,41 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
             {/* Right Column */}
             <Grid item xs={6}>
               <Box mb={2}>
-                <Typography variant="subtitle2">Estimated duration</Typography>
-                <Typography variant="body2">-</Typography>
-              </Box>
-              <Box mb={2}>
                 <Typography variant="subtitle2">Warehouse for production</Typography>
-                <Link href="#" variant="body2">
-                  0000000
-                </Link>
+                <Typography variant="body2">01TRSS</Typography>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Total cost</Typography>
-                <Typography variant="body2">9,786.35</Typography>
+                <Typography variant="subtitle2">Date start planned</Typography>
+                <Link href="#" variant="body2"></Link>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Unit cost</Typography>
-                <Typography variant="body2">97.8635</Typography>
+                <Typography variant="subtitle2">Date end planned</Typography>
+                <Typography variant="body2"></Typography>
               </Box>
             </Grid>
           </Grid>
         </Box>
-        <BomProductsTable />
-        <BomServicesTable />
-        <Grid container justifyContent="flex-end" columnGap={4} alignItems="center">
+  
+        
+        <Grid container justifyContent={"space-between"} flexDirection={"row"} columnGap={2} rowGap={6}>
+        <Box width={"100%"}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Summary</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">None</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+          <Grid container justifyContent="flex-end" columnGap={4} alignItems="center">
           <Button
             variant="contained"
             color="primary"
@@ -475,8 +332,6 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
             Delete
           </Button>
         </Grid>
-        
-        <Grid container justifyContent={"space-between"} flexDirection={"row"} columnGap={2} rowGap={6}>
           <Box width={"100%"}>
             <Typography variant="h5" gutterBottom>
               Linked files
