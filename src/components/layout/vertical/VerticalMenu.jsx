@@ -45,13 +45,13 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
     <ScrollWrapper
       {...(isBreakpointReached
         ? {
-            className: 'bs-full overflow-y-auto overflow-x-hidden',
-            onScroll: container => scrollMenu(container, false)
-          }
+          className: 'bs-full overflow-y-auto overflow-x-hidden',
+          onScroll: container => scrollMenu(container, false)
+        }
         : {
-            options: { wheelPropagation: false, suppressScrollX: true },
-            onScrollY: container => scrollMenu(container, true)
-          })}
+          options: { wheelPropagation: false, suppressScrollX: true },
+          onScrollY: container => scrollMenu(container, true)
+        })}
     >
       {/* Incase you also want to scroll NavHeader to scroll with Vertical Menu, remove NavHeader from above and paste it below this comment */}
       {/* Vertical Menu */}
@@ -74,12 +74,45 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem>
         </SubMenu>
 
-        <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
+        {/* <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
           <SubMenu label={dictionary['navigation'].thirdParty} href={`/${locale}/third-parties`}>
             <MenuItem href={`/${locale}/third-parties/list`}>{dictionary['navigation'].list}</MenuItem>
             <MenuItem href={`/${locale}/third-parties/add`}>{dictionary['navigation'].add}</MenuItem>
           </SubMenu>
+        </SubMenu> */}
+
+        <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
+          <SubMenu label={dictionary['navigation'].thirdParty} href={`/${locale}/third-parties`}>
+            <MenuItem href={`/${locale}/third-parties/add`}>{dictionary['navigation'].newThirdParty}</MenuItem>
+
+            <SubMenu label={dictionary['navigation'].list}>
+              <MenuItem href={`/${locale}/third-parties/prospects/list`}>{dictionary['navigation'].listOfProspects}</MenuItem>
+              <MenuItem href={`/${locale}/third-parties/prospects/add`}>{dictionary['navigation'].newProspect}</MenuItem>
+              <MenuItem href={`/${locale}/third-parties/customers/list`}>{dictionary['navigation'].listOfCustomers}</MenuItem>
+              <MenuItem href={`/${locale}/third-parties/customers/add`}>{dictionary['navigation'].newCustomer}</MenuItem>
+              <MenuItem href={`/${locale}/third-parties/vendors/list`}>{dictionary['navigation'].listOfVendors}</MenuItem>
+              <MenuItem href={`/${locale}/third-parties/vendors/add`}>{dictionary['navigation'].newVendor}</MenuItem>
+            </SubMenu>
+
+            <MenuItem href={`/${locale}/third-parties/customers-prospects/tags`}>{dictionary['navigation'].customerProspectTagsCategories}</MenuItem>
+            <MenuItem href={`/${locale}/third-parties/vendors/tags`}>{dictionary['navigation'].vendorTagsCategories}</MenuItem>
+          </SubMenu>
+
+          <SubMenu label={dictionary['navigation'].contactsAddresses} icon={<i className='ri-contacts-line' />}>
+            <MenuItem href={`/${locale}/contacts/add`}>{dictionary['navigation'].newContactAddress}</MenuItem>
+
+            <SubMenu label={dictionary['navigation'].list}>
+              <MenuItem href={`/${locale}/contacts/prospects`}>{dictionary['navigation'].prospects}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/customers`}>{dictionary['navigation'].customers}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/vendors`}>{dictionary['navigation'].vendors}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/others`}>{dictionary['navigation'].other}</MenuItem>
+            </SubMenu>
+
+            <MenuItem href={`/${locale}/contacts/tags`}>{dictionary['navigation'].contactsTagsCategories}</MenuItem>
+          </SubMenu>
+
         </SubMenu>
+
 
         <SubMenu
           label={dictionary['navigation'].mrp}
