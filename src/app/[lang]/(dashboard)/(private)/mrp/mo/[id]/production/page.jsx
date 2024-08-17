@@ -34,7 +34,7 @@ const data = [
   { description: 'BABY_KLIM_1_Lata_Cantag_6x400g_CO', qty: 1, frozenQty: 1, stockChangeDisabled: 1, manufacturingEfficiency: 1, totalCost: 0 },
 ];
 
-const EventRecordsList = () => {
+const BomNetNeedsProductsTable = () => {
 
   const [newRow, setNewRow] = useState({
     description: '',
@@ -61,6 +61,13 @@ const EventRecordsList = () => {
   return (
     <>
       <Grid container justifyContent="space-between" alignItems="center" mb={2}>
+        <Grid item>
+          <Box mb={2} display={"flex"} justifyContent={"flex-start"} flexDirection={"row"} gap={"20px"} alignItems={"center"}>
+            <Typography variant="h5" component="div">
+              BOM Net Needs
+            </Typography>
+          </Box>
+        </Grid>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -183,6 +190,14 @@ const EventRecordsList = () => {
 };
 
 
+const InfoItem = ({ label, value }) => (
+  <Box display="flex" justifyContent="space-between" mb={1}>
+    <Typography variant="body2" color="text.secondary">{label}</Typography>
+    <Typography variant="body2">{value}</Typography>
+  </Box>
+);
+
+
 const MRP_BOM_ItemTabNetNeeds = ({ }) => {
   return (
     <>
@@ -230,32 +245,53 @@ const MRP_BOM_ItemTabNetNeeds = ({ }) => {
 
               {/* Details */}
               <Box mb={2}>
-                <Typography variant="subtitle2">Created by</Typography>
-                <Link href={"#"} display={"flex"} flexDirection="row" columnGap={2} variant="body2">
-                    <img style={{width: 24}} src='https://f.start.me/us.gov' />
-                    <Typography variant="body2">David Joe</Typography>
+                <Typography variant="subtitle2">Label</Typography>
+                <Typography variant="body2">XYZ</Typography>
+              </Box>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Type</Typography>
+                <Typography variant="body2">Manufacturing</Typography>
+              </Box>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Product</Typography>
+                <Link href="#" variant="body2">
+                  CANONC3520
                 </Link>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Creation date</Typography>
-                <Typography variant="body2">10/10/2023 10:41 PM PHP Time (server)   /   10/11/2023 02:11 AM  Client time (user)</Typography>
+                <Typography variant="subtitle2">Quantity</Typography>
+                <Typography variant="body2">100.00</Typography>
               </Box>
               <Box mb={2}>
-                <Typography variant="subtitle2">Latest modification date</Typography>
-                <Typography variant="body2">10/10/2023 10:41 PM PHP Time (server)   /   10/11/2023 02:11 AM  Client time (user)</Typography>
+                <Typography variant="subtitle2">Description</Typography>
+                <Typography variant="body2">-</Typography>
+              </Box>
+            </Grid>
+
+            {/* Right Column */}
+            <Grid item xs={6}>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Estimated duration</Typography>
+                <Typography variant="body2">-</Typography>
+              </Box>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Warehouse for production</Typography>
+                <Link href="#" variant="body2">
+                  0000000
+                </Link>
+              </Box>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Total cost</Typography>
+                <Typography variant="body2">9,786.35</Typography>
+              </Box>
+              <Box mb={2}>
+                <Typography variant="subtitle2">Unit cost</Typography>
+                <Typography variant="body2">97.8635</Typography>
               </Box>
             </Grid>
           </Grid>
         </Box>
-        <EventRecordsList />
-        <Grid container justifyContent="flex-end" columnGap={4} alignItems="center">
-          <Button
-            variant="contained"
-            color="primary"
-          >
-            Create event
-          </Button>
-        </Grid>
+        <BomNetNeedsProductsTable />
       </Grid>
     </>
   );

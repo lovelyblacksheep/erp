@@ -57,6 +57,9 @@ const MRP_BOM_Item = ({ children }) => {
     else if(pathname.endsWith(BOMItemTabs.bomNetNeeds)) {
       return BOMItemTabs.bomNetNeeds; 
     }
+    else if(pathname.endsWith(BOMItemTabs.linked)) {
+      return BOMItemTabs.linked; 
+    }
     else if(pathname.endsWith(BOMItemTabs.notes)) {
       return BOMItemTabs.notes; 
     }
