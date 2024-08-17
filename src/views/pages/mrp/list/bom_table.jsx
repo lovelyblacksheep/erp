@@ -213,7 +213,7 @@ const BOMTable = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('date_creation', {
         cell: info => {
-          const date = new Date(info.getValue())
+          const date = new Date(info.getValue() * 1000) // Convert Unix timestamp to milliseconds
           return date.toLocaleString('en-GB', {
             day: '2-digit',
             month: '2-digit',
@@ -226,15 +226,13 @@ const BOMTable = ({ onSelectionChange }) => {
         header: 'Creation Date',
         size: 180,
         sortingFn: (rowA, rowB) => {
-          const dateA = new Date(rowA.original.date_creation)
-          const dateB = new Date(rowB.original.date_creation)
-          return dateA - dateB
+          return rowA.original.date_creation - rowB.original.date_creation
         },
         filterFn: (row, columnId, filterValue) => {
           if (!filterValue.from || !filterValue.to) return true
-          const fromDate = new Date(filterValue.from)
-          const toDate = new Date(filterValue.to)
-          const rowDate = new Date(row.getValue(columnId))
+          const fromDate = filterValue.from.valueOf() / 1000
+          const toDate = filterValue.to.valueOf() / 1000
+          const rowDate = row.getValue(columnId)
           return rowDate >= fromDate && rowDate <= toDate
         }
       }),
