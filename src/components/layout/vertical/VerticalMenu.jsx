@@ -104,10 +104,10 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/contacts/add`}>{dictionary['navigation'].newContactAddress}</MenuItem>
 
             <SubMenu label={dictionary['navigation'].list}>
-              <MenuItem href={`/${locale}/contacts/prospects`}>{dictionary['navigation'].prospects}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/customers`}>{dictionary['navigation'].customers}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/vendors`}>{dictionary['navigation'].vendors}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/others`}>{dictionary['navigation'].other}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/prospects/list`}>{dictionary['navigation'].prospects}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/customers/list`}>{dictionary['navigation'].customers}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/vendors/list`}>{dictionary['navigation'].vendors}</MenuItem>
+              <MenuItem href={`/${locale}/contacts/others/list`}>{dictionary['navigation'].other}</MenuItem>
             </SubMenu>
 
             <MenuItem href={`/${locale}/contacts/tags`}>{dictionary['navigation'].contactsTagsCategories}</MenuItem>

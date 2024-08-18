@@ -35,7 +35,7 @@ import ChevronRight from '@menu/svg/ChevronRight'
 import styles from '@core/styles/table.module.css'
 
 // API Import
-import { getThirdParties } from '@/libs/api/thirdparty'
+import { getThirdParties } from '@/libs/api/third-parties'
 
 // Config Import
 import { apiUrl, apiKey } from '@/config'
