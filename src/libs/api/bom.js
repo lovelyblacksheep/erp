@@ -17,6 +17,21 @@ export async function getBoms({ limit, page }) {
   return result
 }
 
+
+export async function getLastBom({}) {
+  const result = await axios.get(url, {
+    params: {
+      sortfield: 't.rowid',
+      sortorder: 'DESC',
+      limit: 1,
+      page: 0,
+      DOLAPIKEY: apiKey
+    }
+  })
+
+  return result
+}
+
 export async function addBom(data) {
   try {
     const response = await axios.post(url, data, {

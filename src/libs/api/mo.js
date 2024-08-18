@@ -40,6 +40,20 @@ export async function getMo(id) {
   return result
 }
 
+export async function getLastMo({}) {
+  const result = await axios.get(url, {
+    params: {
+      sortfield: 't.rowid',
+      sortorder: 'DESC',
+      limit: 1,
+      page: 0,
+      DOLAPIKEY: apiKey
+    }
+  })
+
+  return result
+}
+
 export async function deleteMo(id) {
   const result = await axios.delete(`${url}/${id}`, {
     params: {
