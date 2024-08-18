@@ -37,9 +37,9 @@ import ChevronRight from '@menu/svg/ChevronRight'
 
 // Style Imports
 import styles from '@core/styles/table.module.css'
-
-// API Import
 import { getThirdParties } from '@/libs/api/third-parties'
+import axios from 'axios'
+import { apiKey, apiUrl } from '@/config'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -176,53 +176,50 @@ const Prospects_Table = ({ onSelectionChange }) => {
       columnHelper.accessor('name', {
         cell: info => (
           <Link href={`/thirdparty/${info.row.original.id}`} className={`${styles.link} hover:underline`}>
-            {info.getValue()}
+            {info.getValue() || 'N/A'}
           </Link>
         ),
         header: 'Third-party name',
-        size: 150
+        size: 200
       }),
       columnHelper.accessor('name_alias', {
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || 'N/A',
         header: 'Alias Name',
-        size: 120
+        size: 150
       }),
       columnHelper.accessor('sales_representatives', {
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || 'N/A',
         header: 'Sales representatives',
-        size: 180
+        size: 200
       }),
       columnHelper.accessor('zip', {
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || 'N/A',
         header: 'Zip Code',
-        size: 80
+        size: 100
       }),
-      columnHelper.accessor('fk_prospectlevel', {
-        cell: info => info.getValue(),
+      columnHelper.accessor('potential', {
+        cell: info => info.getValue() || 'N/A',
         header: 'Prospect potential',
-        size: 120
+        size: 150
       }),
       columnHelper.accessor('status_prospect_label', {
         cell: info => (
           <Select
-            value={info.getValue()}
+            value={info.getValue() || ''}
             onChange={async e => {
               const newValue = e.target.value
               info.row.original.status_prospect_label = newValue
               try {
-                await fetch(`https://qnerp.com/erp/api/index.php/thirdparties/${info.row.original.id}`, {
-                  method: 'PUT',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    DOLAPIKEY: 'cDIoWFiQIAB0'
-                  },
-                  body: JSON.stringify({ status_prospect_label: newValue })
-                })
+                await axios.put(
+                  `${apiUrl}/thirdparties/${info.row.original.id}`,
+                  { status_prospect_label: newValue },
+                  { params: { DOLAPIKEY: apiKey } }
+                )
               } catch (error) {
                 console.error('Error updating prospect status:', error)
               }
             }}
+            style={{ width: '100%' }}
           >
             <MenuItem value='Do not contact'>Do not contact</MenuItem>
             <MenuItem value='Never contacted'>Never contacted</MenuItem>
@@ -232,25 +229,26 @@ const Prospects_Table = ({ onSelectionChange }) => {
           </Select>
         ),
         header: 'Prospect status',
-        size: 150
+        size: 180
       }),
       columnHelper.accessor('profession', {
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || 'N/A',
         header: 'Profession',
-        size: 120
+        size: 150
       }),
-      columnHelper.accessor('birth_date', {
+      columnHelper.accessor(row => row.linkedObjectsIds?.birthdate?.[0] ?? null, {
+        id: 'birth_date',
         cell: info => {
-          const date = new Date(info.getValue() * 1000) // Convert Unix timestamp to milliseconds
-          return date.toLocaleDateString('en-GB')
+          const date = info.getValue() ? new Date(info.getValue() * 1000) : null
+          return date ? date.toLocaleDateString('en-GB') : 'N/A'
         },
         header: 'Birth date',
-        size: 100
+        size: 120
       }),
       columnHelper.accessor('status', {
-        cell: info => info.getValue(),
+        cell: info => info.getValue() || 'N/A',
         header: 'Status',
-        size: 80
+        size: 100
       })
     ],
     []
@@ -279,9 +277,22 @@ const Prospects_Table = ({ onSelectionChange }) => {
       const result = await getThirdParties({
         limit: table.getState().pagination.pageSize,
         page: table.getState().pagination.pageIndex,
+        sortfield: 't.rowid',
+        sortorder: 'ASC',
         mode: 2
       })
-      setData(result.data)
+      const thirdParties = result.data
+      const representativesPromises = thirdParties.map(tp =>
+        axios.get(`${apiUrl}/thirdparties/${tp.id}/representatives`, { params: { DOLAPIKEY: apiKey } })
+      )
+      const representativesResults = await Promise.all(representativesPromises)
+
+      const updatedData = thirdParties.map((tp, index) => ({
+        ...tp,
+        sales_representatives: representativesResults[index].data.map(rep => rep.name).join(', ') || null
+      }))
+
+      setData(updatedData)
     } catch (error) {
       console.error(error)
     }
@@ -309,7 +320,7 @@ const Prospects_Table = ({ onSelectionChange }) => {
         }
       />
       <div className='overflow-x-auto'>
-        <table className={`${styles.table} w-full`}>
+        <table className={`${styles.table} w-full`} style={{ minWidth: '1200px' }}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
