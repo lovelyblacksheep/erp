@@ -451,7 +451,16 @@ const MRP_BOM_ItemTabBOM = () => {
             <Grid item xs={6}>
               <Box mb={2}>
                 <Typography variant='subtitle2'>Estimated duration</Typography>
-                <Typography variant='body2'>{bomData.duration || '-'}</Typography>
+                <Typography variant='body2'>
+                  {bomData.duration
+                    ? (() => {
+                        const totalMinutes = Math.floor(Number(bomData.duration) / 60)
+                        const hours = Math.floor(totalMinutes / 60)
+                        const minutes = totalMinutes % 60
+                        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+                      })()
+                    : '-'}
+                </Typography>
               </Box>
               <Box mb={2}>
                 <Typography variant='subtitle2'>Warehouse for production</Typography>
