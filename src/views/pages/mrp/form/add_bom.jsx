@@ -3,7 +3,7 @@
 // Next Imports
 import axios from 'axios'
 import { apiKey, apiUrl } from '@/config'
-import { addBom, getBoms } from '@/libs/api/bom'
+import { addBom, getBoms, getLastBom } from '@/libs/api/bom'
 
 // React Imports
 import { useEffect, useState } from 'react'
@@ -18,28 +18,50 @@ const AddBOMForm = () => {
   const [products, setProducts] = useState([])
   const [warehouses, setWarehouses] = useState([])
 
+  const [lastBom, setLastBom] = useState(null);
+
   const [formData, setFormData] = useState({
     label: '',
     type: '',
+    bomtype: '',
+    status: '',
     product: '',
+    fk_product: '',
     quantity: '',
     description: '',
     est_time_hours: 0,
     est_time_minutes: 0,
-    warehouse: ''
+    warehouse: '',
+    fk_warehoust: '',
+    ref: '(PROV{ID})'
   })
+
 
   // Fetch Parent Companies
   useEffect(() => {
     async function fetchData() {
       try {
         const result = await getBoms({ limit: 12, page: 0 })
+        console.log("R :: ", result)
         setParentCompanies(result.data)
       } catch (error) {
         console.error(error)
       }
     }
     fetchData()
+  }, [])
+
+  useEffect(() => {
+    async function fetchLastBomData() {
+      try {
+        const result = await getLastBom({})
+        console.log("R :: ", result)
+        setLastBom(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchLastBomData()
   }, [])
 
   // Fetch Products for Dropdown
@@ -85,18 +107,32 @@ const AddBOMForm = () => {
 
   const handleSubmit = async () => {
     try {
+      let lastId = (lastBom || []).length > 0 ? lastBom[0].id : 0;
       const estTimeFormatted = `${formData.est_time_hours}:${formData.est_time_minutes.toString().padStart(2, '0')}`
-      const result = await addBom({ ...formData, est_time: estTimeFormatted })
+      const result = await addBom({ 
+          ...formData,
+          est_time: estTimeFormatted,
+          bomtype: formData.type,
+          status: '0',
+          fk_warehouse: formData.warehouse,
+          ref: formData.ref.replace("{ID}", lastId+1),
+          qty: formData.quantity
+        })
       if (result.success) {
         setFormData({
           label: '',
           type: '',
+          bomtype: '',
+          status: '',
           product: '',
+          fk_product: '',
           quantity: '',
           description: '',
           est_time_hours: 0,
           est_time_minutes: 0,
-          warehouse: ''
+          warehouse: '',
+          fk_warehouse: '',
+          ref: '(PROV{ID})'
         })
         alert('Form Submitted successfully')
       } else {
