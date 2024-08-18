@@ -22,7 +22,7 @@ import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-picker
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 
-import { addMo } from '@/libs/api/mo'
+import { addMo, getLastMo } from '@/libs/api/mo'
 
 const AddMOForm = () => {
   const [products, setProducts] = useState([])
@@ -30,6 +30,8 @@ const AddMOForm = () => {
   const [boms, setBoms] = useState([])
   const [thirdParties, setThirdParties] = useState([])
   const [projects, setProjects] = useState([])
+
+  const [lastMo, setLastMo] = useState(null);
 
   const [formData, setFormData] = useState({
     bom: '',
@@ -44,10 +46,23 @@ const AddMOForm = () => {
     date_start: null,
     time_start: null,
     date_end: null,
-    time_end: null
+    time_end: null,
+    ref: '(PROV{id})'
   })
 
   useEffect(() => {
+
+    async function fetchLastMoData() {
+      try {
+        const result = await getLastMo({})
+        setLastMo(result.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchLastMoData()
+
     fetchProducts()
     fetchWarehouses()
     fetchBoms()
@@ -152,7 +167,12 @@ const AddMOForm = () => {
       const submissionData = {
         ...formData,
         date_start: dateStartUnix,
-        date_end: dateEndUnix
+        date_end: dateEndUnix,
+        qty: formData.quantity,
+        ref: `(PROV${((lastMo || []).length > 0 ? lastMo[0].id : 0)+1})`,
+        mrptype: formData.type,
+        fk_product: formData.product,
+        status: '0'
       }
 
       const result = await addMo(submissionData)
