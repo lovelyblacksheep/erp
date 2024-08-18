@@ -8,6 +8,8 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import { AddCircleOutlineSharp } from '@mui/icons-material'
+import Link from '@/components/Link'
 
 const MRP_MO_List = () => {
   const [selectedRows, setSelectedRows] = useState([])
@@ -45,10 +47,13 @@ const MRP_MO_List = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12}>
+      <Grid item xs={12} display={"flex"} justifyContent={"space-between"}>
         <Typography variant='h4' className='flex items-center gap-2'>
           <i className='ri-building-4-fill text-primary text-3xl' /> Bill Of Materials
         </Typography>
+        <Button variant='contained' color='primary' component={Link} href="add">
+          <AddCircleOutlineSharp /><span style={{marginLeft: 4}}>Add</span>
+        </Button>
       </Grid>
       <Grid item xs={12}>
         <Box display='flex' justifyContent='flex-end' alignItems='center' mb={2}>
