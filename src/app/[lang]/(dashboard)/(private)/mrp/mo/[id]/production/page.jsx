@@ -388,7 +388,7 @@ const MRP_BOM_ItemTabBOM = ({ }) => {
               </Box>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2" underline="hover">
+              <Link href="/mrp/mo/list" variant="body2" underline="hover">
                 Back to list
               </Link>
             </Grid>

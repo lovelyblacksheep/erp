@@ -409,7 +409,7 @@ const MRP_BOM_ItemTabBOM = () => {
               </Box>
             </Grid>
             <Grid item>
-              <Link href='/boms' passHref>
+              <Link href='/mrp/bom/list' passHref>
                 <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
                   Back to list
                 </Typography>
