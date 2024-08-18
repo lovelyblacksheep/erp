@@ -1,145 +1,158 @@
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Tabs, Tab, Grid, Typography, TextField, Box, Container } from '@mui/material';
-import { styled } from '@mui/system';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import { Grid, Typography, TextField, Box, Container, IconButton, Button, Paper } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import { apiKey, apiUrl } from '@/config'
 
+const MRP_BOM_ItemTabNotes = () => {
+  const { id: bomId } = useParams()
+  const [bomData, setBomData] = useState(null)
+  const [editMode, setEditMode] = useState(null)
+  const [publicNote, setPublicNote] = useState('')
+  const [privateNote, setPrivateNote] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Button,
-  Select,
-  MenuItem,
-  InsertDriveFileIcon
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import MenuIcon from '@mui/icons-material/Menu';
-
-
-const MRP_BOM_ItemTabNotes = ({ }) => {
-
-    const [editMode, setEditMode] = useState(null);
-
-    const handleSave = async (e) => {
-        if(editMode === "public") {
-
+  const fetchBomData = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(`${apiUrl}/boms/${bomId}`, {
+        headers: {
+          DOLAPIKEY: apiKey
         }
-        else if(editMode === "private") {
-            
-        }
-        setEditMode(null);
+      })
+      if (!response.ok) {
+        throw new Error('Failed to fetch BOM data')
+      }
+      const data = await response.json()
+      setBomData(data)
+      setPublicNote(data.note_public || '')
+      setPrivateNote(data.note_private || '')
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
+    if (bomId) {
+      fetchBomData()
+    }
+  }, [bomId])
+
+  const handleSave = async noteType => {
+    try {
+      const response = await fetch(`${apiUrl}/boms/${bomId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          DOLAPIKEY: apiKey
+        },
+        body: JSON.stringify({
+          [noteType === 'public' ? 'note_public' : 'note_private']: noteType === 'public' ? publicNote : privateNote
+        })
+      })
+      if (!response.ok) {
+        throw new Error('Failed to update note')
+      }
+      await fetchBomData()
+    } catch (error) {
+      console.error('Error updating note:', error)
+      setError(error.message)
+    }
+    setEditMode(null)
+  }
+
+  if (isLoading) {
+    return <Typography>Loading...</Typography>
+  }
+
+  if (error) {
+    return <Typography color='error'>Error: {error}</Typography>
+  }
+
+  const renderNoteSection = (noteType, noteValue, setNoteValue) => (
+    <Box sx={{ mb: 4 }}>
+      <Typography variant='h6' gutterBottom display='flex' justifyContent='space-between' alignItems='center'>
+        Note ({noteType})
+        <IconButton disabled={editMode === noteType} color='primary' onClick={() => setEditMode(noteType)}>
+          <EditIcon />
+        </IconButton>
+      </Typography>
+      {editMode === noteType ? (
+        <>
+          <TextField
+            multiline
+            minRows={4}
+            variant='outlined'
+            fullWidth
+            value={noteValue}
+            onChange={e => setNoteValue(e.target.value)}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Button onClick={() => handleSave(noteType)} variant='contained' color='primary' sx={{ mr: 1 }}>
+              Save
+            </Button>
+            <Button onClick={() => setEditMode(null)} variant='outlined'>
+              Cancel
+            </Button>
+          </Box>
+        </>
+      ) : (
+        <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', bgcolor: '#f5f5f5' }}>
+          <Typography variant='body1' color='text.primary'>
+            {noteValue || `No ${noteType} note available`}
+          </Typography>
+        </Paper>
+      )}
+    </Box>
+  )
 
   return (
-    <>
-      <Grid item xs={12} display={"flex"} flexDirection={"column"} rowGap={8}>
-
-        <Box p={6} border={1} borderColor="grey.300" borderRadius={1} display={"flex"} flexDirection={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} rowGap={4}>
-
-          {/* Top Section */}
-          <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-            <Grid item>
-              <Box mb={2} display={"flex"} justifyContent={"flex-start"} flexDirection={"row"} gap={"20px"} alignItems={"center"}>
-                <Box
-                  width={50}
-                  height={50}
-                  bgcolor="grey.200"
-                  // borderRadius="50%"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  overflow="hidden"
-                >
-                  {/* Image Placeholder */}
-                  {/* <Typography variant="body1" color="textSecondary">
-                  No Image
-                </Typography> */}
-                  <img width={64}
-                    height={64} src='https://f.start.me/us.gov' />
-                </Box>
-                <Typography variant="h6" component="div">
-                  BOM2310-0001
-                </Typography>
+    <Grid item xs={12} display='flex' flexDirection='column' rowGap={4}>
+      <Box p={4} border={1} borderColor='grey.300' borderRadius={1}>
+        {/* Top Section */}
+        <Grid container justifyContent='space-between' alignItems='center' mb={4}>
+          <Grid item>
+            <Box display='flex' alignItems='center' gap={2}>
+              <Box
+                width={50}
+                height={50}
+                bgcolor='grey.200'
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                overflow='hidden'
+              >
+                <img width={64} height={64} src='https://f.start.me/us.gov' alt='BOM' />
               </Box>
-            </Grid>
-            <Grid item>
-              <Link href="/mrp/bom/list" variant="body2" underline="hover">
-                Back to list
-              </Link>
-            </Grid>
+              <Typography variant='h5' component='div'>
+                {bomData.ref || 'No Reference'}
+              </Typography>
+            </Box>
           </Grid>
+          <Grid item>
+            <Link href='/mrp/bom/list' passHref>
+              <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
+                Back to list
+              </Typography>
+            </Link>
+          </Grid>
+        </Grid>
 
-          {/* Main Content Section */}
-          <Container maxWidth="md" sx={{ mt: 5 }}>
-            <Box sx={{ mb: 8 }}>
-                <Typography variant="body1" display={"flex"} justifyContent={"space-between"} alignItems={"center"} gutterBottom>
-                    <span>Note (public)</span>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <IconButton disabled={editMode === "public"} color="primary" onClick={() => setEditMode("public")}>
-                            <EditIcon />
-                        </IconButton>
-                    </Box>
-                </Typography>
-                <TextField
-                    multiline
-                    minRows={4}
-                    variant="outlined"
-                    fullWidth
-                    value={"publicNote"}
-                    disabled={editMode === "public" ? false : true}
-                />
-                {editMode === "public" && <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                    <Button onClick={handleSave} variant="contained" color="secondary" sx={{ mr: 1 }}>
-                        Save
-                    </Button>
-                    <Button onClick={() => setEditMode(null)}  variant="contained" color="secondary">
-                        Cancel
-                    </Button>
-                </Box>}
-            </Box>
-
-            <Box sx={{ mb: 2 }}>
-                <Typography variant="body1" display={"flex"} justifyContent={"space-between"} alignItems={"center"} gutterBottom>
-                    <span>Note (private)</span>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <IconButton disabled={editMode === "private"} color="primary" onClick={() => setEditMode("private")}>
-                            <EditIcon />
-                        </IconButton>
-                    </Box>
-                </Typography>
-                <TextField
-                    multiline
-                    minRows={4}
-                    variant="outlined"
-                    fullWidth
-                    value={"privateNote"}
-                    disabled={editMode === "private" ? false : true}
-                />
-                {editMode === "private" && <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                    <Button onClick={handleSave} variant="contained" color="secondary" sx={{ mr: 1 }}>
-                        Save
-                    </Button>
-                    <Button onClick={() => setEditMode(null)} variant="contained" color="secondary">
-                        Cancel
-                    </Button>
-                </Box>}
-            </Box>
+        {/* Main Content Section */}
+        <Container maxWidth='md' disableGutters>
+          {renderNoteSection('public', publicNote, setPublicNote)}
+          {renderNoteSection('private', privateNote, setPrivateNote)}
         </Container>
-        </Box>
-      </Grid>
-    </>
-  );
-};
+      </Box>
+    </Grid>
+  )
+}
 
-export default MRP_BOM_ItemTabNotes;
+export default MRP_BOM_ItemTabNotes
