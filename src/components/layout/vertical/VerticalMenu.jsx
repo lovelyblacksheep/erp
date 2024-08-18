@@ -21,6 +21,7 @@ import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNav
 // Style Imports
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
+import Link from '@/components/Link'
 
 const RenderExpandIcon = ({ open, transitionDuration }) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
@@ -84,6 +85,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
         <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
           <SubMenu label={dictionary['navigation'].thirdParty} href={`/${locale}/third-parties`}>
             <MenuItem href={`/${locale}/third-parties/add`}>{dictionary['navigation'].newThirdParty}</MenuItem>
+            <MenuItem href={`/${locale}/third-parties/list`}>{"Third Party list"}</MenuItem>
 
             <SubMenu label={dictionary['navigation'].list}>
               <MenuItem href={`/${locale}/third-parties/prospects/list`}>{dictionary['navigation'].listOfProspects}</MenuItem>
