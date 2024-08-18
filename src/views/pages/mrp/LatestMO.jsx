@@ -53,7 +53,7 @@ const LatestMO = () => {
             limit: 100,
             DOLAPIKEY: apiKey
           }
-        })
+        });
 
         const formattedData = result.data.map(item => ({
           ref: item.ref,

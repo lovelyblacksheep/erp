@@ -37,7 +37,7 @@ import ChevronRight from '@menu/svg/ChevronRight'
 
 // Style Imports
 import styles from '@core/styles/table.module.css'
-import { getBoms } from '@/libs/api/mo'
+import { getMos } from '@/libs/api/mo'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -349,7 +349,7 @@ const BOMTable = ({ onSelectionChange }) => {
 
   async function fetchData() {
     try {
-      const result = await getBoms({
+      const result = await getMos({
         limit: table.getState().pagination.pageSize,
         page: table.getState().pagination.pageIndex
       })
