@@ -30,6 +30,7 @@ import {
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
 import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
 import { Grid } from '@mui/material';
+import { getThirdPartyCategories } from '@/libs/api/third-parties';
 
 
 const CustomTreeItemRoot = styled(TreeItem2Root)(({ theme }) => ({
@@ -155,7 +156,106 @@ function EndIcon() {
   return <div style={{ width: 24 }} />;
 }
 
+// const ItemsList = [
+//   {
+//     label: "All Mail",
+//     labelIcon: MailIcon,
+//     id: 1,
+//     childs: [],
+//     color: "#1a73e8",
+//     bgColor: "#e8f0fe",
+//     colorForDarkMode: "#D9B8FB",
+//     bgColorForDarkMode: alpha('#9035ff', 0.15)
+//   },
+//   {
+//     label: "Trash",
+//     labelIcon: DeleteIcon,
+//     id: 2,
+//     childs: [],
+//     color: "#1a73e8",
+//     bgColor: "#e8f0fe",
+//     colorForDarkMode: "#D9B8FB",
+//     bgColorForDarkMode: alpha('#9035ff', 0.15)
+//   },
+//   {
+//     label: "Categories",
+//     labelIcon: Label,
+//     id: 3,
+//     childs: [
+//       {
+//         label: "Social",
+//         labelIcon: SupervisorAccountIcon,
+//         id: 4,
+//         childs: [],
+//         color: "#fff",
+//         bgColor: "#000",
+//         colorForDarkMode: "#D9B8FB",
+//         bgColorForDarkMode: alpha('#9035ff', 0.15)
+//       }
+//     ],
+//     color: "#1a73e8",
+//     bgColor: "#e8f0fe",
+//     colorForDarkMode: "#D9B8FB",
+//     bgColorForDarkMode: alpha('#9035ff', 0.15)
+//   }
+// ]
+
+const renderTreeItems = (items) => {
+  return items.map((item) => (
+    <CustomTreeItem
+      key={item.id}
+      itemId={item.id}
+      label={item.label}
+      labelIcon={item.labelIcon}
+      color={item.color}
+      bgColor={item.bgColor}
+      colorForDarkMode={item.colorForDarkMode}
+      bgColorForDarkMode={item.bgColorForDarkMode}
+    >
+      {item.childs && renderTreeItems(item.childs)}
+    </CustomTreeItem>
+  ));
+};
+
+const convertItems = (data) => {
+  const itemsById = data.reduce((acc, item) => {
+    acc[item.id] = {
+      ...item,
+      childs: []
+    };
+    return acc;
+  }, {});
+
+  const ItemsList = [];
+
+  data.forEach((item) => {
+    const newItem = itemsById[item.id];
+    
+    if (item.fk_parent) {
+      itemsById[item.fk_parent].childs.push(newItem);
+    } else {
+      ItemsList.push(newItem);
+    }
+  });
+
+  return ItemsList;
+}
+
 function CategoriesTreeView() {
+
+  const [items, setItems] = React.useState([]);
+
+  const fetchItems = async () => {
+    let response = await getThirdPartyCategories();
+    if(response && response.status === 200) {
+      setItems(convertItems(response.data));
+    }
+  }
+
+  React.useEffect(() => {
+    fetchItems();
+  }, []);
+
   return (
     <SimpleTreeView
       aria-label="categories"
@@ -168,51 +268,7 @@ function CategoriesTreeView() {
       }}
       sx={{ flexGrow: 1, maxWidth: '100%', width: '100%' }}
     >
-      <CustomTreeItem itemId="1" label="All Mail" labelIcon={MailIcon} />
-      <CustomTreeItem itemId="2" label="Trash" labelIcon={DeleteIcon} />
-      <CustomTreeItem itemId="3" label="Categories" labelIcon={Label}>
-        <CustomTreeItem
-          itemId="5"
-          label="Social"
-          labelIcon={SupervisorAccountIcon}
-          labelInfo="90"
-          color="#1a73e8"
-          bgColor="#e8f0fe"
-          colorForDarkMode="#B8E7FB"
-          bgColorForDarkMode={alpha('#00b4ff', 0.2)}
-        />
-        <CustomTreeItem
-          itemId="6"
-          label="Updates"
-          labelIcon={InfoIcon}
-          labelInfo="2,294"
-          color="#e3742f"
-          bgColor="#fcefe3"
-          colorForDarkMode="#FFE2B7"
-          bgColorForDarkMode={alpha('#ff8f00', 0.2)}
-        />
-        <CustomTreeItem
-          itemId="7"
-          label="Forums"
-          labelIcon={ForumIcon}
-          labelInfo="3,566"
-          color="#a250f5"
-          bgColor="#f3e8fd"
-          colorForDarkMode="#D9B8FB"
-          bgColorForDarkMode={alpha('#9035ff', 0.15)}
-        />
-        <CustomTreeItem
-          itemId="8"
-          label="Promotions"
-          labelIcon={LocalOfferIcon}
-          labelInfo="733"
-          color="#3c8039"
-          bgColor="#e6f4ea"
-          colorForDarkMode="#CCE8CD"
-          bgColorForDarkMode={alpha('#64ff6a', 0.2)}
-        />
-      </CustomTreeItem>
-      <CustomTreeItem itemId="4" label="History" labelIcon={Label} />
+      {renderTreeItems(items)}
     </SimpleTreeView>
   );
 }
