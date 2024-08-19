@@ -8,7 +8,7 @@ export async function getThirdParties({ limit, page }) {
     params: {
       sortfield: 't.rowid',
       sortorder: 'ASC',
-      limit: limit || 10,
+      limit: limit || 100,
       page: page || 0,
       DOLAPIKEY: apiKey
     }

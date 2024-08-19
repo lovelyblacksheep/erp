@@ -38,8 +38,6 @@ import ChevronRight from '@menu/svg/ChevronRight'
 // Style Imports
 import styles from '@core/styles/table.module.css'
 import { getThirdParties } from '@/libs/api/third-parties'
-import axios from 'axios'
-import { apiKey, apiUrl } from '@/config'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -69,7 +67,7 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
   return <TextField {...props} size='small' value={value} onChange={e => setValue(e.target.value)} />
 }
 
-const ProspectStatusFilter = ({ column, table }) => {
+const StatusFilter = ({ column }) => {
   const columnFilterValue = column.getFilterValue() ?? ''
 
   return (
@@ -86,6 +84,25 @@ const ProspectStatusFilter = ({ column, table }) => {
       <MenuItem value='To be contacted'>To be contacted</MenuItem>
       <MenuItem value='Contact in process'>Contact in process</MenuItem>
       <MenuItem value='Contact done'>Contact done</MenuItem>
+    </Select>
+  )
+}
+
+const PotentialFilter = ({ column }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
+
+  return (
+    <Select
+      fullWidth
+      size='small'
+      value={columnFilterValue}
+      onChange={e => column.setFilterValue(e.target.value)}
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      <MenuItem value='Low'>Low</MenuItem>
+      <MenuItem value='Medium'>Medium</MenuItem>
+      <MenuItem value='High'>High</MenuItem>
     </Select>
   )
 }
@@ -124,12 +141,13 @@ const DateRangeFilter = ({ column }) => {
   )
 }
 
-const Filter = ({ column, table }) => {
-  const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
+const Filter = ({ column }) => {
   const columnFilterValue = column.getFilterValue()
 
   if (column.id === 'status_prospect_label') {
-    return <ProspectStatusFilter column={column} table={table} />
+    return <StatusFilter column={column} />
+  } else if (column.id === 'potential') {
+    return <PotentialFilter column={column} />
   } else if (column.id === 'birth_date') {
     return <DateRangeFilter column={column} />
   } else if (column.id !== 'select') {
@@ -175,80 +193,54 @@ const Prospects_Table = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('name', {
         cell: info => (
-          <Link href={`/thirdparty/${info.row.original.id}`} className={`${styles.link} hover:underline`}>
-            {info.getValue() || 'N/A'}
+          <Link href={`/prospects/${info.row.original.id}`} className={styles.link}>
+            {info.getValue()}
           </Link>
         ),
-        header: 'Third-party name',
-        size: 200
-      }),
-      columnHelper.accessor('name_alias', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Alias Name',
+        header: () => <div className='text-center'>Third-party name</div>,
         size: 150
       }),
-      columnHelper.accessor('sales_representatives', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Sales representatives',
-        size: 200
+      columnHelper.accessor('name_alias', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Alias Name</div>,
+        size: 150
       }),
       columnHelper.accessor('zip', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Zip Code',
-        size: 100
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Zip Code</div>,
+        size: 120
       }),
       columnHelper.accessor('potential', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Prospect potential',
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Prospect potential</div>,
         size: 150
       }),
       columnHelper.accessor('status_prospect_label', {
-        cell: info => (
-          <Select
-            value={info.getValue() || ''}
-            onChange={async e => {
-              const newValue = e.target.value
-              info.row.original.status_prospect_label = newValue
-              try {
-                await axios.put(
-                  `${apiUrl}/thirdparties/${info.row.original.id}`,
-                  { status_prospect_label: newValue },
-                  { params: { DOLAPIKEY: apiKey } }
-                )
-              } catch (error) {
-                console.error('Error updating prospect status:', error)
-              }
-            }}
-            style={{ width: '100%' }}
-          >
-            <MenuItem value='Do not contact'>Do not contact</MenuItem>
-            <MenuItem value='Never contacted'>Never contacted</MenuItem>
-            <MenuItem value='To be contacted'>To be contacted</MenuItem>
-            <MenuItem value='Contact in process'>Contact in process</MenuItem>
-            <MenuItem value='Contact done'>Contact done</MenuItem>
-          </Select>
-        ),
-        header: 'Prospect status',
-        size: 180
-      }),
-      columnHelper.accessor('profession', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Profession',
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Prospect status</div>,
         size: 150
       }),
-      columnHelper.accessor(row => row.linkedObjectsIds?.birthdate?.[0] ?? null, {
-        id: 'birth_date',
+      columnHelper.accessor('profession', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Profession</div>,
+        size: 150
+      }),
+      columnHelper.accessor('birth_date', {
         cell: info => {
-          const date = info.getValue() ? new Date(info.getValue() * 1000) : null
-          return date ? date.toLocaleDateString('en-GB') : 'N/A'
+          const date = new Date(info.getValue() * 1000)
+          return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          })
         },
-        header: 'Birth date',
-        size: 120
+        header: () => <div className='text-center'>Birth date</div>,
+        size: 150
       }),
       columnHelper.accessor('status', {
-        cell: info => info.getValue() || 'N/A',
-        header: 'Status',
-        size: 100
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Status</div>,
+        size: 120
       })
     ],
     []
@@ -275,24 +267,12 @@ const Prospects_Table = ({ onSelectionChange }) => {
   async function fetchData() {
     try {
       const result = await getThirdParties({
-        limit: table.getState().pagination.pageSize,
-        page: table.getState().pagination.pageIndex,
         sortfield: 't.rowid',
         sortorder: 'ASC',
+        limit: 100,
         mode: 2
       })
-      const thirdParties = result.data
-      const representativesPromises = thirdParties.map(tp =>
-        axios.get(`${apiUrl}/thirdparties/${tp.id}/representatives`, { params: { DOLAPIKEY: apiKey } })
-      )
-      const representativesResults = await Promise.all(representativesPromises)
-
-      const updatedData = thirdParties.map((tp, index) => ({
-        ...tp,
-        sales_representatives: representativesResults[index].data.map(rep => rep.name).join(', ') || null
-      }))
-
-      setData(updatedData)
+      setData(result.data)
     } catch (error) {
       console.error(error)
     }
@@ -320,73 +300,48 @@ const Prospects_Table = ({ onSelectionChange }) => {
         }
       />
       <div className='overflow-x-auto'>
-        <table className={`${styles.table} w-full`} style={{ minWidth: '1200px' }}>
+        <table className={styles.table}>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <th key={header.id} className='p-2' style={{ width: header.column.columnDef.size }}>
+                  <th key={header.id} className={classnames('whitespace-nowrap', styles.header)}>
                     {header.isPlaceholder ? null : (
-                      <>
-                        <div
-                          className={classnames('flex flex-col items-center justify-center gap-1', {
-                            'cursor-pointer select-none': header.column.getCanSort()
-                          })}
-                        >
-                          <div className='flex items-center' onClick={header.column.getToggleSortingHandler()}>
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {{
-                              asc: <ChevronRight fontSize='1rem' className='-rotate-90' />,
-                              desc: <ChevronRight fontSize='1rem' className='rotate-90' />
-                            }[header.column.getIsSorted()] ?? null}
+                      <div className='flex flex-col items-center'>
+                        <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                        {header.column.getCanFilter() && (
+                          <div>
+                            <Filter column={header.column} />
                           </div>
-                          {header.column.getCanFilter() && (
-                            <div className='w-full'>
-                              <Filter column={header.column} table={table} />
-                            </div>
-                          )}
-                        </div>
-                      </>
+                        )}
+                      </div>
                     )}
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
-          {table.getRowModel().rows.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
-                  No data available
-                </td>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+              <tr key={row.id} className={classnames({ [styles.selectedRow]: row.getIsSelected() })}>
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id} className='text-center'>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
               </tr>
-            </tbody>
-          ) : (
-            <tbody>
-              {table.getRowModel().rows.map(row => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} className='text-center p-2' style={{ width: cell.column.columnDef.size }}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          )}
+            ))}
+          </tbody>
         </table>
       </div>
       <TablePagination
-        rowsPerPageOptions={[7, 10, 25, { label: 'All', value: data.length }]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         component='div'
-        className='border-bs'
-        count={table.getFilteredRowModel().rows.length}
+        count={table.getPrePaginationRowModel().rows.length}
         rowsPerPage={table.getState().pagination.pageSize}
         page={table.getState().pagination.pageIndex}
-        onPageChange={(_, page) => {
-          table.setPageIndex(page)
-        }}
-        onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
+        onPageChange={page => table.setPageIndex(page)}
+        onRowsPerPageChange={event => table.setPageSize(Number(event.target.value))}
       />
     </Card>
   )

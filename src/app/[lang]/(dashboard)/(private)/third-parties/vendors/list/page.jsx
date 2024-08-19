@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import Vendor_Table from '@/views/pages/third-parties/list/vendor_table'
+import { useState, useCallback } from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Select from '@mui/material/Select'
@@ -9,15 +8,17 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { AddCircleOutlineSharp } from '@mui/icons-material'
-import Link from '@/components/Link'
+import Link from 'next/link'
+import Prospects_Table from './Prospects_Table' // Adjust the import path as needed
+import { apiKey, apiUrl } from '@/config'
 
 const Prospects = () => {
   const [selectedRows, setSelectedRows] = useState([])
   const [action, setAction] = useState('')
 
-  const handleSelectionChange = rows => {
+  const handleSelectionChange = useCallback(rows => {
     setSelectedRows(rows)
-  }
+  }, [])
 
   const handleActionChange = event => {
     setAction(event.target.value)
@@ -27,11 +28,11 @@ const Prospects = () => {
     if (action === 'delete' && selectedRows.length > 0) {
       try {
         for (const row of selectedRows) {
-          await fetch(`https://qnerp.com/erp/api/index.php/thirdparties/${row.id}`, {
+          await fetch(`${apiUrl}/thirdparties/${row.id}`, {
             method: 'DELETE',
             headers: {
               Accept: 'application/json',
-              DOLAPIKEY: 'cDIoWFiQIAB0'
+              DOLAPIKEY: apiKey
             }
           })
         }
@@ -73,7 +74,7 @@ const Prospects = () => {
           )}
         </Box>
         <Box sx={{ overflowX: 'auto', width: '100%' }}>
-          <Vendor_Table onSelectionChange={handleSelectionChange} />
+          <Prospects_Table onSelectionChange={handleSelectionChange} />
         </Box>
       </Grid>
     </Grid>
