@@ -43,7 +43,7 @@ const tabs = [
     href: '/'
   },
   {
-    label: 'Notes (1)',
+    label: 'Notes',
     href: '/'
   },
   {
@@ -51,7 +51,7 @@ const tabs = [
     href: '/'
   },
   {
-    label: 'Events/Agenda (1)',
+    label: 'Events/Agenda',
     href: '/'
   }
 ]
@@ -65,7 +65,7 @@ const ThirdPartyLayout = ({ children }) => {
             <Tabs variant='scrollable' scrollButtons='auto'>
               {tabs.map(item => (
                 <Link href={item.href}>
-                  <Tab label={item.label} />
+                  <Tab style={{whiteSpace: "nowrap"}} label={item.label} />
                 </Link>
               ))}
             </Tabs>
