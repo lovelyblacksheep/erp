@@ -1,80 +1,131 @@
+"use client";
+
 import Link from '@/components/Link'
-import { Box, Tab, Tabs } from '@mui/material'
+import { Box, Grid, Tab, Tabs } from '@mui/material'
+import { styled } from '@mui/system';
+import { useParams, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+
+const StyledTabs = styled(Tabs)({
+  borderBottom: '1px solid #e8e8e8',
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#1890ff',
+  },
+});
+
+const StyledTab = styled(Tab)({
+  textTransform: 'none',
+  minWidth: 72,
+  fontWeight: 600,
+  marginRight: 24,
+  '&.Mui-selected': {
+    color: '#1890ff',
+  },
+  '&.Mui-focusVisible': {
+    backgroundColor: '#d1eaff',
+  },
+});
+
+const createLink = (newTab) => {
+  const params = useParams();
+  const { id } = params;
+
+  return {
+    pathname: `/third-parties/${id}/${newTab}`,
+  };
+};
 
 const tabs = [
   {
     label: 'Third-party',
-    href: '/'
+    href: 'third-party'
   },
   {
     label: 'Contacts/Addresses',
-    href: '/'
+    href: 'contact'
   },
   {
     label: 'Customer',
-    href: '/'
+    href: 'customer'
   },
   {
     label: 'Projects',
-    href: '/'
+    href: 'projects'
   },
   {
     label: 'Related items',
-    href: '/'
+    href: 'related'
   },
   {
     label: 'Payment methods',
-    href: '/'
+    href: 'payment'
   },
   {
     label: 'Partnerships',
-    href: '/'
+    href: 'partnership'
   },
   {
     label: 'Tickets',
-    href: '/'
+    href: 'tickets'
   },
   {
     label: 'Margins',
-    href: '/'
+    href: 'margins'
   },
   {
     label: 'Notifications',
-    href: '/'
+    href: 'notifications'
   },
   {
-    label: 'Notes (1)',
-    href: '/'
+    label: 'Notes',
+    href: 'notes'
   },
   {
     label: 'Linked files',
-    href: '/'
+    href: 'linked_files'
   },
   {
-    label: 'Events/Agenda (1)',
-    href: '/'
+    label: 'Events/Agenda',
+    href: 'events'
   }
 ]
 
 const ThirdPartyLayout = ({ children }) => {
-  return (
-    <div>
-      <div className='mb-5'>
-        <Box sx={{ width: '100%' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs variant='scrollable' scrollButtons='auto'>
-              {tabs.map(item => (
-                <Link href={item.href}>
-                  <Tab label={item.label} />
-                </Link>
-              ))}
-            </Tabs>
-          </Box>
-        </Box>
-      </div>
 
-      {children}
-    </div>
+  const pathname = usePathname();
+  const [activeTab, setActiveTab] = useState(0);
+
+  const getActiveTab = () => {
+    let active = 0;
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      let p = pathname.split("/");
+      if (p[p.length - 1] === tab.href) {
+        active = i;
+        break;
+      }
+    }
+    setActiveTab(active);
+  };
+
+  useEffect(() => {
+    getActiveTab();
+  }, []);
+
+  return (
+    <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <StyledTabs value={tabs[activeTab].href} aria-label="Third party tabs">
+          {tabs.map((tab) => {
+            return (
+              <StyledTab value={tab.href} label={tab.label} component={Link} href={createLink(tab.href)} />
+            );
+          })}
+        </StyledTabs>
+      </Grid>
+      {children ? children : <MRP_BOM_ItemTabBOM />}
+    </Grid>
   )
 }
 

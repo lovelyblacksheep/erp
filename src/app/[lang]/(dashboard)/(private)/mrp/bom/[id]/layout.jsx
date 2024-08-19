@@ -9,7 +9,7 @@ import MRP_BOM_ItemTabBOM from './bom/page';
 
 const createLink = (newTab) => {
   const params = useParams();
-  const { id } = params; // Assuming your dynamic segment is `id`
+  const { id } = params;
 
   return {
     pathname: `/mrp/bom/${id}/${newTab}`,
