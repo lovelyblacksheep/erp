@@ -207,10 +207,10 @@ const renderTreeItems = (items) => {
       itemId={item.id}
       label={item.label}
       labelIcon={item.labelIcon}
-      color={item.color}
-      bgColor={item.bgColor}
-      colorForDarkMode={item.colorForDarkMode}
-      bgColorForDarkMode={item.bgColorForDarkMode}
+      color={item.color ? '#ffffff' : '#00000'}
+      bgColor={item.color}
+      colorForDarkMode={item.color ? '#ffffff' : '#00000'}
+      bgColorForDarkMode={item.color}
     >
       {item.childs && renderTreeItems(item.childs)}
     </CustomTreeItem>
