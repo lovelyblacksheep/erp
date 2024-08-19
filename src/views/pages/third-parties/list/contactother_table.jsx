@@ -109,7 +109,7 @@ const Filter = ({ column }) => {
   return null
 }
 
-const Vendor_Table = ({ onSelectionChange }) => {
+const ContactotherTable = ({ onSelectionChange }) => {
   const [columnFilters, setColumnFilters] = useState([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [data, setData] = useState([])
@@ -169,6 +169,11 @@ const Vendor_Table = ({ onSelectionChange }) => {
         header: () => <div className='text-center'>Third-party</div>,
         size: 150
       }),
+      columnHelper.accessor('name_alias', {
+        cell: info => info.getValue(),
+        header: 'Alias Name',
+        size: 150
+      }),
       columnHelper.accessor('civility_id', {
         cell: info => (info.getValue() === '1' ? 'Public' : 'Private'),
         header: () => <div className='text-center'>Visibility</div>,
@@ -202,7 +207,7 @@ const Vendor_Table = ({ onSelectionChange }) => {
         sortfield: 't.rowid',
         sortorder: 'ASC',
         limit: 100,
-        mode: 4
+        mode: 3
       })
       setData(result.data)
     } catch (error) {
@@ -279,4 +284,4 @@ const Vendor_Table = ({ onSelectionChange }) => {
   )
 }
 
-export default Vendor_Table
+export default ContactotherTable
