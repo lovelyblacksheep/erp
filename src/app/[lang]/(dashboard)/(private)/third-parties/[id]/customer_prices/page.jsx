@@ -26,7 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
 
-const ProjectsDedicatedToThisTp = ({ data }) => {
+const CustomerProductsPrices = ({ data }) => {
   const [newRow, setNewRow] = useState({
     product_ref: '',
     product_label: '',
@@ -149,7 +149,7 @@ const ProjectsDedicatedToThisTp = ({ data }) => {
 }
 
 
-const TP_ItemTabProjects = () => {
+const TP_ItemTabCustomerPrices = () => {
   const [bomData, setBomData] = useState(null)
   const [warehouseData, setWarehouseData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -320,13 +320,13 @@ const TP_ItemTabProjects = () => {
         </Box>
         <Grid container justifyContent='flex-end' columnGap={4} alignItems='center'>
         <Button variant='contained' color='primary'>
-            Add project
+            Add price by Customer
           </Button>
         </Grid>
-        <ProjectsDedicatedToThisTp data={productLines} />
+        <CustomerProductsPrices data={productLines} />
       </Grid>
     </>
   )
 }
 
-export default TP_ItemTabProjects
+export default TP_ItemTabCustomerPrices

@@ -52,6 +52,10 @@ const tabs = [
     href: 'customer'
   },
   {
+    label: 'Customer prices',
+    href: 'customer_prices'
+  },
+  {
     label: 'Projects',
     href: 'projects'
   },
