@@ -1,16 +1,18 @@
 "use client";
 
-import Link from '@/components/Link'
-import { Box, Grid, Tab, Tabs } from '@mui/material'
+import Link from '@/components/Link';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '1px solid #e8e8e8',
   '& .MuiTabs-indicator': {
     backgroundColor: '#1890ff',
+  },
+  '& .MuiTabs-scrollButtons': {
+    color: '#1890ff',
   },
 });
 
@@ -111,15 +113,20 @@ const ThirdPartyLayout = ({ children }) => {
 
   useEffect(() => {
     getActiveTab();
-  }, []);
+  }, [pathname]);
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <StyledTabs value={tabs[activeTab].href} aria-label="Third party tabs">
+        <StyledTabs
+          value={tabs[activeTab].href}
+          aria-label="Third party tabs"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           {tabs.map((tab) => {
             return (
-              <StyledTab value={tab.href} label={tab.label} component={Link} href={createLink(tab.href)} />
+              <StyledTab key={tab.href} value={tab.href} label={tab.label} component={Link} href={createLink(tab.href)} />
             );
           })}
         </StyledTabs>
@@ -129,4 +136,4 @@ const ThirdPartyLayout = ({ children }) => {
   )
 }
 
-export default ThirdPartyLayout
+export default ThirdPartyLayout;
