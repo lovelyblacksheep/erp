@@ -9,7 +9,7 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { AddCircleOutlineSharp } from '@mui/icons-material'
 import Link from 'next/link'
-import Prospects_Table from './Prospects_Table' // Adjust the import path as needed
+import Vendors_Table from '@/views/pages/third-parties/list/vendors_table'
 import { apiKey, apiUrl } from '@/config'
 
 const Prospects = () => {
@@ -50,7 +50,7 @@ const Prospects = () => {
     <Grid container spacing={6}>
       <Grid item xs={12} display={'flex'} justifyContent={'space-between'}>
         <Typography variant='h4' className='flex items-center gap-2'>
-          <i className='ri-building-4-fill text-primary text-3xl' /> Prospects
+          <i className='ri-building-4-fill text-primary text-3xl' /> Vendors
         </Typography>
         <Button variant='contained' color='primary' component={Link} href='add'>
           <AddCircleOutlineSharp />
@@ -74,7 +74,7 @@ const Prospects = () => {
           )}
         </Box>
         <Box sx={{ overflowX: 'auto', width: '100%' }}>
-          <Prospects_Table onSelectionChange={handleSelectionChange} />
+          <Vendors_Table onSelectionChange={handleSelectionChange} />
         </Box>
       </Grid>
     </Grid>
