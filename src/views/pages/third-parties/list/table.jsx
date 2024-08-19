@@ -118,6 +118,10 @@ const ThirdPartiesTable = () => {
   // Hooks
   const columns = useMemo(
     () => [
+      columnHelper.accessor('id', {
+        header: 'Technical ID',
+        size: 100
+      }),
       columnHelper.accessor('name', {
         cell: info => (
           <Link href={'/third-parties/' + info.row.original.id} className='text-primary'>
@@ -138,6 +142,26 @@ const ThirdPartiesTable = () => {
         cell: info => info.getValue(),
         header: 'Customer Code'
       }),
+      columnHelper.accessor('code_fournisseur', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Vendor code</div>,
+        size: 120
+      }),
+      columnHelper.accessor('accountancy_code_customer', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Cust. account. code</div>,
+        size: 120
+      }),
+      columnHelper.accessor('accountancy_code_supplier', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Sup. account. code</div>,
+        size: 120
+      }),
+      columnHelper.accessor('address', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Address</div>,
+        size: 200
+      }),
       columnHelper.accessor('salesRepresentatives', {
         cell: info => info.getValue(),
         header: 'Sales representatives'
@@ -146,21 +170,128 @@ const ThirdPartiesTable = () => {
         cell: info => info.getValue(),
         header: 'Zip Code'
       }),
+      columnHelper.accessor('town', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>City</div>,
+        size: 120
+      }),
+      columnHelper.accessor('state_id', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>State/Province</div>,
+        size: 120
+      }),
+      columnHelper.accessor('region', {
+        cell: info => info.getValue(),
+        header: () => <div className='text-center'>Region</div>,
+        size: 120
+      }),
       columnHelper.accessor('typent_id', {
         cell: info => info.getValue(),
         header: 'Third-party type'
+      }),
+      columnHelper.accessor('workforce', {
+        cell: info => info.getValue(),
+        header: 'Workforce'
       }),
       columnHelper.accessor('phone', {
         cell: info => info.getValue(),
         header: 'Phone'
       }),
+      columnHelper.accessor('fax', {
+        cell: info => info.getValue(),
+        header: 'Fax'
+      }),
+      columnHelper.accessor('idprof1', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 1'
+      }),
+      columnHelper.accessor('idprof2', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 2'
+      }),
+      columnHelper.accessor('idprof3', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 3'
+      }),
+      columnHelper.accessor('idprof4', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 4'
+      }),
+      columnHelper.accessor('idprof5', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 5'
+      }),
+      columnHelper.accessor('idprof6', {
+        cell: info => info.getValue(),
+        header: '	Prof. id 6'
+      }),
+      columnHelper.accessor('vat_id', {
+        cell: info => info.getValue(),
+        header: 'VAT ID'
+      }),
       columnHelper.accessor('natureOfThirdParty', {
         cell: info => info.getValue(),
         header: 'Nature of Third Party'
       }),
+      columnHelper.accessor('potential', {
+        cell: info => info.getValue(),
+        header: 'Prospect potential',
+        size: 150
+      }),
+      columnHelper.accessor('status_prospect_label', {
+        cell: info => info.getValue(),
+        header: 'Prospect status',
+        size: 150
+      }),
+      columnHelper.accessor('"parent"', {
+        cell: info => info.getValue(),
+        header: 'Parent company'
+      }),
+      columnHelper.accessor('weight', {
+        cell: info => info.getValue(),
+        header: 'Weight'
+      }),
+      columnHelper.accessor('linkedObjectsIds', {
+        cell: info => info.getValue(),
+        header: 'Birth date'
+      }),
+      columnHelper.accessor('date_creation', {
+        cell: info => {
+          const date = new Date(info.getValue())
+          return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })
+        },
+        header: 'Creation Date',
+        size: 260
+      }),
+      columnHelper.accessor('date_modification', {
+        cell: info => {
+          const date = new Date(info.getValue() * 1000)
+          return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })
+        },
+        header: 'Modif. date',
+        size: 180
+      }),
       columnHelper.accessor('status', {
-        cell: info => <>{info.getValue() ? 'Open' : 'Close'}</>,
+        cell: info => info.getValue(),
         header: 'Status'
+      }),
+      columnHelper.accessor('import_key', {
+        cell: info => info.getValue(),
+        header: 'Import id'
       })
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
