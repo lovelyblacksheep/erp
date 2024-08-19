@@ -1,0 +1,1241 @@
+.
+├── @core
+│   ├── components
+│   │   ├── custom-inputs
+│   │   │   ├── Horizontal.jsx
+│   │   │   ├── Image.jsx
+│   │   │   └── Vertical.jsx
+│   │   ├── customizer
+│   │   │   ├── index.jsx
+│   │   │   └── styles.module.css
+│   │   ├── mui
+│   │   │   ├── Avatar.jsx
+│   │   │   ├── Badge.jsx
+│   │   │   ├── IconButton.jsx
+│   │   │   └── TabList.jsx
+│   │   ├── option-menu
+│   │   │   └── index.jsx
+│   │   └── scroll-to-top
+│   │       └── index.jsx
+│   ├── contexts
+│   │   └── settingsContext.jsx
+│   ├── hooks
+│   │   ├── useImageVariant.js
+│   │   ├── useLayoutInit.js
+│   │   ├── useObjectCookie.js
+│   │   └── useSettings.jsx
+│   ├── styles
+│   │   ├── horizontal
+│   │   │   ├── menuItemStyles.js
+│   │   │   └── menuRootStyles.js
+│   │   ├── stepper.js
+│   │   ├── table.module.css
+│   │   └── vertical
+│   │       ├── menuItemStyles.js
+│   │       ├── menuSectionStyles.js
+│   │       └── navigationCustomStyles.js
+│   ├── svg
+│   │   ├── ContentCompact.jsx
+│   │   ├── ContentWide.jsx
+│   │   ├── DirectionLtr.jsx
+│   │   ├── DirectionRtl.jsx
+│   │   ├── LayoutCollapsed.jsx
+│   │   ├── LayoutHorizontal.jsx
+│   │   ├── LayoutVertical.jsx
+│   │   ├── Logo.jsx
+│   │   ├── SkinBordered.jsx
+│   │   └── SkinDefault.jsx
+│   ├── tailwind
+│   │   └── plugin.js
+│   ├── theme
+│   │   ├── colorSchemes.js
+│   │   ├── customShadows.js
+│   │   ├── index.js
+│   │   ├── overrides
+│   │   │   ├── accordion.jsx
+│   │   │   ├── alerts.jsx
+│   │   │   ├── autocomplete.jsx
+│   │   │   ├── avatar.js
+│   │   │   ├── backdrop.js
+│   │   │   ├── badges.js
+│   │   │   ├── breadcrumbs.js
+│   │   │   ├── button-group.js
+│   │   │   ├── button.js
+│   │   │   ├── card.js
+│   │   │   ├── checkbox.jsx
+│   │   │   ├── chip.js
+│   │   │   ├── dialog.js
+│   │   │   ├── drawer.js
+│   │   │   ├── fab.js
+│   │   │   ├── form-control-label.js
+│   │   │   ├── icon-button.js
+│   │   │   ├── index.js
+│   │   │   ├── input.js
+│   │   │   ├── list.js
+│   │   │   ├── menu.js
+│   │   │   ├── pagination.js
+│   │   │   ├── paper.js
+│   │   │   ├── popover.js
+│   │   │   ├── progress.js
+│   │   │   ├── radio.jsx
+│   │   │   ├── rating.jsx
+│   │   │   ├── select.jsx
+│   │   │   ├── slider.js
+│   │   │   ├── snackbar.js
+│   │   │   ├── switch.js
+│   │   │   ├── table-pagination.js
+│   │   │   ├── tabs.js
+│   │   │   ├── timeline.js
+│   │   │   ├── toggle-button.js
+│   │   │   ├── tooltip.js
+│   │   │   └── typography.js
+│   │   ├── shadows.js
+│   │   ├── spacing.js
+│   │   └── typography.js
+│   └── utils
+│       └── serverHelpers.js
+├── @layouts
+│   ├── BlankLayout.jsx
+│   ├── HorizontalLayout.jsx
+│   ├── LayoutWrapper.jsx
+│   ├── VerticalLayout.jsx
+│   ├── components
+│   │   ├── horizontal
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── LayoutContent.jsx
+│   │   │   └── Navbar.jsx
+│   │   └── vertical
+│   │       ├── Footer.jsx
+│   │       ├── LayoutContent.jsx
+│   │       └── Navbar.jsx
+│   ├── styles
+│   │   ├── horizontal
+│   │   │   ├── StyledContentWrapper.jsx
+│   │   │   ├── StyledFooter.jsx
+│   │   │   └── StyledHeader.jsx
+│   │   ├── shared
+│   │   │   └── StyledMain.jsx
+│   │   └── vertical
+│   │       ├── StyledContentWrapper.jsx
+│   │       ├── StyledFooter.jsx
+│   │       └── StyledHeader.jsx
+│   └── utils
+│       └── layoutClasses.js
+├── @menu
+│   ├── components
+│   │   ├── RouterLink.jsx
+│   │   ├── horizontal-menu
+│   │   │   ├── HorizontalNav.jsx
+│   │   │   ├── Menu.jsx
+│   │   │   ├── MenuButton.jsx
+│   │   │   ├── MenuItem.jsx
+│   │   │   ├── SubMenu.jsx
+│   │   │   ├── SubMenuContent.jsx
+│   │   │   └── VerticalNavInHorizontal.jsx
+│   │   └── vertical-menu
+│   │       ├── Menu.jsx
+│   │       ├── MenuButton.jsx
+│   │       ├── MenuItem.jsx
+│   │       ├── MenuSection.jsx
+│   │       ├── NavCollapseIcons.jsx
+│   │       ├── NavHeader.jsx
+│   │       ├── SubMenu.jsx
+│   │       ├── SubMenuContent.jsx
+│   │       └── VerticalNav.jsx
+│   ├── contexts
+│   │   ├── horizontalNavContext.jsx
+│   │   └── verticalNavContext.jsx
+│   ├── defaultConfigs.js
+│   ├── hooks
+│   │   ├── useHorizontalMenu.jsx
+│   │   ├── useHorizontalNav.jsx
+│   │   ├── useMediaQuery.jsx
+│   │   ├── useVerticalMenu.jsx
+│   │   └── useVerticalNav.jsx
+│   ├── horizontal-menu
+│   │   └── index.jsx
+│   ├── styles
+│   │   ├── StyledBackdrop.jsx
+│   │   ├── StyledMenuIcon.jsx
+│   │   ├── StyledMenuLabel.jsx
+│   │   ├── StyledMenuPrefix.jsx
+│   │   ├── StyledMenuSectionLabel.jsx
+│   │   ├── StyledMenuSuffix.jsx
+│   │   ├── StyledSubMenuContent.jsx
+│   │   ├── horizontal
+│   │   │   ├── StyledHorizontalMenu.jsx
+│   │   │   ├── StyledHorizontalMenuItem.jsx
+│   │   │   ├── StyledHorizontalNav.jsx
+│   │   │   ├── StyledHorizontalNavExpandIcon.jsx
+│   │   │   ├── StyledHorizontalSubMenuContent.jsx
+│   │   │   ├── StyledHorizontalSubMenuContentWrapper.jsx
+│   │   │   └── horizontalUl.module.css
+│   │   ├── styles.module.css
+│   │   └── vertical
+│   │       ├── StyledVerticalMenu.jsx
+│   │       ├── StyledVerticalMenuItem.jsx
+│   │       ├── StyledVerticalMenuSection.jsx
+│   │       ├── StyledVerticalNav.jsx
+│   │       ├── StyledVerticalNavBgColorContainer.jsx
+│   │       ├── StyledVerticalNavContainer.jsx
+│   │       ├── StyledVerticalNavExpandIcon.jsx
+│   │       └── verticalNavBgImage.module.css
+│   ├── svg
+│   │   ├── ChevronRight.jsx
+│   │   ├── Close.jsx
+│   │   ├── RadioCircle.jsx
+│   │   └── RadioCircleMarked.jsx
+│   ├── utils
+│   │   ├── menuClasses.js
+│   │   └── menuUtils.jsx
+│   └── vertical-menu
+│       └── index.jsx
+├── app
+│   ├── [lang]
+│   │   ├── (blank-layout-pages)
+│   │   │   ├── (guest-only)
+│   │   │   │   ├── forgot-password
+│   │   │   │   │   └── page.jsx
+│   │   │   │   ├── layout.jsx
+│   │   │   │   ├── login
+│   │   │   │   │   └── page.jsx
+│   │   │   │   └── register
+│   │   │   │       └── page.jsx
+│   │   │   ├── layout.jsx
+│   │   │   └── pages
+│   │   │       ├── auth
+│   │   │       │   ├── forgot-password-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── forgot-password-v2
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── login-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── login-v2
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── register-multi-steps
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── register-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── register-v2
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── reset-password-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── reset-password-v2
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── two-steps-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── two-steps-v2
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── verify-email-v1
+│   │   │       │   │   └── page.jsx
+│   │   │       │   └── verify-email-v2
+│   │   │       │       └── page.jsx
+│   │   │       └── misc
+│   │   │           ├── 401-not-authorized
+│   │   │           │   └── page.jsx
+│   │   │           ├── 404-not-found
+│   │   │           │   └── page.jsx
+│   │   │           ├── coming-soon
+│   │   │           │   └── page.jsx
+│   │   │           └── under-maintenance
+│   │   │               └── page.jsx
+│   │   ├── (dashboard)
+│   │   │   └── (private)
+│   │   │       ├── apps
+│   │   │       │   ├── academy
+│   │   │       │   │   ├── course-details
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── dashboard
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── my-courses
+│   │   │       │   │       └── page.jsx
+│   │   │       │   ├── calendar
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── chat
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── ecommerce
+│   │   │       │   │   ├── customers
+│   │   │       │   │   │   ├── details
+│   │   │       │   │   │   │   └── [id]
+│   │   │       │   │   │   │       └── page.jsx
+│   │   │       │   │   │   └── list
+│   │   │       │   │   │       └── page.jsx
+│   │   │       │   │   ├── dashboard
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── manage-reviews
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── orders
+│   │   │       │   │   │   ├── details
+│   │   │       │   │   │   │   └── [id]
+│   │   │       │   │   │   │       └── page.jsx
+│   │   │       │   │   │   └── list
+│   │   │       │   │   │       └── page.jsx
+│   │   │       │   │   ├── products
+│   │   │       │   │   │   ├── add
+│   │   │       │   │   │   │   └── page.jsx
+│   │   │       │   │   │   ├── category
+│   │   │       │   │   │   │   └── page.jsx
+│   │   │       │   │   │   └── list
+│   │   │       │   │   │       └── page.jsx
+│   │   │       │   │   ├── referrals
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── settings
+│   │   │       │   │       └── page.jsx
+│   │   │       │   ├── email
+│   │   │       │   │   ├── [folder]
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── label
+│   │   │       │   │   │   └── [label]
+│   │   │       │   │   │       └── page.jsx
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── invoice
+│   │   │       │   │   ├── add
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── edit
+│   │   │       │   │   │   └── [id]
+│   │   │       │   │   │       └── page.jsx
+│   │   │       │   │   ├── list
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── preview
+│   │   │       │   │       └── [id]
+│   │   │       │   │           └── page.jsx
+│   │   │       │   ├── kanban
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── logistics
+│   │   │       │   │   ├── dashboard
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── fleet
+│   │   │       │   │       └── page.jsx
+│   │   │       │   ├── permissions
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── roles
+│   │   │       │   │   └── page.jsx
+│   │   │       │   └── user
+│   │   │       │       ├── list
+│   │   │       │       │   └── page.jsx
+│   │   │       │       └── view
+│   │   │       │           └── page.jsx
+│   │   │       ├── charts
+│   │   │       │   ├── apex-charts
+│   │   │       │   │   └── page.jsx
+│   │   │       │   └── recharts
+│   │   │       │       └── page.jsx
+│   │   │       ├── dashboards
+│   │   │       │   ├── academy
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── analytics
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── crm
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── ecommerce
+│   │   │       │   │   └── page.jsx
+│   │   │       │   └── logistics
+│   │   │       │       └── page.jsx
+│   │   │       ├── forms
+│   │   │       │   ├── form-layouts
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── form-validation
+│   │   │       │   │   └── page.jsx
+│   │   │       │   └── form-wizard
+│   │   │       │       └── page.jsx
+│   │   │       ├── layout.jsx
+│   │   │       ├── mrp
+│   │   │       │   ├── bom
+│   │   │       │   │   ├── add
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── list
+│   │   │       │   │       └── page.jsx
+│   │   │       │   ├── mo
+│   │   │       │   │   ├── add
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── list
+│   │   │       │   │       └── page.jsx
+│   │   │       │   ├── page.jsx
+│   │   │       │   └── workstations
+│   │   │       │       ├── add
+│   │   │       │       │   └── page.jsx
+│   │   │       │       └── list
+│   │   │       │           └── page.jsx
+│   │   │       ├── pages
+│   │   │       │   ├── account-settings
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── dialog-examples
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── faq
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── pricing
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── user-profile
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── widget-examples
+│   │   │       │   │   ├── actions
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── advanced
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── basic
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── charts
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   ├── gamification
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── statistics
+│   │   │       │   │       └── page.jsx
+│   │   │       │   └── wizard-examples
+│   │   │       │       ├── checkout
+│   │   │       │       │   └── page.jsx
+│   │   │       │       ├── create-deal
+│   │   │       │       │   └── page.jsx
+│   │   │       │       └── property-listing
+│   │   │       │           └── page.jsx
+│   │   │       ├── react-table
+│   │   │       │   └── page.jsx
+│   │   │       └── third-parties
+│   │   │           ├── [id]
+│   │   │           │   ├── contact
+│   │   │           │   │   └── page.jsx
+│   │   │           │   ├── customer
+│   │   │           │   │   └── page.jsx
+│   │   │           │   ├── layout.jsx
+│   │   │           │   └── page.jsx
+│   │   │           ├── add
+│   │   │           │   └── page.jsx
+│   │   │           ├── list
+│   │   │           │   └── page.jsx
+│   │   │           └── page.jsx
+│   │   ├── [...not-found]
+│   │   │   └── page.jsx
+│   │   └── layout.jsx
+│   ├── api
+│   │   ├── apps
+│   │   │   ├── academy
+│   │   │   │   └── route.js
+│   │   │   ├── ecommerce
+│   │   │   │   └── route.js
+│   │   │   ├── invoice
+│   │   │   │   └── route.js
+│   │   │   ├── logistics
+│   │   │   │   └── route.js
+│   │   │   ├── permissions
+│   │   │   │   └── route.js
+│   │   │   └── user-list
+│   │   │       └── route.js
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   │       └── route.js
+│   │   ├── login
+│   │   │   ├── route.js
+│   │   │   └── users.js
+│   │   └── pages
+│   │       ├── faq
+│   │       │   └── route.js
+│   │       ├── pricing
+│   │       │   └── route.js
+│   │       ├── profile
+│   │       │   └── route.js
+│   │       └── widget-examples
+│   │           └── route.js
+│   ├── favicon.ico
+│   ├── front-pages
+│   │   ├── checkout
+│   │   │   └── page.jsx
+│   │   ├── help-center
+│   │   │   ├── article
+│   │   │   │   └── how-to-add-product-in-cart
+│   │   │   │       └── page.jsx
+│   │   │   └── page.jsx
+│   │   ├── landing-page
+│   │   │   └── page.jsx
+│   │   ├── layout.jsx
+│   │   ├── payment
+│   │   │   └── page.jsx
+│   │   └── pricing
+│   │       └── page.jsx
+│   ├── globals.css
+│   └── server
+│       └── actions.js
+├── assets
+│   ├── iconify-icons
+│   │   ├── bundle-icons-css.js
+│   │   ├── generated-icons.css
+│   │   └── svg
+│   │       └── logo.svg
+│   └── svg
+│       └── front-pages
+│           ├── help-center
+│           │   ├── Bulb.jsx
+│           │   ├── Discord.jsx
+│           │   ├── File.jsx
+│           │   ├── Gift.jsx
+│           │   ├── Laptop.jsx
+│           │   └── Rocket.jsx
+│           └── landing-page
+│               ├── Airbnb.jsx
+│               ├── Arrow.jsx
+│               ├── Continental.jsx
+│               ├── Cube.jsx
+│               ├── Curve.jsx
+│               ├── Document.jsx
+│               ├── Dribbble.jsx
+│               ├── Eckerd.jsx
+│               ├── Edit.jsx
+│               ├── ElementOne.jsx
+│               ├── ElementTwo.jsx
+│               ├── LaptopCharging.jsx
+│               ├── Levis.jsx
+│               ├── Lifebuoy.jsx
+│               ├── Lines.jsx
+│               └── TransitionUp.jsx
+├── components
+│   ├── AuthRedirect.jsx
+│   ├── DirectionalIcon.jsx
+│   ├── Form.jsx
+│   ├── GenerateMenu.jsx
+│   ├── LangRedirect.jsx
+│   ├── Link.jsx
+│   ├── Providers.jsx
+│   ├── card-statistics
+│   │   ├── Character.jsx
+│   │   ├── CustomerStats.jsx
+│   │   ├── Horizontal.jsx
+│   │   ├── HorizontalWithAvatar.jsx
+│   │   ├── HorizontalWithBorder.jsx
+│   │   ├── HorizontalWithSubtitle.jsx
+│   │   └── Vertical.jsx
+│   ├── dialogs
+│   │   ├── OpenDialogOnElementClick.jsx
+│   │   ├── add-edit-address
+│   │   │   └── index.jsx
+│   │   ├── billing-card
+│   │   │   └── index.jsx
+│   │   ├── confirmation-dialog
+│   │   │   └── index.jsx
+│   │   ├── create-app
+│   │   │   ├── Billing.jsx
+│   │   │   ├── Database.jsx
+│   │   │   ├── Details.jsx
+│   │   │   ├── FrameWork.jsx
+│   │   │   ├── Submit.jsx
+│   │   │   └── index.jsx
+│   │   ├── edit-user-info
+│   │   │   └── index.jsx
+│   │   ├── payment-method
+│   │   │   └── index.jsx
+│   │   ├── payment-providers
+│   │   │   └── index.jsx
+│   │   ├── permission-dialog
+│   │   │   └── index.jsx
+│   │   ├── pricing
+│   │   │   └── index.jsx
+│   │   ├── refer-earn
+│   │   │   └── index.jsx
+│   │   ├── role-dialog
+│   │   │   └── index.jsx
+│   │   ├── share-project
+│   │   │   └── index.jsx
+│   │   ├── two-factor-auth
+│   │   │   └── index.jsx
+│   │   └── upgrade-plan
+│   │       └── index.jsx
+│   ├── layout
+│   │   ├── front-pages
+│   │   │   ├── DropdownMenu.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── FrontMenu.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── index.jsx
+│   │   │   └── styles.module.css
+│   │   ├── horizontal
+│   │   │   ├── Footer.jsx
+│   │   │   ├── FooterContent.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── HorizontalMenu.jsx
+│   │   │   ├── NavToggle.jsx
+│   │   │   ├── NavbarContent.jsx
+│   │   │   ├── Navigation.jsx
+│   │   │   └── VerticalNavContent.jsx
+│   │   ├── shared
+│   │   │   ├── LanguageDropdown.jsx
+│   │   │   ├── Logo.jsx
+│   │   │   ├── ModeDropdown.jsx
+│   │   │   ├── NotificationsDropdown.jsx
+│   │   │   ├── ShortcutsDropdown.jsx
+│   │   │   ├── UserDropdown.jsx
+│   │   │   └── search
+│   │   │       ├── DefaultSuggestions.jsx
+│   │   │       ├── NoResult.jsx
+│   │   │       ├── index.jsx
+│   │   │       └── styles.css
+│   │   └── vertical
+│   │       ├── Footer.jsx
+│   │       ├── FooterContent.jsx
+│   │       ├── NavToggle.jsx
+│   │       ├── Navbar.jsx
+│   │       ├── NavbarContent.jsx
+│   │       ├── Navigation.jsx
+│   │       └── VerticalMenu.jsx
+│   ├── pricing
+│   │   ├── PlanDetails.jsx
+│   │   └── index.jsx
+│   ├── stepper-dot
+│   │   ├── index.jsx
+│   │   └── styles.module.css
+│   └── theme
+│       ├── ModeChanger.jsx
+│       ├── index.jsx
+│       ├── mergedTheme.js
+│       └── userTheme.js
+├── config.js
+├── configs
+│   ├── i18n.js
+│   ├── primaryColorConfig.js
+│   └── themeConfig.js
+├── contexts
+│   ├── intersectionContext.jsx
+│   └── nextAuthProvider.jsx
+├── data
+│   ├── countriesList.js
+│   ├── dictionaries
+│   │   ├── ar.json
+│   │   ├── en.json
+│   │   └── fr.json
+│   ├── navigation
+│   │   ├── horizontalMenuData.jsx
+│   │   └── verticalMenuData.jsx
+│   └── searchData.js
+├── examples
+│   └── menu
+│       └── ThemeProvider.jsx
+├── fake-db
+│   ├── apps
+│   │   ├── academy.js
+│   │   ├── calendar.js
+│   │   ├── chat.js
+│   │   ├── ecommerce.js
+│   │   ├── email.js
+│   │   ├── invoice.js
+│   │   ├── kanban.js
+│   │   ├── logistics.js
+│   │   ├── permissions.js
+│   │   └── userList.js
+│   └── pages
+│       ├── faq.js
+│       ├── pricing.js
+│       ├── userProfile.js
+│       └── widgetExamples.js
+├── hocs
+│   ├── AuthGuard.jsx
+│   ├── GuestOnlyRoute.jsx
+│   └── TranslationWrapper.jsx
+├── hooks
+│   └── useIntersection.js
+├── libs
+│   ├── ApexCharts.jsx
+│   ├── ReactPlayer.jsx
+│   ├── Recharts.jsx
+│   ├── api
+│   │   ├── bom.js
+│   │   ├── mo.js
+│   │   └── third-parties.js
+│   ├── auth.js
+│   └── styles
+│       ├── AppFullCalendar.js
+│       ├── AppKeenSlider.js
+│       ├── AppReactApexCharts.jsx
+│       ├── AppReactDatepicker.jsx
+│       ├── AppReactDropzone.js
+│       ├── AppReactToastify.jsx
+│       ├── AppRecharts.js
+│       ├── inputOtp.module.css
+│       └── tiptapEditor.css
+├── output.txt
+├── prisma
+│   ├── dev.db
+│   ├── migrations
+│   │   ├── 20231221071046_
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   └── schema.prisma
+├── redux-store
+│   ├── ReduxProvider.jsx
+│   ├── index.js
+│   └── slices
+│       ├── calendar.js
+│       ├── chat.js
+│       ├── email.js
+│       └── kanban.js
+├── remove-translation-scripts
+│   ├── findAndReplaceInFiles.js
+│   ├── index.js
+│   ├── modifyGenerateMenuFile.js
+│   ├── removeFilesAndFolders.js
+│   ├── removeLangaugeDropdown.js
+│   ├── removeUnusedImports.js
+│   ├── removeUnwantedCode.js
+│   ├── updateHocs.js
+│   ├── updateLayoutFiles.js
+│   ├── updateMenuFiles.js
+│   └── updatePackages.js
+├── utils
+│   ├── getDictionary.js
+│   ├── getInitials.js
+│   ├── i18n.js
+│   └── string.js
+└── views
+    ├── ForgotPassword.jsx
+    ├── Login.jsx
+    ├── NotAuthorized.jsx
+    ├── NotFound.jsx
+    ├── Register.jsx
+    ├── apps
+    │   ├── academy
+    │   │   ├── course-details
+    │   │   │   ├── Details.jsx
+    │   │   │   └── Sidebar.jsx
+    │   │   ├── dashboard
+    │   │   │   ├── AssignmentProgress.jsx
+    │   │   │   ├── CourseTable.jsx
+    │   │   │   ├── InterestedTopics.jsx
+    │   │   │   ├── PopularInstructors.jsx
+    │   │   │   ├── TopCourses.jsx
+    │   │   │   ├── UpcomingWebinar.jsx
+    │   │   │   └── WelcomeCard.jsx
+    │   │   └── my-courses
+    │   │       ├── ColoredCards.jsx
+    │   │       ├── Courses.jsx
+    │   │       ├── FreeCourses.jsx
+    │   │       ├── MyCourseHeader.jsx
+    │   │       └── index.jsx
+    │   ├── calendar
+    │   │   ├── AddEventSidebar.jsx
+    │   │   ├── Calendar.jsx
+    │   │   ├── CalendarWrapper.jsx
+    │   │   └── SidebarLeft.jsx
+    │   ├── chat
+    │   │   ├── AvatarWithBadge.jsx
+    │   │   ├── ChatContent.jsx
+    │   │   ├── ChatLog.jsx
+    │   │   ├── SendMsgForm.jsx
+    │   │   ├── SidebarLeft.jsx
+    │   │   ├── UserProfileLeft.jsx
+    │   │   ├── UserProfileRight.jsx
+    │   │   ├── index.jsx
+    │   │   └── utils.js
+    │   ├── ecommerce
+    │   │   ├── customers
+    │   │   │   ├── details
+    │   │   │   │   ├── CustomerDetailsHeader.jsx
+    │   │   │   │   ├── customer-left-overview
+    │   │   │   │   │   ├── CustomerDetails.jsx
+    │   │   │   │   │   ├── CustomerPlan.jsx
+    │   │   │   │   │   └── index.jsx
+    │   │   │   │   ├── customer-right
+    │   │   │   │   │   ├── address-billing
+    │   │   │   │   │   │   ├── AddressBookCard.jsx
+    │   │   │   │   │   │   ├── PaymentMethodCard.jsx
+    │   │   │   │   │   │   └── index.jsx
+    │   │   │   │   │   ├── index.jsx
+    │   │   │   │   │   ├── notification
+    │   │   │   │   │   │   └── index.jsx
+    │   │   │   │   │   ├── overview
+    │   │   │   │   │   │   ├── CustomerStatisticsCard.jsx
+    │   │   │   │   │   │   ├── OrderListTable.jsx
+    │   │   │   │   │   │   └── index.jsx
+    │   │   │   │   │   └── security
+    │   │   │   │   │       ├── ChangePassword.jsx
+    │   │   │   │   │       ├── RecentDevice.jsx
+    │   │   │   │   │       ├── TwoStepVerification.jsx
+    │   │   │   │   │       └── index.jsx
+    │   │   │   │   └── index.jsx
+    │   │   │   └── list
+    │   │   │       ├── AddCustomerDrawer.jsx
+    │   │   │       └── CustomerListTable.jsx
+    │   │   ├── manage-reviews
+    │   │   │   ├── ManageReviewsTable.jsx
+    │   │   │   ├── ReviewsStatistics.jsx
+    │   │   │   └── TotalReviews.jsx
+    │   │   ├── orders
+    │   │   │   ├── details
+    │   │   │   │   ├── BillingAddressCard.jsx
+    │   │   │   │   ├── CustomerDetailsCard.jsx
+    │   │   │   │   ├── OrderDetailHeader.jsx
+    │   │   │   │   ├── OrderDetailsCard.jsx
+    │   │   │   │   ├── ShippingActivityCard.jsx
+    │   │   │   │   ├── ShippingAddressCard.jsx
+    │   │   │   │   └── index.jsx
+    │   │   │   └── list
+    │   │   │       ├── OrderCard.jsx
+    │   │   │       ├── OrderListTable.jsx
+    │   │   │       └── index.jsx
+    │   │   ├── products
+    │   │   │   ├── add
+    │   │   │   │   ├── ProductAddHeader.jsx
+    │   │   │   │   ├── ProductImage.jsx
+    │   │   │   │   ├── ProductInformation.jsx
+    │   │   │   │   ├── ProductInventory.jsx
+    │   │   │   │   ├── ProductOrganize.jsx
+    │   │   │   │   ├── ProductPricing.jsx
+    │   │   │   │   └── ProductVariants.jsx
+    │   │   │   ├── category
+    │   │   │   │   ├── AddCategoryDrawer.jsx
+    │   │   │   │   └── ProductCategoryTable.jsx
+    │   │   │   └── list
+    │   │   │       ├── ProductCard.jsx
+    │   │   │       ├── ProductListTable.jsx
+    │   │   │       └── TableFilters.jsx
+    │   │   ├── referrals
+    │   │   │   ├── HorizontalStatisticsCard.jsx
+    │   │   │   ├── IconStepsCard.jsx
+    │   │   │   ├── InviteAndShare.jsx
+    │   │   │   └── ReferredUsersTable.jsx
+    │   │   └── settings
+    │   │       ├── Notifications.jsx
+    │   │       ├── ShippingDelivery.jsx
+    │   │       ├── checkout
+    │   │       │   ├── CustomerContact.jsx
+    │   │       │   ├── CustomerInformation.jsx
+    │   │       │   └── index.jsx
+    │   │       ├── index.jsx
+    │   │       ├── locations
+    │   │       │   ├── Address.jsx
+    │   │       │   ├── LocationName.jsx
+    │   │       │   └── index.jsx
+    │   │       ├── payments
+    │   │       │   ├── ManualMethods.jsx
+    │   │       │   ├── PaymentProviders.jsx
+    │   │       │   ├── SupportedMethods.jsx
+    │   │       │   └── index.jsx
+    │   │       └── store-details
+    │   │           ├── BillingInformation.jsx
+    │   │           ├── OrderIdFormat.jsx
+    │   │           ├── Profile.jsx
+    │   │           ├── StoreCurrency.jsx
+    │   │           ├── TimeZone.jsx
+    │   │           └── index.jsx
+    │   ├── email
+    │   │   ├── ComposeMail.jsx
+    │   │   ├── MailCard.jsx
+    │   │   ├── MailContent.jsx
+    │   │   ├── MailContentActions.jsx
+    │   │   ├── MailContentList.jsx
+    │   │   ├── MailContentSearch.jsx
+    │   │   ├── MailDetails.jsx
+    │   │   ├── SidebarLeft.jsx
+    │   │   ├── index.jsx
+    │   │   └── styles.module.css
+    │   ├── invoice
+    │   │   ├── add
+    │   │   │   ├── AddActions.jsx
+    │   │   │   ├── AddCard.jsx
+    │   │   │   └── AddCustomerDrawer.jsx
+    │   │   ├── edit
+    │   │   │   ├── EditActions.jsx
+    │   │   │   └── EditCard.jsx
+    │   │   ├── list
+    │   │   │   ├── InvoiceCard.jsx
+    │   │   │   ├── InvoiceListTable.jsx
+    │   │   │   └── index.jsx
+    │   │   ├── preview
+    │   │   │   ├── PreviewActions.jsx
+    │   │   │   ├── PreviewCard.jsx
+    │   │   │   ├── index.jsx
+    │   │   │   └── print.css
+    │   │   └── shared
+    │   │       ├── AddPaymentDrawer.jsx
+    │   │       └── SendInvoiceDrawer.jsx
+    │   ├── kanban
+    │   │   ├── KanbanBoard.jsx
+    │   │   ├── KanbanDrawer.jsx
+    │   │   ├── KanbanList.jsx
+    │   │   ├── NewColumn.jsx
+    │   │   ├── NewTask.jsx
+    │   │   ├── TaskCard.jsx
+    │   │   └── styles.module.css
+    │   ├── logistics
+    │   │   ├── dashboard
+    │   │   │   ├── LogisticsDeliveryExceptions.jsx
+    │   │   │   ├── LogisticsDeliveryPerformance.jsx
+    │   │   │   ├── LogisticsOrdersByCountries.jsx
+    │   │   │   ├── LogisticsOverviewTable.jsx
+    │   │   │   ├── LogisticsShipmentStatistics.jsx
+    │   │   │   ├── LogisticsStatisticsCard.jsx
+    │   │   │   ├── LogisticsVehicleOverview.jsx
+    │   │   │   ├── styles.css
+    │   │   │   └── styles.module.css
+    │   │   └── fleet
+    │   │       ├── FleetMap.jsx
+    │   │       ├── FleetSidebar.jsx
+    │   │       ├── index.jsx
+    │   │       └── styles.css
+    │   ├── permissions
+    │   │   └── index.jsx
+    │   ├── roles
+    │   │   ├── RoleCards.jsx
+    │   │   ├── RolesTable.jsx
+    │   │   └── index.jsx
+    │   └── user
+    │       ├── list
+    │       │   ├── AddUserDrawer.jsx
+    │       │   ├── TableFilters.jsx
+    │       │   ├── UserListCards.jsx
+    │       │   ├── UserListTable.jsx
+    │       │   └── index.jsx
+    │       └── view
+    │           ├── user-left-overview
+    │           │   ├── UserDetails.jsx
+    │           │   ├── UserPlan.jsx
+    │           │   └── index.jsx
+    │           └── user-right
+    │               ├── billing-plans
+    │               │   ├── BillingAddress.jsx
+    │               │   ├── CurrentPlan.jsx
+    │               │   ├── PaymentMethod.jsx
+    │               │   └── index.jsx
+    │               ├── connections
+    │               │   └── index.jsx
+    │               ├── index.jsx
+    │               ├── notifications
+    │               │   └── index.jsx
+    │               ├── overview
+    │               │   ├── InvoiceListTable.jsx
+    │               │   ├── ProjectListTable.jsx
+    │               │   ├── UserActivityTimeline.jsx
+    │               │   └── index.jsx
+    │               └── security
+    │                   ├── ChangePassword.jsx
+    │                   ├── RecentDevice.jsx
+    │                   ├── TwoStepVerification.jsx
+    │                   └── index.jsx
+    ├── charts
+    │   ├── apex
+    │   │   ├── ApexAreaChart.jsx
+    │   │   ├── ApexBarChart.jsx
+    │   │   ├── ApexCandlestickChart.jsx
+    │   │   ├── ApexColumnChart.jsx
+    │   │   ├── ApexDonutChart.jsx
+    │   │   ├── ApexHeatmapChart.jsx
+    │   │   ├── ApexLineChart.jsx
+    │   │   ├── ApexRadarChart.jsx
+    │   │   ├── ApexRadialBarChart.jsx
+    │   │   └── ApexScatterChart.jsx
+    │   └── recharts
+    │       ├── RechartsAreaChart.jsx
+    │       ├── RechartsBarChart.jsx
+    │       ├── RechartsLineChart.jsx
+    │       ├── RechartsPieChart.jsx
+    │       ├── RechartsRadarChart.jsx
+    │       └── RechartsScatterChart.jsx
+    ├── dashboards
+    │   ├── analytics
+    │   │   ├── ActivityTimeline.jsx
+    │   │   ├── BarChart.jsx
+    │   │   ├── CongratulationsJohn.jsx
+    │   │   ├── LineChart.jsx
+    │   │   ├── Performance.jsx
+    │   │   ├── ProjectStatistics.jsx
+    │   │   ├── RadialBarChart.jsx
+    │   │   ├── SalesCountry.jsx
+    │   │   ├── TopReferralSources.jsx
+    │   │   ├── TotalTransactions.jsx
+    │   │   ├── VisitsByDay.jsx
+    │   │   └── WeeklySales.jsx
+    │   ├── crm
+    │   │   ├── Award.jsx
+    │   │   ├── DonutChart.jsx
+    │   │   ├── ExternalLinks.jsx
+    │   │   ├── MeetingSchedule.jsx
+    │   │   ├── MonthlyBudget.jsx
+    │   │   ├── OrganicSessions.jsx
+    │   │   ├── PaymentHistory.jsx
+    │   │   ├── ProjectTimeline.jsx
+    │   │   ├── SalesInCountries.jsx
+    │   │   ├── SocialNetworkVisits.jsx
+    │   │   ├── StackedBarChart.jsx
+    │   │   ├── UserTable.jsx
+    │   │   └── WeeklyOverview.jsx
+    │   └── ecommerce
+    │       ├── ActivityTimeline.jsx
+    │       ├── LiveVisitors.jsx
+    │       ├── MarketingSales.jsx
+    │       ├── OrdersImpressions.jsx
+    │       ├── Sales.jsx
+    │       ├── SalesMonth.jsx
+    │       ├── TopReferralSources.jsx
+    │       ├── TotalVisits.jsx
+    │       ├── UserTable.jsx
+    │       ├── VisitsByDay.jsx
+    │       └── WeeklySalesBg.jsx
+    ├── forms
+    │   ├── form-layouts
+    │   │   ├── FormLayoutsAlignment.jsx
+    │   │   ├── FormLayoutsBasic.jsx
+    │   │   ├── FormLayoutsCollapsible.jsx
+    │   │   ├── FormLayoutsIcons.jsx
+    │   │   ├── FormLayoutsSeparator.jsx
+    │   │   └── FormLayoutsTabs.jsx
+    │   ├── form-validation
+    │   │   ├── FormValidationAsyncSubmit.jsx
+    │   │   ├── FormValidationBasic.jsx
+    │   │   └── FormValidationSchema.jsx
+    │   └── form-wizard
+    │       ├── StepperAlternativeLabel.jsx
+    │       ├── StepperLinearWithValidation.jsx
+    │       ├── StepperVerticalWithNumbers.jsx
+    │       └── StepperVerticalWithoutNumbers.jsx
+    ├── front-pages
+    │   ├── CheckoutPage.jsx
+    │   ├── Payment.jsx
+    │   ├── help-center
+    │   │   ├── Articles.jsx
+    │   │   ├── HelpCenterHeader.jsx
+    │   │   ├── KeepLearning.jsx
+    │   │   ├── KnowledgeBase.jsx
+    │   │   ├── NeedHelp.jsx
+    │   │   ├── Questions.jsx
+    │   │   ├── index.jsx
+    │   │   └── styles.module.css
+    │   ├── landing-page
+    │   │   ├── ContactUs.jsx
+    │   │   ├── CustomerReviews.jsx
+    │   │   ├── Faqs.jsx
+    │   │   ├── GetStarted.jsx
+    │   │   ├── HeroSection.jsx
+    │   │   ├── OurTeam.jsx
+    │   │   ├── Pricing.jsx
+    │   │   ├── ProductStat.jsx
+    │   │   ├── UsefulFeature.jsx
+    │   │   ├── index.jsx
+    │   │   └── styles.module.css
+    │   ├── pricing
+    │   │   ├── Faqs.jsx
+    │   │   ├── FreeTrial.jsx
+    │   │   ├── Plans.jsx
+    │   │   ├── PricingSection.jsx
+    │   │   ├── index.jsx
+    │   │   └── styles.module.css
+    │   └── styles.module.css
+    ├── pages
+    │   ├── account-settings
+    │   │   ├── account
+    │   │   │   ├── AccountDelete.jsx
+    │   │   │   ├── AccountDetails.jsx
+    │   │   │   └── index.jsx
+    │   │   ├── billing-plans
+    │   │   │   ├── Address.jsx
+    │   │   │   ├── CurrentPlan.jsx
+    │   │   │   ├── InvoiceListTable.jsx
+    │   │   │   ├── PaymentMethod.jsx
+    │   │   │   └── index.jsx
+    │   │   ├── connections
+    │   │   │   └── index.jsx
+    │   │   ├── index.jsx
+    │   │   ├── notifications
+    │   │   │   └── index.jsx
+    │   │   └── security
+    │   │       ├── ApiKeyList.jsx
+    │   │       ├── ChangePasswordCard.jsx
+    │   │       ├── CreateApiKey.jsx
+    │   │       ├── RecentDevicesTable.jsx
+    │   │       ├── TwoFactorAuthenticationCard.jsx
+    │   │       └── index.jsx
+    │   ├── auth
+    │   │   ├── ForgotPasswordV1.jsx
+    │   │   ├── ForgotPasswordV2.jsx
+    │   │   ├── LoginV1.jsx
+    │   │   ├── LoginV2.jsx
+    │   │   ├── RegisterV1.jsx
+    │   │   ├── RegisterV2.jsx
+    │   │   ├── ResetPasswordV1.jsx
+    │   │   ├── ResetPasswordV2.jsx
+    │   │   ├── TwoStepsV1.jsx
+    │   │   ├── TwoStepsV2.jsx
+    │   │   ├── VerifyEmailV1.jsx
+    │   │   ├── VerifyEmailV2.jsx
+    │   │   └── register-multi-steps
+    │   │       ├── StepAccountDetails.jsx
+    │   │       ├── StepBillingDetails.jsx
+    │   │       ├── StepPersonalInfo.jsx
+    │   │       └── index.jsx
+    │   ├── dialog-examples
+    │   │   ├── DialogAddCard.jsx
+    │   │   ├── DialogAddNewAddress.jsx
+    │   │   ├── DialogAuthentication.jsx
+    │   │   ├── DialogCreateApp.jsx
+    │   │   ├── DialogEditUserInfo.jsx
+    │   │   ├── DialogPaymentMethod.jsx
+    │   │   ├── DialogPaymentProviders.jsx
+    │   │   ├── DialogPricing.jsx
+    │   │   ├── DialogReferEarn.jsx
+    │   │   └── DialogShareProject.jsx
+    │   ├── faq
+    │   │   ├── FaqFooter.jsx
+    │   │   ├── FaqHeader.jsx
+    │   │   ├── Faqs.jsx
+    │   │   ├── index.jsx
+    │   │   └── styles.module.css
+    │   ├── misc
+    │   │   ├── ComingSoon.jsx
+    │   │   └── UnderMaintenance.jsx
+    │   ├── mrp
+    │   │   ├── LatestBOM.jsx
+    │   │   ├── LatestMO.jsx
+    │   │   ├── Statistics.jsx
+    │   │   ├── form
+    │   │   │   ├── add_bom.jsx
+    │   │   │   ├── add_mo.jsx
+    │   │   │   └── add_workstation.jsx
+    │   │   └── list
+    │   │       ├── bom_table.jsx
+    │   │       ├── mo_table.jsx
+    │   │       └── workstations_table.jsx
+    │   ├── pricing
+    │   │   └── index.jsx
+    │   ├── third-parties
+    │   │   ├── LatestContacts.jsx
+    │   │   ├── LatestThirdParties.jsx
+    │   │   ├── Statistics.jsx
+    │   │   ├── add
+    │   │   │   └── index.jsx
+    │   │   ├── detail
+    │   │   │   ├── Files.jsx
+    │   │   │   ├── LatestEvents.jsx
+    │   │   │   ├── contact
+    │   │   │   │   └── table.jsx
+    │   │   │   ├── customer
+    │   │   │   │   └── index.jsx
+    │   │   │   └── index.jsx
+    │   │   └── list
+    │   │       └── table.jsx
+    │   ├── user-profile
+    │   │   ├── UserProfileHeader.jsx
+    │   │   ├── connections
+    │   │   │   └── index.jsx
+    │   │   ├── index.jsx
+    │   │   ├── profile
+    │   │   │   ├── AboutOverview.jsx
+    │   │   │   ├── ActivityTimeline.jsx
+    │   │   │   ├── ConnectionsTeams.jsx
+    │   │   │   ├── ProjectsTables.jsx
+    │   │   │   └── index.jsx
+    │   │   ├── projects
+    │   │   │   └── index.jsx
+    │   │   └── teams
+    │   │       └── index.jsx
+    │   ├── widget-examples
+    │   │   ├── actions
+    │   │   │   ├── AllActions.jsx
+    │   │   │   ├── Collapsible.jsx
+    │   │   │   ├── RefreshContent.jsx
+    │   │   │   ├── RemoveCard.jsx
+    │   │   │   └── Table.jsx
+    │   │   ├── advanced
+    │   │   │   ├── ActivityTimeline.jsx
+    │   │   │   ├── AssignmentProgress.jsx
+    │   │   │   ├── DeliveryPerformance.jsx
+    │   │   │   ├── FinanceApp.jsx
+    │   │   │   ├── GeneralStatistics.jsx
+    │   │   │   ├── MeetingSchedule.jsx
+    │   │   │   ├── OrdersByCountries.jsx
+    │   │   │   ├── PaymentHistory.jsx
+    │   │   │   ├── PlanUpgrade.jsx
+    │   │   │   ├── PopularInstructors.jsx
+    │   │   │   ├── ProjectStatistics.jsx
+    │   │   │   ├── SalesInCountries.jsx
+    │   │   │   ├── SocialNetworkVisits.jsx
+    │   │   │   ├── SubscribersByCountries.jsx
+    │   │   │   ├── TopCourses.jsx
+    │   │   │   ├── TopReferralSources.jsx
+    │   │   │   ├── TotalEarnings.jsx
+    │   │   │   ├── Transactions.jsx
+    │   │   │   ├── UpcomingWebinar.jsx
+    │   │   │   ├── VehicleOverview.jsx
+    │   │   │   └── styles.module.css
+    │   │   ├── basic
+    │   │   │   ├── CardFacebook.jsx
+    │   │   │   ├── CardHorizontalRatings.jsx
+    │   │   │   ├── CardInfluencingInfluencer.jsx
+    │   │   │   ├── CardInfluencingInfluencerWithImg.jsx
+    │   │   │   ├── CardLifetimeMembership.jsx
+    │   │   │   ├── CardLinkedIn.jsx
+    │   │   │   ├── CardMobile.jsx
+    │   │   │   ├── CardSupport.jsx
+    │   │   │   ├── CardTwitter.jsx
+    │   │   │   ├── CardUser.jsx
+    │   │   │   ├── CardVerticalRatings.jsx
+    │   │   │   ├── CardWatch.jsx
+    │   │   │   ├── CardWithCollapse.jsx
+    │   │   │   ├── CardWithTabs.jsx
+    │   │   │   └── CardWithTabsCenter.jsx
+    │   │   ├── charts
+    │   │   │   ├── ActivityTimeline.jsx
+    │   │   │   ├── DeliveryExceptions.jsx
+    │   │   │   ├── ExternalLinks.jsx
+    │   │   │   ├── InterestedTopics.jsx
+    │   │   │   ├── MonthlyBudget.jsx
+    │   │   │   ├── OrganicSessions.jsx
+    │   │   │   ├── Performance.jsx
+    │   │   │   ├── PerformanceOverview.jsx
+    │   │   │   ├── ProjectTimeline.jsx
+    │   │   │   ├── SalesCountry.jsx
+    │   │   │   ├── ShipmentStatistics.jsx
+    │   │   │   ├── TotalTransactions.jsx
+    │   │   │   ├── VisitsByDay.jsx
+    │   │   │   ├── WeeklyOverview.jsx
+    │   │   │   ├── WeeklySales.jsx
+    │   │   │   └── styles.css
+    │   │   ├── gamification
+    │   │   │   ├── Award.jsx
+    │   │   │   ├── CongratulationsDaisy.jsx
+    │   │   │   ├── CongratulationsJohn.jsx
+    │   │   │   └── UpgradeAccount.jsx
+    │   │   └── statistics
+    │   │       ├── BarChart.jsx
+    │   │       ├── Characters.jsx
+    │   │       ├── CustomerStatisticsCard.jsx
+    │   │       ├── DonutChart.jsx
+    │   │       ├── Horizontal.jsx
+    │   │       ├── HorizontalStatisticsCard.jsx
+    │   │       ├── LineChart.jsx
+    │   │       ├── LiveVisitors.jsx
+    │   │       ├── LogisticsStatisticsCard.jsx
+    │   │       ├── MarketingSales.jsx
+    │   │       ├── OrdersImpressions.jsx
+    │   │       ├── RadialBarChart.jsx
+    │   │       ├── Sales.jsx
+    │   │       ├── SalesMonth.jsx
+    │   │       ├── SalesProfit.jsx
+    │   │       ├── SmoothLineChart.jsx
+    │   │       ├── StackedBarChart.jsx
+    │   │       ├── TotalVisits.jsx
+    │   │       ├── UserListCards.jsx
+    │   │       ├── Vertical.jsx
+    │   │       └── WeeklySalesBg.jsx
+    │   └── wizard-examples
+    │       ├── checkout
+    │       │   ├── StepAddress.jsx
+    │       │   ├── StepCart.jsx
+    │       │   ├── StepConfirmation.jsx
+    │       │   ├── StepPayment.jsx
+    │       │   └── index.jsx
+    │       ├── create-deal
+    │       │   ├── StepDealDetails.jsx
+    │       │   ├── StepDealType.jsx
+    │       │   ├── StepDealUsage.jsx
+    │       │   ├── StepReview.jsx
+    │       │   └── index.jsx
+    │       └── property-listing
+    │           ├── StepPersonalDetails.jsx
+    │           ├── StepPriceDetails.jsx
+    │           ├── StepPropertyArea.jsx
+    │           ├── StepPropertyDetails.jsx
+    │           ├── StepPropertyFeatures.jsx
+    │           └── index.jsx
+    └── react-table
+        ├── BasicDataTables.jsx
+        ├── ColumnVisibility.jsx
+        ├── EditableDataTables.jsx
+        ├── KitchenSink.jsx
+        ├── RowSelection.jsx
+        └── data.js
+
+350 directories, 889 files

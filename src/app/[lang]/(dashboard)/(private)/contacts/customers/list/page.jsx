@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Customer_Table from '@/views/pages/third-parties/list/customer_table'
+import ContactsCustomerTable from '@/views/pages/third-parties/list/contactcustomer_table'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Select from '@mui/material/Select'
@@ -11,7 +11,7 @@ import Box from '@mui/material/Box'
 import { AddCircleOutlineSharp } from '@mui/icons-material'
 import Link from '@/components/Link'
 
-const Prospects = () => {
+const Customers = () => {
   const [selectedRows, setSelectedRows] = useState([])
   const [action, setAction] = useState('')
 
@@ -73,11 +73,11 @@ const Prospects = () => {
           )}
         </Box>
         <Box sx={{ overflowX: 'auto', width: '100%' }}>
-          <Customer_Table onSelectionChange={handleSelectionChange} />
+          <ContactsCustomerTable onSelectionChange={handleSelectionChange} />
         </Box>
       </Grid>
     </Grid>
   )
 }
 
-export default Prospects
+export default Customers

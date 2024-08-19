@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Prospects_Table from '@/views/pages/third-parties/list/prospect_table'
+import ContactsProspectTable from '@/views/pages/third-parties/list/contactprospect_table'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Select from '@mui/material/Select'
@@ -73,7 +73,7 @@ const Prospects = () => {
           )}
         </Box>
         <Box sx={{ overflowX: 'auto', width: '100%' }}>
-          <Prospects_Table onSelectionChange={handleSelectionChange} />
+          <ContactsProspectTable onSelectionChange={handleSelectionChange} />
         </Box>
       </Grid>
     </Grid>
