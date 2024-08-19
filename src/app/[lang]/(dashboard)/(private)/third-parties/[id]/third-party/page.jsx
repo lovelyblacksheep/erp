@@ -93,9 +93,6 @@ const TP_ItemTabThirdParty = () => {
     return <Typography>No BOM data available</Typography>
   }
 
-  const productLines = bomData.lines ? bomData.lines.filter(line => line.type === 'product') : []
-  const serviceLines = bomData.lines ? bomData.lines.filter(line => line.type === 'service') : []
-
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
@@ -205,13 +202,13 @@ const TP_ItemTabThirdParty = () => {
 
         <Grid container justifyContent='flex-end' columnGap={4} alignItems='center'>
           <Button variant='contained' color='primary'>
+            Send Email
+          </Button>
+          <Button variant='contained' color='primary'>
             Modify
           </Button>
           <Button variant='contained' color='primary'>
-            Validate
-          </Button>
-          <Button variant='contained' color='primary'>
-            Clone
+            Merge
           </Button>
           <Button variant='contained' color='error'>
             Delete
