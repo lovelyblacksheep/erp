@@ -1,92 +1,227 @@
-import React from 'react';
-import TreeView from '@mui/lab/TreeView';
-import TreeItem from '@mui/lab/TreeItem';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import LabelIcon from '@mui/icons-material/Label';
+"use client";
+
+import * as React from 'react';
+import clsx from 'clsx';
+import { styled, useTheme, alpha } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import MailIcon from '@mui/icons-material/Mail';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Label from '@mui/icons-material/Label';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import InfoIcon from '@mui/icons-material/Info';
+import ForumIcon from '@mui/icons-material/Forum';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { IconButton } from '@mui/material';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import {
+  TreeItem2Content,
+  TreeItem2IconContainer,
+  TreeItem2Root,
+  TreeItem2GroupTransition,
+} from '@mui/x-tree-view/TreeItem2';
+import {
+  unstable_useTreeItem2 as useTreeItem,
+  UseTreeItem2Parameters,
+} from '@mui/x-tree-view/useTreeItem2';
+import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
+import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
+import { Grid } from '@mui/material';
 
-const data = [
-  {
-    id: '1',
-    label: 'Customer of North Region',
-    children: [
-      {
-        id: '2',
-        label: 'Region North A',
-      },
-      {
-        id: '3',
-        label: 'Region North B',
-      },
-    ],
-  },
-  {
-    id: '4',
-    label: 'Direct',
-  },
-  {
-    id: '5',
-    label: 'Employeur',
-  },
-  {
-    id: '6',
-    label: 'PERSONALIZAR AGRO',
-    children: [
-      {
-        id: '7',
-        label: 'PME',
-      },
-      {
-        id: '8',
-        label: 'PSS',
-      },
-    ],
-  },
-  // Add more items as needed
-];
 
-const renderTree = (nodes) => (
-  <TreeItem 
-    key={nodes.id} 
-    nodeId={nodes.id} 
-    label={
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <LabelIcon style={{ marginRight: 8 }} />
-        {nodes.label}
-        <div style={{ marginLeft: 'auto' }}>
-          <IconButton size="small"><VisibilityIcon fontSize="small" /></IconButton>
-          <IconButton size="small"><EditIcon fontSize="small" /></IconButton>
-          <IconButton size="small"><DeleteIcon fontSize="small" /></IconButton>
-        </div>
-      </div>
-    }>
-    {Array.isArray(nodes.children)
-      ? nodes.children.map((node) => renderTree(node))
-      : null}
-  </TreeItem>
+const CustomTreeItemRoot = styled(TreeItem2Root)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+}));
+
+const CustomTreeItemContent = styled(TreeItem2Content)(({ theme }) => ({
+  marginBottom: theme.spacing(0.3),
+  color: theme.palette.text.secondary,
+  borderRadius: theme.spacing(2),
+  paddingRight: theme.spacing(1),
+  fontWeight: theme.typography.fontWeightMedium,
+  '&.expanded': {
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&.focused, &.selected, &.selected.focused': {
+    backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
+    color: 'var(--tree-view-color)',
+  },
+}));
+
+const CustomTreeItemIconContainer = styled(TreeItem2IconContainer)(({ theme }) => ({
+  marginRight: theme.spacing(1),
+}));
+
+const CustomTreeItemGroupTransition = styled(TreeItem2GroupTransition)(
+  ({ theme }) => ({
+    marginLeft: 0,
+    [`& .content`]: {
+      paddingLeft: theme.spacing(2),
+    },
+  }),
 );
 
-const TreeViewExample = () => {
+const CustomTreeItem = React.forwardRef(function CustomTreeItem(
+  props,
+  ref,
+) {
+  const theme = useTheme();
+  const {
+    id,
+    itemId,
+    label,
+    disabled,
+    children,
+    bgColor,
+    color,
+    labelIcon: LabelIcon,
+    labelInfo,
+    colorForDarkMode,
+    bgColorForDarkMode,
+    ...other
+  } = props;
+
+  const {
+    getRootProps,
+    getContentProps,
+    getIconContainerProps,
+    getLabelProps,
+    getGroupTransitionProps,
+    status,
+  } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
+
+  const style = {
+    '--tree-view-color': theme.palette.mode !== 'dark' ? color : colorForDarkMode,
+    '--tree-view-bg-color':
+      theme.palette.mode !== 'dark' ? bgColor : bgColorForDarkMode,
+  };
+
   return (
-    <TreeView
-      aria-label="rich object"
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      sx={{ height: '100%', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-    >
-      {data.map((item) => renderTree(item))}
-    </TreeView>
+    <TreeItem2Provider itemId={itemId}>
+      <CustomTreeItemRoot {...getRootProps({ ...other, style })}>
+        <CustomTreeItemContent
+          {...getContentProps({
+            className: clsx('content', {
+              expanded: status.expanded,
+              selected: status.selected,
+              focused: status.focused,
+            }),
+          })}
+        >
+          <CustomTreeItemIconContainer {...getIconContainerProps()}>
+            <TreeItem2Icon status={status} />
+          </CustomTreeItemIconContainer>
+          <Box
+            sx={{
+              display: 'flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              p: 1,
+              pr: 1,
+            }}
+          >
+            <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
+            <Typography
+              {...getLabelProps({
+                variant: 'body2',
+                sx: { display: 'flex', fontWeight: 'inherit', flexGrow: 1 },
+              })}
+            />
+            {/* <Typography variant="caption" color="inherit">
+              {labelInfo}
+            </Typography> */}
+            <Grid width={"max-content"} height={"100%"} display={"flex"} flexDirection={"row"} justifyContent={"flex-end"} alignItems={"center"} gap={2}>
+                <VisibilityIcon />
+                <EditIcon  />
+                <DeleteIcon  />
+            </Grid>
+          </Box>
+        </CustomTreeItemContent>
+        {children && (
+          <CustomTreeItemGroupTransition {...getGroupTransitionProps()} />
+        )}
+      </CustomTreeItemRoot>
+    </TreeItem2Provider>
   );
-};
+});
+
+function EndIcon() {
+  return <div style={{ width: 24 }} />;
+}
+
+function CategoriesTreeView() {
+  return (
+    <SimpleTreeView
+      aria-label="categories"
+      defaultExpandedItems={['3']}
+      defaultSelectedItems="5"
+      slots={{
+        expandIcon: ArrowRightIcon,
+        collapseIcon: ArrowDropDownIcon,
+        endIcon: EndIcon,
+      }}
+      sx={{ flexGrow: 1, maxWidth: '100%', width: '100%' }}
+    >
+      <CustomTreeItem itemId="1" label="All Mail" labelIcon={MailIcon} />
+      <CustomTreeItem itemId="2" label="Trash" labelIcon={DeleteIcon} />
+      <CustomTreeItem itemId="3" label="Categories" labelIcon={Label}>
+        <CustomTreeItem
+          itemId="5"
+          label="Social"
+          labelIcon={SupervisorAccountIcon}
+          labelInfo="90"
+          color="#1a73e8"
+          bgColor="#e8f0fe"
+          colorForDarkMode="#B8E7FB"
+          bgColorForDarkMode={alpha('#00b4ff', 0.2)}
+        />
+        <CustomTreeItem
+          itemId="6"
+          label="Updates"
+          labelIcon={InfoIcon}
+          labelInfo="2,294"
+          color="#e3742f"
+          bgColor="#fcefe3"
+          colorForDarkMode="#FFE2B7"
+          bgColorForDarkMode={alpha('#ff8f00', 0.2)}
+        />
+        <CustomTreeItem
+          itemId="7"
+          label="Forums"
+          labelIcon={ForumIcon}
+          labelInfo="3,566"
+          color="#a250f5"
+          bgColor="#f3e8fd"
+          colorForDarkMode="#D9B8FB"
+          bgColorForDarkMode={alpha('#9035ff', 0.15)}
+        />
+        <CustomTreeItem
+          itemId="8"
+          label="Promotions"
+          labelIcon={LocalOfferIcon}
+          labelInfo="733"
+          color="#3c8039"
+          bgColor="#e6f4ea"
+          colorForDarkMode="#CCE8CD"
+          bgColorForDarkMode={alpha('#64ff6a', 0.2)}
+        />
+      </CustomTreeItem>
+      <CustomTreeItem itemId="4" label="History" labelIcon={Label} />
+    </SimpleTreeView>
+  );
+}
+
 
 export default function Categories() {
-  return (
-    <div>
-      <TreeViewExample />
-    </div>
-  );
+    return (
+        <Box width={'100%'}>
+            <CategoriesTreeView />
+        </Box>
+    );
 }
