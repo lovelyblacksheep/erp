@@ -170,7 +170,7 @@ export default function Categories() {
 
   React.useEffect(() => {
     const fetchItems = async () => {
-      let response = await getThirdPartyCategories()
+      let response = await getThirdPartyCategories("customer")
       if (response && response.status === 200) {
         setItems(convertItems(response.data))
       }
