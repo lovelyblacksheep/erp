@@ -228,7 +228,7 @@ export default function Categories() {
           <Button variant='contained' color='primary' onClick={handleSearch} startIcon={<SearchIcon />}>
             Search
           </Button>
-          <Button variant='contained' color='primary' LinkComponent={Link} href='categories/add?type=2' startIcon={<Add />}>
+          <Button variant='contained' color='primary' LinkComponent={Link} href='tags/add?type=2' startIcon={<Add />}>
             Add
           </Button>
         </Box>
