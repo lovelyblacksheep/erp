@@ -90,6 +90,16 @@ const ActionBox = styled(Box)(({ theme }) => ({
   alignItems: 'center'
 }))
 
+const getColor = (c) => {
+    if(c[0] === '#') {
+        return c;
+    }
+    else
+    {
+        return `#${c}`;
+    }
+}
+
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(props, ref) {
   const theme = useTheme()
   const { itemId, label, color, children, ...other } = props
@@ -97,7 +107,8 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(props, ref) {
   const { getRootProps, getContentProps, getIconContainerProps, getLabelProps, getGroupTransitionProps, status } =
     useTreeItem({ itemId, children, label, rootRef: ref })
 
-  const backgroundColor = color ? `#${color}` : '#6e6e6e'
+    console.log("COLOR :: ", color)
+  const backgroundColor = color ? getColor(color) : '#6e6e6e'
   const isLight = isLightColor(backgroundColor)
   const textColor = isLight ? 'black' : 'white'
 
