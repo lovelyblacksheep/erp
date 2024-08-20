@@ -224,7 +224,7 @@ const Vendors_Table = ({ onSelectionChange }) => {
         sortfield: 't.rowid',
         sortorder: 'ASC',
         limit: 100,
-        mode: 2
+        mode: 4
       })
       setData(result.data)
     } catch (error) {
