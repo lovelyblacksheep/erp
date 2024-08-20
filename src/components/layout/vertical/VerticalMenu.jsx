@@ -1,5 +1,5 @@
 // Next Imports
-import { useParams } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 
 // MUI Imports
 import { useTheme } from '@mui/material/styles'
@@ -23,6 +23,9 @@ import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
 import Link from '@/components/Link'
 
+// React Imports
+import { useState, useEffect } from 'react'
+
 const RenderExpandIcon = ({ open, transitionDuration }) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
     <i className='ri-arrow-right-s-line' />
@@ -34,11 +37,47 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
   const params = useParams()
+  const pathname = usePathname()
+  const router = useRouter()
+  const [activeItem, setActiveItem] = useState('')
+  const [openSubMenus, setOpenSubMenus] = useState([])
 
   // Vars
   const { isBreakpointReached, transitionDuration } = verticalNavOptions
   const { lang: locale } = params
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
+
+  useEffect(() => {
+    // Update activeItem based on the current pathname and search params
+    const pathParts = pathname.split('/')
+    const lastPart = pathParts[pathParts.length - 1]
+    const searchParams = new URLSearchParams(window.location.search)
+    const type = searchParams.get('type')
+
+    if (lastPart === 'add') {
+      setActiveItem(`new-${type || 'third-party'}`)
+    } else {
+      setActiveItem(lastPart)
+    }
+
+    // Keep relevant submenus open based on the current path
+    const relevantSubMenus = pathParts.slice(1, -1) // Exclude locale and last part
+    setOpenSubMenus(prev => {
+      const newOpenSubMenus = [...new Set([...prev, ...relevantSubMenus])]
+      return newOpenSubMenus
+    })
+  }, [pathname])
+
+  const isActive = itemId => activeItem === itemId
+
+  const handleItemClick = (itemId, href) => {
+    setActiveItem(itemId)
+    router.push(href)
+  }
+
+  const handleSubMenuToggle = label => {
+    setOpenSubMenus(prev => (prev.includes(label) ? prev.filter(item => item !== label) : [...prev, label]))
+  }
 
   return (
     // eslint-disable-next-line lines-around-comment
@@ -46,13 +85,13 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
     <ScrollWrapper
       {...(isBreakpointReached
         ? {
-          className: 'bs-full overflow-y-auto overflow-x-hidden',
-          onScroll: container => scrollMenu(container, false)
-        }
+            className: 'bs-full overflow-y-auto overflow-x-hidden',
+            onScroll: container => scrollMenu(container, false)
+          }
         : {
-          options: { wheelPropagation: false, suppressScrollX: true },
-          onScrollY: container => scrollMenu(container, true)
-        })}
+            options: { wheelPropagation: false, suppressScrollX: true },
+            onScrollY: container => scrollMenu(container, true)
+          })}
     >
       {/* Incase you also want to scroll NavHeader to scroll with Vertical Menu, remove NavHeader from above and paste it below this comment */}
       {/* Vertical Menu */}
@@ -67,12 +106,44 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           label={dictionary['navigation'].dashboards}
           icon={<i className='ri-home-smile-line' />}
           suffix={<Chip label='5' size='small' color='error' />}
+          open={openSubMenus.includes('dashboards')}
+          onOpenChange={() => handleSubMenuToggle('dashboards')}
         >
-          <MenuItem href={`/${locale}/dashboards/crm`}>{dictionary['navigation'].crm}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/analytics`}>{dictionary['navigation'].analytics}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/ecommerce`}>{dictionary['navigation'].eCommerce}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/academy`}>{dictionary['navigation'].academy}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem>
+          <MenuItem
+            href={`/${locale}/dashboards/crm`}
+            active={isActive('crm')}
+            onClick={() => handleItemClick('crm', `/${locale}/dashboards/crm`)}
+          >
+            {dictionary['navigation'].crm}
+          </MenuItem>
+          <MenuItem
+            href={`/${locale}/dashboards/analytics`}
+            active={isActive('analytics')}
+            onClick={() => handleItemClick('analytics', `/${locale}/dashboards/analytics`)}
+          >
+            {dictionary['navigation'].analytics}
+          </MenuItem>
+          <MenuItem
+            href={`/${locale}/dashboards/ecommerce`}
+            active={isActive('ecommerce')}
+            onClick={() => handleItemClick('ecommerce', `/${locale}/dashboards/ecommerce`)}
+          >
+            {dictionary['navigation'].eCommerce}
+          </MenuItem>
+          <MenuItem
+            href={`/${locale}/dashboards/academy`}
+            active={isActive('academy')}
+            onClick={() => handleItemClick('academy', `/${locale}/dashboards/academy`)}
+          >
+            {dictionary['navigation'].academy}
+          </MenuItem>
+          <MenuItem
+            href={`/${locale}/dashboards/logistics`}
+            active={isActive('logistics')}
+            onClick={() => handleItemClick('logistics', `/${locale}/dashboards/logistics`)}
+          >
+            {dictionary['navigation'].logistics}
+          </MenuItem>
         </SubMenu>
 
         {/* <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
@@ -82,56 +153,223 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           </SubMenu>
         </SubMenu> */}
 
-        <SubMenu label={dictionary['navigation'].thirdParties} icon={<i className='ri-building-4-line' />}>
-          <SubMenu label={dictionary['navigation'].thirdParty} href={`/${locale}/third-parties`}>
-            <MenuItem href={`/${locale}/third-parties/add`}>{dictionary['navigation'].newThirdParty}</MenuItem>
-            <MenuItem href={`/${locale}/third-parties/list`}>{"Third Party list"}</MenuItem>
+        <SubMenu
+          label={dictionary['navigation'].thirdParties}
+          icon={<i className='ri-building-4-line' />}
+          open={openSubMenus.includes('third-parties')}
+          onOpenChange={() => handleSubMenuToggle('third-parties')}
+        >
+          <SubMenu
+            label={dictionary['navigation'].thirdParty}
+            href={`/${locale}/third-parties`}
+            open={openSubMenus.includes('third-party')}
+            onOpenChange={() => handleSubMenuToggle('third-party')}
+          >
+            <MenuItem
+              href={`/${locale}/third-parties/add?type=third-party`}
+              active={isActive('new-third-party')}
+              onClick={() => handleItemClick('new-third-party', `/${locale}/third-parties/add?type=third-party`)}
+            >
+              {dictionary['navigation'].newThirdParty}
+            </MenuItem>
+            <MenuItem
+              href={`/${locale}/third-parties/list`}
+              active={isActive('list')}
+              onClick={() => handleItemClick('list', `/${locale}/third-parties/list`)}
+            >
+              {'Third Party list'}
+            </MenuItem>
 
-            <SubMenu label={dictionary['navigation'].list}>
-              <MenuItem href={`/${locale}/third-parties/prospects/list`}>{dictionary['navigation'].listOfProspects}</MenuItem>
-              <MenuItem href={`/${locale}/third-parties/prospects/add`}>{dictionary['navigation'].newProspect}</MenuItem>
-              <MenuItem href={`/${locale}/third-parties/customers/list`}>{dictionary['navigation'].listOfCustomers}</MenuItem>
-              <MenuItem href={`/${locale}/third-parties/customers/add`}>{dictionary['navigation'].newCustomer}</MenuItem>
-              <MenuItem href={`/${locale}/third-parties/vendors/list`}>{dictionary['navigation'].listOfVendors}</MenuItem>
-              <MenuItem href={`/${locale}/third-parties/vendors/add`}>{dictionary['navigation'].newVendor}</MenuItem>
+            <SubMenu
+              label={dictionary['navigation'].list}
+              open={openSubMenus.includes('list')}
+              onOpenChange={() => handleSubMenuToggle('list')}
+            >
+              <MenuItem
+                href={`/${locale}/third-parties/prospects/list`}
+                active={isActive('prospects')}
+                onClick={() => handleItemClick('prospects', `/${locale}/third-parties/prospects/list`)}
+              >
+                {dictionary['navigation'].listOfProspects}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/third-parties/add?type=prospect`}
+                active={isActive('new-prospect')}
+                onClick={() => handleItemClick('new-prospect', `/${locale}/third-parties/add?type=prospect`)}
+              >
+                {dictionary['navigation'].newProspect}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/third-parties/customers/list`}
+                active={isActive('customers')}
+                onClick={() => handleItemClick('customers', `/${locale}/third-parties/customers/list`)}
+              >
+                {dictionary['navigation'].listOfCustomers}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/third-parties/add?type=customer`}
+                active={isActive('new-customer')}
+                onClick={() => handleItemClick('new-customer', `/${locale}/third-parties/add?type=customer`)}
+              >
+                {dictionary['navigation'].newCustomer}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/third-parties/vendors/list`}
+                active={isActive('vendors')}
+                onClick={() => handleItemClick('vendors', `/${locale}/third-parties/vendors/list`)}
+              >
+                {dictionary['navigation'].listOfVendors}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/third-parties/add?type=vendor`}
+                active={isActive('new-vendor')}
+                onClick={() => handleItemClick('new-vendor', `/${locale}/third-parties/add?type=vendor`)}
+              >
+                {dictionary['navigation'].newVendor}
+              </MenuItem>
             </SubMenu>
 
-            <MenuItem href={`/${locale}/third-parties/categories`}>{dictionary['navigation'].customerProspectTagsCategories}</MenuItem>
-            <MenuItem href={`/${locale}/third-parties/vendors/tags`}>{dictionary['navigation'].vendorTagsCategories}</MenuItem>
+            <MenuItem
+              href={`/${locale}/third-parties/categories`}
+              active={isActive('categories')}
+              onClick={() => handleItemClick('categories', `/${locale}/third-parties/categories`)}
+            >
+              {dictionary['navigation'].customerProspectTagsCategories}
+            </MenuItem>
+            <MenuItem
+              href={`/${locale}/third-parties/vendors/tags`}
+              active={isActive('tags')}
+              onClick={() => handleItemClick('tags', `/${locale}/third-parties/vendors/tags`)}
+            >
+              {dictionary['navigation'].vendorTagsCategories}
+            </MenuItem>
           </SubMenu>
 
-          <SubMenu label={dictionary['navigation'].contactsAddresses} icon={<i className='ri-contacts-line' />}>
-            <MenuItem href={`/${locale}/contacts/add`}>{dictionary['navigation'].newContactAddress}</MenuItem>
+          <SubMenu
+            label={dictionary['navigation'].contactsAddresses}
+            icon={<i className='ri-contacts-line' />}
+            open={openSubMenus.includes('contacts')}
+            onOpenChange={() => handleSubMenuToggle('contacts')}
+          >
+            <MenuItem
+              href={`/${locale}/contacts/add`}
+              active={isActive('new-contact')}
+              onClick={() => handleItemClick('new-contact', `/${locale}/contacts/add`)}
+            >
+              {dictionary['navigation'].newContactAddress}
+            </MenuItem>
 
-            <SubMenu label={dictionary['navigation'].list}>
-              <MenuItem href={`/${locale}/contacts/prospects/list`}>{dictionary['navigation'].prospects}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/customers/list`}>{dictionary['navigation'].customers}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/vendors/list`}>{dictionary['navigation'].vendors}</MenuItem>
-              <MenuItem href={`/${locale}/contacts/others/list`}>{dictionary['navigation'].other}</MenuItem>
+            <SubMenu
+              label={dictionary['navigation'].list}
+              open={openSubMenus.includes('contacts-list')}
+              onOpenChange={() => handleSubMenuToggle('contacts-list')}
+            >
+              <MenuItem
+                href={`/${locale}/contacts/prospects/list`}
+                active={isActive('contact-prospects')}
+                onClick={() => handleItemClick('contact-prospects', `/${locale}/contacts/prospects/list`)}
+              >
+                {dictionary['navigation'].prospects}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/contacts/customers/list`}
+                active={isActive('contact-customers')}
+                onClick={() => handleItemClick('contact-customers', `/${locale}/contacts/customers/list`)}
+              >
+                {dictionary['navigation'].customers}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/contacts/vendors/list`}
+                active={isActive('contact-vendors')}
+                onClick={() => handleItemClick('contact-vendors', `/${locale}/contacts/vendors/list`)}
+              >
+                {dictionary['navigation'].vendors}
+              </MenuItem>
+              <MenuItem
+                href={`/${locale}/contacts/others/list`}
+                active={isActive('contact-others')}
+                onClick={() => handleItemClick('contact-others', `/${locale}/contacts/others/list`)}
+              >
+                {dictionary['navigation'].other}
+              </MenuItem>
             </SubMenu>
 
-            <MenuItem href={`/${locale}/contacts/tags`}>{dictionary['navigation'].contactsTagsCategories}</MenuItem>
+            <MenuItem
+              href={`/${locale}/contacts/tags`}
+              active={isActive('contact-tags')}
+              onClick={() => handleItemClick('contact-tags', `/${locale}/contacts/tags`)}
+            >
+              {dictionary['navigation'].contactsTagsCategories}
+            </MenuItem>
           </SubMenu>
-
         </SubMenu>
-
 
         <SubMenu
           label={dictionary['navigation'].mrp}
           icon={<i className='ri-building-4-line' />}
           href={`/${locale}/mrp`}
+          open={openSubMenus.includes('mrp')}
+          onOpenChange={() => handleSubMenuToggle('mrp')}
         >
-          <SubMenu label={dictionary['navigation'].bom}>
-            <MenuItem href={`/${locale}/mrp/bom/add`}>{dictionary['navigation'].new_bom}</MenuItem>
-            <MenuItem href={`/${locale}/mrp/bom/list`}>{dictionary['navigation'].list}</MenuItem>
+          <SubMenu
+            label={dictionary['navigation'].bom}
+            open={openSubMenus.includes('bom')}
+            onOpenChange={() => handleSubMenuToggle('bom')}
+          >
+            <MenuItem
+              href={`/${locale}/mrp/bom/add`}
+              active={isActive('new-bom')}
+              onClick={() => handleItemClick('new-bom', `/${locale}/mrp/bom/add`)}
+            >
+              {dictionary['navigation'].new_bom}
+            </MenuItem>
+            <MenuItem
+              href={`/${locale}/mrp/bom/list`}
+              active={isActive('bom-list')}
+              onClick={() => handleItemClick('bom-list', `/${locale}/mrp/bom/list`)}
+            >
+              {dictionary['navigation'].list}
+            </MenuItem>
           </SubMenu>
-          <SubMenu label={dictionary['navigation'].mo}>
-            <MenuItem href={`/${locale}/mrp/mo/add`}>{dictionary['navigation'].new_mo}</MenuItem>
-            <MenuItem href={`/${locale}/mrp/mo/list`}>{dictionary['navigation'].list}</MenuItem>
+          <SubMenu
+            label={dictionary['navigation'].mo}
+            open={openSubMenus.includes('mo')}
+            onOpenChange={() => handleSubMenuToggle('mo')}
+          >
+            <MenuItem
+              href={`/${locale}/mrp/mo/add`}
+              active={isActive('new-mo')}
+              onClick={() => handleItemClick('new-mo', `/${locale}/mrp/mo/add`)}
+            >
+              {dictionary['navigation'].new_mo}
+            </MenuItem>
+            <MenuItem
+              href={`/${locale}/mrp/mo/list`}
+              active={isActive('mo-list')}
+              onClick={() => handleItemClick('mo-list', `/${locale}/mrp/mo/list`)}
+            >
+              {dictionary['navigation'].list}
+            </MenuItem>
           </SubMenu>
-          <SubMenu label={dictionary['navigation'].workstations}>
-            <MenuItem href={`/${locale}/mrp/workstations/add`}>{dictionary['navigation'].new_workstation}</MenuItem>
-            <MenuItem href={`/${locale}/mrp/workstations/list`}>{dictionary['navigation'].list}</MenuItem>
+          <SubMenu
+            label={dictionary['navigation'].workstations}
+            open={openSubMenus.includes('workstations')}
+            onOpenChange={() => handleSubMenuToggle('workstations')}
+          >
+            <MenuItem
+              href={`/${locale}/mrp/workstations/add`}
+              active={isActive('new-workstation')}
+              onClick={() => handleItemClick('new-workstation', `/${locale}/mrp/workstations/add`)}
+            >
+              {dictionary['navigation'].new_workstation}
+            </MenuItem>
+            <MenuItem
+              href={`/${locale}/mrp/workstations/list`}
+              active={isActive('workstation-list')}
+              onClick={() => handleItemClick('workstation-list', `/${locale}/mrp/workstations/list`)}
+            >
+              {dictionary['navigation'].list}
+            </MenuItem>
           </SubMenu>
         </SubMenu>
 
