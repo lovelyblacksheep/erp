@@ -27,6 +27,8 @@ import { unstable_useTreeItem2 as useTreeItem } from '@mui/x-tree-view/useTreeIt
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider'
 import { Grid, Paper, TextField, Button, Chip } from '@mui/material'
 import { getThirdPartyCategories } from '@/libs/api/third-parties'
+import { Add } from '@mui/icons-material'
+import Link from '@/components/Link'
 
 // Helper function to determine if a color is light or dark
 const isLightColor = color => {
@@ -210,8 +212,11 @@ export default function Categories() {
             onChange={e => setSearchTerm(e.target.value)}
             sx={{ mr: 1 }}
           />
-          <Button variant='contained' color='primary' onClick={handleSearch} startIcon={<SearchIcon />}>
+          <Button variant='contained' color='primary' style={{marginRight: 8}} onClick={handleSearch} startIcon={<SearchIcon />}>
             Search
+          </Button>
+          <Button variant='contained' color='primary' LinkComponent={Link} href='add_category' startIcon={<Add />}>
+            Add
           </Button>
         </Box>
       </Paper>
