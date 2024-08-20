@@ -2,12 +2,10 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { apiKey, apiUrl } from '@/config'
 import Link from 'next/link'
 import {
   Grid,
   Typography,
-  TextField,
   Box,
   Table,
   TableBody,
@@ -25,48 +23,32 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
-import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
 
 const InfoItem = ({ label, value }) => (
-  <Box display='flex' justifyContent='space-between' mb={1}>
-    <Typography variant='body2' color='text.secondary'>
-      {label}
-    </Typography>
-    <Typography variant='body2'>{value}</Typography>
+  <Box mb={2}>
+    <Typography variant='subtitle2'>{label}</Typography>
+    <Typography variant='body2'>{value || '-'}</Typography>
   </Box>
 )
 
 const TP_ItemTabThirdParty = () => {
-  const [bomData, setBomData] = useState(null)
-  const [warehouseData, setWarehouseData] = useState(null)
+  const [thirdPartyData, setThirdPartyData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  const { id: bomId } = useParams()
+  const params = useParams()
+  const thirdPartyId = params.id
 
   useEffect(() => {
-    const fetchBomData = async () => {
+    const fetchThirdPartyData = async () => {
       setIsLoading(true)
       try {
-        const response = await getThirdParty(bomId)
+        const response = await getThirdParty(thirdPartyId)
         if (response.status !== 200) {
-          throw new Error('Failed to fetch BOM data')
+          throw new Error('Failed to fetch Third Party data')
         }
         const data = response.data
-        setBomData(data)
-
-        if (data.warehouse_id) {
-          const warehouseResponse = await fetch(`${apiUrl}/warehouses/${data.warehouse_id}`, {
-            headers: {
-              DOLAPIKEY: apiKey
-            }
-          })
-          if (!warehouseResponse.ok) {
-            throw new Error('Failed to fetch warehouse data')
-          }
-          const warehouseData = await warehouseResponse.json()
-          setWarehouseData(warehouseData)
-        }
+        setThirdPartyData(data)
       } catch (error) {
         console.error('Error fetching data:', error)
         setError(error.message)
@@ -75,10 +57,10 @@ const TP_ItemTabThirdParty = () => {
       }
     }
 
-    if (bomId) {
-      fetchBomData()
+    if (thirdPartyId) {
+      fetchThirdPartyData()
     }
-  }, [bomId])
+  }, [thirdPartyId])
 
   if (isLoading) {
     return <Typography>Loading...</Typography>
@@ -88,15 +70,15 @@ const TP_ItemTabThirdParty = () => {
     return <Typography color='error'>Error: {error}</Typography>
   }
 
-  if (!bomData) {
-    return <Typography>No BOM data available</Typography>
+  if (!thirdPartyData) {
+    return <Typography>No Third Party data available</Typography>
   }
 
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
         <Box p={6} border={1} borderColor='grey.300' borderRadius={1}>
-          {/* Top Section */}
+          {/* Top Section with Image and ID */}
           <Grid container justifyContent='space-between' alignItems='center' mb={2}>
             <Grid item>
               <Box
@@ -116,15 +98,15 @@ const TP_ItemTabThirdParty = () => {
                   alignItems='center'
                   overflow='hidden'
                 >
-                  <img width={64} height={64} src='https://f.start.me/us.gov' alt='BOM' />
+                  <img width={64} height={64} src='https://f.start.me/us.gov' alt='Third Party' />
                 </Box>
                 <Typography variant='h6' component='div'>
-                  {bomData.ref || 'No Reference'}
+                  {thirdPartyData.ref || 'No Reference'}
                 </Typography>
               </Box>
             </Grid>
             <Grid item>
-              <Link href='/mrp/bom/list' passHref>
+              <Link href='/third-parties/list' passHref>
                 <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
                   Back to list
                 </Typography>
@@ -136,65 +118,34 @@ const TP_ItemTabThirdParty = () => {
           <Grid container spacing={2}>
             {/* Left Column */}
             <Grid item xs={6}>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Label</Typography>
-                <Typography variant='body2'>{bomData.label}</Typography>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Type</Typography>
-                <Typography variant='body2'>{bomData.bomtype}</Typography>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Product</Typography>
-                <Link href={`/products/${bomData.fk_product}`} passHref>
-                  <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {bomData.product_ref}
-                  </Typography>
-                </Link>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Quantity</Typography>
-                <Typography variant='body2'>{bomData.qty}</Typography>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Description</Typography>
-                <Typography variant='body2'>{bomData.description || '-'}</Typography>
-              </Box>
+              <InfoItem label='Nature of Third party' value={thirdPartyData.thirdparty_nature} />
+              <InfoItem label='Customer Code' value={thirdPartyData.code_client} />
+              <InfoItem label='Barcode' value={thirdPartyData.barcode} />
+              <InfoItem label='Prof Id 1 (TIN)' value={thirdPartyData.prof_id1} />
+              <InfoItem label='Prof Id 2 (PAN)' value={thirdPartyData.prof_id2} />
+              <InfoItem label='Prof Id 3 (SRVC TAX)' value={thirdPartyData.prof_id3} />
+              <InfoItem label='Prof Id 4' value={thirdPartyData.prof_id4} />
+              <InfoItem label='Prof Id 5' value={thirdPartyData.prof_id5} />
+              <InfoItem label='VAT ID' value={thirdPartyData.vat_id} />
+              <InfoItem label='Customers tags/categories' value={thirdPartyData.customer_tags} />
             </Grid>
 
             {/* Right Column */}
             <Grid item xs={6}>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Estimated duration</Typography>
-                <Typography variant='body2'>
-                  {bomData.duration
-                    ? (() => {
-                        const totalMinutes = Math.floor(Number(bomData.duration) / 60)
-                        const hours = Math.floor(totalMinutes / 60)
-                        const minutes = totalMinutes % 60
-                        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-                      })()
-                    : '-'}
-                </Typography>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Warehouse for production</Typography>
-                {warehouseData && (
-                  <Link href={`/warehouses/${bomData.warehouse_id}`} passHref>
-                    <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
-                      {warehouseData.ref}
-                    </Typography>
-                  </Link>
-                )}
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Total cost</Typography>
-                <Typography variant='body2'>{bomData.total_cost}</Typography>
-              </Box>
-              <Box mb={2}>
-                <Typography variant='subtitle2'>Unit cost</Typography>
-                <Typography variant='body2'>{bomData.unit_cost}</Typography>
-              </Box>
+              <InfoItem label='Third-party type' value={thirdPartyData.thirdparty_type} />
+              <InfoItem label='Workforce' value={thirdPartyData.workforce} />
+              <InfoItem label='Business entity type' value={thirdPartyData.business_entity_type} />
+              <InfoItem label='Refuse bulk emailings' value={thirdPartyData.refuse_bulk_emailings ? 'Yes' : 'No'} />
+              <InfoItem label='Default language' value={thirdPartyData.default_language} />
+              <InfoItem label='Incoterms' value={thirdPartyData.incoterms} />
+              <InfoItem label='Currency' value={thirdPartyData.currency} />
+              <InfoItem label='Height' value={thirdPartyData.height} />
+              <InfoItem label='Weight' value={thirdPartyData.weight} />
+              <InfoItem label='Profession' value={thirdPartyData.profession} />
+              <InfoItem label='Birth date' value={thirdPartyData.birth_date} />
+              <InfoItem label='Parent company' value={thirdPartyData.parent_company} />
+              <InfoItem label='Sales representatives' value={thirdPartyData.sales_representatives} />
+              <InfoItem label='Link to member' value={thirdPartyData.link_to_member} />
             </Grid>
           </Grid>
         </Box>
@@ -231,14 +182,14 @@ const TP_ItemTabThirdParty = () => {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell colSpan={5} align='center'>
+                    <TableCell colSpan={4} align='center'>
                       None
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
-            <Box width={'100%'}>
+            <Box width={'100%'} mt={2}>
               <Grid width={'100%'} display={'flex'} flexDirection={'row'} columnGap={4} alignItems={'center'}>
                 <Typography>Doc template</Typography>
                 <Select>

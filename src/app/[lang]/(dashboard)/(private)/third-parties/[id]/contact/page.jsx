@@ -59,7 +59,7 @@ const ContactAddresses = ({ data }) => {
             alignItems={'center'}
           >
             <Typography variant='h5' component='div'>
-            Contacts/addresses for this third party
+              Contacts/addresses for this third party
             </Typography>
           </Box>
         </Grid>
@@ -147,7 +147,6 @@ const ContactAddresses = ({ data }) => {
     </>
   )
 }
-
 
 const TP_ItemTabContact = () => {
   const [bomData, setBomData] = useState(null)
