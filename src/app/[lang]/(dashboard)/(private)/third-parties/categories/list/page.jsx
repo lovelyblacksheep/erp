@@ -107,7 +107,6 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(props, ref) {
   const { getRootProps, getContentProps, getIconContainerProps, getLabelProps, getGroupTransitionProps, status } =
     useTreeItem({ itemId, children, label, rootRef: ref })
 
-    console.log("COLOR :: ", color)
   const backgroundColor = color ? getColor(color) : '#6e6e6e'
   const isLight = isLightColor(backgroundColor)
   const textColor = isLight ? 'black' : 'white'
