@@ -33,7 +33,6 @@ const RenderExpandIcon = ({ open, transitionDuration }) => (
 )
 
 const VerticalMenu = ({ dictionary, scrollMenu }) => {
-  // Hooks
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
   const params = useParams()
@@ -42,30 +41,30 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
   const [activeItem, setActiveItem] = useState('')
   const [openSubMenus, setOpenSubMenus] = useState([])
 
-  // Vars
   const { isBreakpointReached, transitionDuration } = verticalNavOptions
   const { lang: locale } = params
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
 
   useEffect(() => {
-    // Update activeItem based on the current pathname and search params
-    const pathParts = pathname.split('/')
-    const lastPart = pathParts[pathParts.length - 1]
-    const searchParams = new URLSearchParams(window.location.search)
-    const type = searchParams.get('type')
+    const handleRouteChange = url => {
+      const pathParts = url.split('/')
+      const lastPart = pathParts[pathParts.length - 1]
+      const searchParams = new URLSearchParams(url.split('?')[1])
+      const type = searchParams.get('type')
 
-    if (lastPart === 'add') {
-      setActiveItem(`new-${type || 'third-party'}`)
-    } else {
-      setActiveItem(lastPart)
+      if (lastPart === 'add') {
+        setActiveItem(`new-${type || 'third-party'}`)
+      } else {
+        setActiveItem(lastPart)
+      }
+
+      // Keep relevant submenus open based on the current path
+      const relevantSubMenus = pathParts.slice(1, -1) // Exclude locale and last part
+      setOpenSubMenus(prev => {
+        const newOpenSubMenus = [...new Set([...prev, ...relevantSubMenus])]
+        return newOpenSubMenus
+      })
     }
-
-    // Keep relevant submenus open based on the current path
-    const relevantSubMenus = pathParts.slice(1, -1) // Exclude locale and last part
-    setOpenSubMenus(prev => {
-      const newOpenSubMenus = [...new Set([...prev, ...relevantSubMenus])]
-      return newOpenSubMenus
-    })
   }, [pathname])
 
   const isActive = itemId => activeItem === itemId
@@ -295,7 +294,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             </SubMenu>
 
             <MenuItem
-              href={`/${locale}/contacts/tags`}
+              href={`/${locale}/third-parties/contacts/tags`}
               active={isActive('contact-tags')}
               onClick={() => handleItemClick('contact-tags', `/${locale}/contacts/tags`)}
             >
