@@ -5,6 +5,7 @@ import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import CT_ItemTabCategory from './page';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '1px solid #e8e8e8',
@@ -95,7 +96,7 @@ const CategoryLayout = ({ children }) => {
           })}
         </StyledTabs>
       </Grid>
-      {children ? children : <MRP_BOM_ItemTabBOM />}
+      {children ? children : <CT_ItemTabCategory />}
     </Grid>
   )
 }
