@@ -3,13 +3,14 @@ import { apiKey, apiUrl } from '@/config'
 
 const url = `${apiUrl}/thirdparties`
 
-export async function getThirdParties({ limit, page }) {
+export async function getThirdParties({ limit, page, mode }) {
   const result = await axios.get(url, {
     params: {
       sortfield: 't.rowid',
       sortorder: 'ASC',
       limit: limit || 100,
       page: page || 0,
+      mode: mode,
       DOLAPIKEY: apiKey
     }
   })
@@ -41,12 +42,15 @@ export async function getThirdParty(id) {
 }
 
 export async function getThirdPartyCategories(type) {
-  const result = await axios.get(`${'https://qnerp.com/erp/api/index.php/categories?sortfield=t.rowid&sortorder=ASC&limit=100'}`, {
-    params: {
-      DOLAPIKEY: apiKey,
-      // type: type
+  const result = await axios.get(
+    `${'https://qnerp.com/erp/api/index.php/categories?sortfield=t.rowid&sortorder=ASC&limit=100'}`,
+    {
+      params: {
+        DOLAPIKEY: apiKey
+        // type: type
+      }
     }
-  })
+  )
 
   return result
 }
