@@ -170,7 +170,7 @@ const BOMTable = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('ref', {
         cell: info => (
-          <Link href={`/bom/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+          <Link href={info.row.original.id + `/bom`} className={`${styles.link} hover:underline`}>
             {info.getValue()}
           </Link>
         ),
