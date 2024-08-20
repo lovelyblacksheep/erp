@@ -68,8 +68,8 @@ const tabs = [
     href: 'payment'
   },
   {
-    label: 'Partnerships',
-    href: 'partnership'
+    label: 'Web access accounts',
+    href: 'web_access'
   },
   {
     label: 'Tickets',

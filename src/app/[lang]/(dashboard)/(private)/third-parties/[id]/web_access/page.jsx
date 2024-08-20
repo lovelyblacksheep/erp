@@ -26,7 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
 
-const MarginListTp = ({ data }) => {
+const WebsiteAccountsTp = ({ data }) => {
   const [newRow, setNewRow] = useState({
     product_ref: '',
     product_label: '',
@@ -306,10 +306,13 @@ const TP_ItemTabWebAccess = () => {
         </Box>
         <Grid display={"flex"} justifyContent='space-between' width={'100%'} flexDirection={"row"} columnGap={4} alignItems='center'>
           <Grid display={"flex"} justifyContent='flex-start' flexDirection={"row"} columnGap={4} alignItems='center'>
-            <Typography>Margin details</Typography>
+            <Typography>Website accounts</Typography>
+          </Grid>
+          <Grid>
+            <Button variant='contained'>Add</Button>
           </Grid>
         </Grid>
-        <MarginListTp data={productLines} />
+        <WebsiteAccountsTp data={productLines} />
       </Grid>
     </>
   )

@@ -26,7 +26,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
 
-const ProjectsDedicatedToThisTp = ({ data }) => {
+const CreditCardsOfTp = ({ data }) => {
   const [newRow, setNewRow] = useState({
     product_ref: '',
     product_label: '',
@@ -59,7 +59,129 @@ const ProjectsDedicatedToThisTp = ({ data }) => {
             alignItems={'center'}
           >
             <Typography variant='h5' component='div'>
-            Products with specific prices
+            Credit cards
+            </Typography>
+          </Box>
+        </Grid>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Product</TableCell>
+                <TableCell align='right'>Quantity</TableCell>
+                <TableCell align='right'>Physical Stock</TableCell>
+                <TableCell align='right'>Virtual Stock</TableCell>
+                <TableCell align='center'>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component='th' scope='row'>
+                    <Link href={`/products/${row.fk_product}`} passHref>
+                      <Typography variant='body2' style={{ textDecoration: 'none', color: 'inherit' }}>
+                        {`${row.product_ref} - ${row.product_label}`}
+                      </Typography>
+                    </Link>
+                  </TableCell>
+                  <TableCell align='right'>{row.qty}</TableCell>
+                  <TableCell align='right'>{row.physical_stock}</TableCell>
+                  <TableCell align='right'>{row.virtual_stock}</TableCell>
+                  <TableCell align='center'>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell>
+                  <TextField
+                    fullWidth
+                    variant='outlined'
+                    placeholder='Product'
+                    value={`${newRow.product_ref} - ${newRow.product_label}`}
+                    onChange={e => {
+                      const [ref, label] = e.target.value.split(' - ')
+                      setNewRow({ ...newRow, product_ref: ref, product_label: label })
+                    }}
+                  />
+                </TableCell>
+                <TableCell align='right'>
+                  <TextField
+                    type='number'
+                    value={newRow.qty}
+                    onChange={e => setNewRow({ ...newRow, qty: Number(e.target.value) })}
+                    variant='outlined'
+                  />
+                </TableCell>
+                <TableCell align='right'>
+                  <TextField
+                    type='number'
+                    value={newRow.physical_stock}
+                    onChange={e => setNewRow({ ...newRow, physical_stock: e.target.value })}
+                    variant='outlined'
+                  />
+                </TableCell>
+                <TableCell align='right'>
+                  <TextField
+                    type='number'
+                    value={newRow.virtual_stock}
+                    onChange={e => setNewRow({ ...newRow, virtual_stock: e.target.value })}
+                    variant='outlined'
+                  />
+                </TableCell>
+                <TableCell align='center'>
+                  <Button variant='contained' color='primary' onClick={handleAddRow} startIcon={<AddIcon />}>
+                    ADD
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </>
+  )
+}
+
+const BankAccountsOfTp = ({ data }) => {
+  const [newRow, setNewRow] = useState({
+    product_ref: '',
+    product_label: '',
+    qty: 1,
+    physical_stock: '',
+    virtual_stock: ''
+  })
+
+  const handleAddRow = () => {
+    console.log('Adding new row:', newRow)
+    setNewRow({
+      product_ref: '',
+      product_label: '',
+      qty: 1,
+      physical_stock: '',
+      virtual_stock: ''
+    })
+  }
+
+  return (
+    <>
+      <Grid container justifyContent='space-between' alignItems='center' mb={2}>
+        <Grid item>
+          <Box
+            mb={2}
+            display={'flex'}
+            justifyContent={'flex-start'}
+            flexDirection={'row'}
+            gap={'20px'}
+            alignItems={'center'}
+          >
+            <Typography variant='h5' component='div'>
+            Bank accounts
             </Typography>
           </Box>
         </Grid>
@@ -318,12 +440,51 @@ const TP_ItemTabPayment = () => {
             </Grid>
           </Grid>
         </Box>
+        <CreditCardsOfTp data={productLines} />
         <Grid container justifyContent='flex-end' columnGap={4} alignItems='center'>
-        <Button variant='contained' color='primary'>
-            Add project
+          <Button variant='contained' color='primary'>
+            Add bank
           </Button>
         </Grid>
-        <ProjectsDedicatedToThisTp data={productLines} />
+        <BankAccountsOfTp data={productLines} />
+        <Grid container justifyContent={'space-between'} flexDirection={'row'} columnGap={2} rowGap={6}>
+          <Box width={'100%'}>
+            <Typography variant='h5' gutterBottom>
+              Linked files
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Size</TableCell>
+                    <TableCell>Create date</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={5} align='center'>
+                      None
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box width={'100%'}>
+              <Grid width={'100%'} display={'flex'} flexDirection={'row'} columnGap={4} alignItems={'center'}>
+                <Typography>Doc template</Typography>
+                <Select>
+                  <MenuItem>template.odt</MenuItem>
+                </Select>
+                <Select>
+                  <MenuItem>English</MenuItem>
+                </Select>
+                <Button variant='contained'>Generate</Button>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
       </Grid>
     </>
   )
