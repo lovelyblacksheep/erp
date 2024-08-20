@@ -25,8 +25,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
-import { getBom } from '@/libs/api/bom'
-import { getThirdParty } from '@/libs/api/third-parties'
+import { getCategory, getCategoryCustomerObjects } from '@/libs/api/category'
 
 
 const InfoItem = ({ label, value }) => (
@@ -45,28 +44,36 @@ const CT_ItemTabCategory = () => {
   const [error, setError] = useState(null)
   const { id: bomId } = useParams()
 
+  const [customers, setCustomers] = useState([]);
+
   useEffect(() => {
     const fetchBomData = async () => {
       setIsLoading(true)
       try {
-        const response = await getThirdParty(bomId)
+        const response = await getCategory(bomId)
         if (response.status !== 200) {
           throw new Error('Failed to fetch BOM data')
         }
         const data = response.data
         setBomData(data)
 
-        if (data.warehouse_id) {
-          const warehouseResponse = await fetch(`${apiUrl}/warehouses/${data.warehouse_id}`, {
-            headers: {
-              DOLAPIKEY: apiKey
-            }
-          })
-          if (!warehouseResponse.ok) {
-            throw new Error('Failed to fetch warehouse data')
+        console.log("DA :: ", data)
+
+        if (data && data.id) {
+          // const warehouseResponse = await fetch(`${apiUrl}/warehouses/${data.warehouse_id}`, {
+          //   headers: {
+          //     DOLAPIKEY: apiKey
+          //   }
+          // })
+          // if (!warehouseResponse.ok) {
+          //   throw new Error('Failed to fetch warehouse data')
+          // }
+          // const warehouseData = await warehouseResponse.json()
+          // setWarehouseData(warehouseData)
+          const customerResponse = await getCategoryCustomerObjects(data.id);
+          if(customerResponse && customerResponse.status === 200) {
+            setCustomers(customerResponse.data);
           }
-          const warehouseData = await warehouseResponse.json()
-          setWarehouseData(warehouseData)
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -76,10 +83,10 @@ const CT_ItemTabCategory = () => {
       }
     }
 
-    if (bomId) {
+    if (bomId && !bomData) {
       fetchBomData()
     }
-  }, [bomId])
+  }, [])
 
   if (isLoading) {
     return <Typography>Loading...</Typography>
@@ -119,9 +126,12 @@ const CT_ItemTabCategory = () => {
                 >
                   <img width={64} height={64} src='https://f.start.me/us.gov' alt='BOM' />
                 </Box>
+                <Box>
                 <Typography variant='h6' component='div'>
-                  {bomData.ref || 'No Reference'}
+                  {bomData.label || 'No label'}
                 </Typography>
+                <Typography>{`${bomData.fk_parent}` === "0" ? `Root >> ${bomData.label}` : ''}</Typography>
+                </Box>
               </Box>
             </Grid>
             <Grid item>
@@ -187,11 +197,16 @@ const CT_ItemTabCategory = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={5} align='center'>
-                      None
-                    </TableCell>
-                  </TableRow>
+                  {(bomData && bomData.childs || []).map((child) => {
+                    return (
+                      <TableRow key={child.id}>
+                        <TableCell colSpan={5}>
+                          {child.label}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {(bomData && bomData.childs || []).length < 1 ? (<TableRow><TableCell colSpan={5} align="center">None</TableCell></TableRow>) : (<></>)}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -227,11 +242,21 @@ const CT_ItemTabCategory = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow>
+                  {customers.length > 0 ? (
+                    customers.map((c) => {
+                      return (
+                        <TableRow key={c.id}>
+                          <TableCell colSpan={5}>
+                            {c.name}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  ) : (<TableRow>
                     <TableCell colSpan={5} align='center'>
                       None
                     </TableCell>
-                  </TableRow>
+                  </TableRow>)}
                 </TableBody>
               </Table>
             </TableContainer>

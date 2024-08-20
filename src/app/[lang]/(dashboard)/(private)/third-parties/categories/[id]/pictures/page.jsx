@@ -27,6 +27,7 @@ import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
 import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
+import { getCategory } from '@/libs/api/category'
 
 
 const InfoItem = ({ label, value }) => (
@@ -49,24 +50,15 @@ const CT_ItemTabPictures = () => {
     const fetchBomData = async () => {
       setIsLoading(true)
       try {
-        const response = await getThirdParty(bomId)
+        const response = await getCategory(bomId)
         if (response.status !== 200) {
           throw new Error('Failed to fetch BOM data')
         }
         const data = response.data
         setBomData(data)
 
-        if (data.warehouse_id) {
-          const warehouseResponse = await fetch(`${apiUrl}/warehouses/${data.warehouse_id}`, {
-            headers: {
-              DOLAPIKEY: apiKey
-            }
-          })
-          if (!warehouseResponse.ok) {
-            throw new Error('Failed to fetch warehouse data')
-          }
-          const warehouseData = await warehouseResponse.json()
-          setWarehouseData(warehouseData)
+        if (data && data.id) {
+          
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -76,10 +68,10 @@ const CT_ItemTabPictures = () => {
       }
     }
 
-    if (bomId) {
+    if (bomId && !bomData) {
       fetchBomData()
     }
-  }, [bomId])
+  }, [])
 
   if (isLoading) {
     return <Typography>Loading...</Typography>
@@ -119,9 +111,12 @@ const CT_ItemTabPictures = () => {
                 >
                   <img width={64} height={64} src='https://f.start.me/us.gov' alt='BOM' />
                 </Box>
+                <Box>
                 <Typography variant='h6' component='div'>
-                  {bomData.ref || 'No Reference'}
+                  {bomData.label || 'No label'}
                 </Typography>
+                <Typography>{`${bomData.fk_parent}` === "0" ? `Root >> ${bomData.label}` : ''}</Typography>
+                </Box>
               </Box>
             </Grid>
             <Grid item>
