@@ -49,7 +49,7 @@ const ThirdParties = () => {
     <Grid container spacing={6}>
       <Grid item xs={12} display={'flex'} justifyContent={'space-between'}>
         <Typography variant='h4' className='flex items-center gap-2'>
-          <i className='ri-building-4-fill text-primary text-3xl' /> Third-arties
+          <i className='ri-building-4-fill text-primary text-3xl' /> Third-parties
         </Typography>
         <Button variant='contained' color='primary' component={Link} href='add'>
           <AddCircleOutlineSharp />
