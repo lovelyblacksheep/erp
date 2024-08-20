@@ -22,3 +22,17 @@ export async function getCategoryCustomerObjects(id) {
 
     return result
 }
+
+
+export async function addCategory(data) {
+    try {
+        const response = await axios.post(url, data, {
+            params: {
+                DOLAPIKEY: apiKey
+            }
+        })
+        return { success: true, ...response.data }
+    } catch (error) {
+        return { success: false, ...error.response.data }
+    }
+}

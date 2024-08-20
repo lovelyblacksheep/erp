@@ -12,28 +12,22 @@ import { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import { Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Autocomplete } from '@mui/material'
+import { addCategory } from '@/libs/api/category'
+import { getThirdPartyCategories } from '@/libs/api/third-parties'
 
-const AddCategoryForm = () => {
+const AddCategoryForm = ({ctType = '1'  /* customer */}) => {
   const [parentCompanies, setParentCompanies] = useState([])
-  const [products, setProducts] = useState([])
+  const [allCategories, setAllCategories] = useState([])
   const [warehouses, setWarehouses] = useState([])
 
   const [lastBom, setLastBom] = useState(null);
 
   const [formData, setFormData] = useState({
     label: '',
-    type: '',
-    bomtype: '',
-    status: '',
-    product: '',
-    fk_product: '',
-    quantity: '',
     description: '',
-    est_time_hours: 0,
-    est_time_minutes: 0,
-    warehouse: '',
-    fk_warehoust: '',
-    ref: '(PROV{ID})'
+    fk_parent: '',
+    type: ctType,
+    color: ''
   })
 
 
@@ -51,38 +45,18 @@ const AddCategoryForm = () => {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    async function fetchLastBomData() {
-      try {
-        const result = await getLastBom({})
-        console.log("R :: ", result)
-        setLastBom(result.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    fetchLastBomData()
-  }, [])
 
   // Fetch Products for Dropdown
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchAllCategories() {
       try {
-        const response = await axios.get(`${apiUrl}/products`, {
-          params: {
-            sortfield: 't.ref',
-            sortorder: 'ASC',
-            limit: 100,
-            mode: 1,
-            DOLAPIKEY: apiKey
-          }
-        })
-        setProducts(response.data)
+        const response = await getThirdPartyCategories();
+        setAllCategories(response.data)
       } catch (error) {
         console.error('Error fetching products:', error)
       }
     }
-    fetchProducts()
+    fetchAllCategories()
   }, [])
 
   // Fetch Warehouses for Dropdown
@@ -107,32 +81,17 @@ const AddCategoryForm = () => {
 
   const handleSubmit = async () => {
     try {
-      let lastId = (lastBom || []).length > 0 ? lastBom[0].id : 0;
-      const estTimeFormatted = `${formData.est_time_hours}:${formData.est_time_minutes.toString().padStart(2, '0')}`
-      const result = await addBom({ 
+      const result = await addCategory({ 
           ...formData,
-          est_time: estTimeFormatted,
-          bomtype: formData.type,
-          status: '0',
-          fk_warehouse: formData.warehouse,
-          ref: formData.ref.replace("{ID}", lastId+1),
-          qty: formData.quantity
+          label: formData.label
         })
       if (result.success) {
         setFormData({
-          label: '',
-          type: '',
-          bomtype: '',
-          status: '',
-          product: '',
-          fk_product: '',
-          quantity: '',
-          description: '',
-          est_time_hours: 0,
-          est_time_minutes: 0,
-          warehouse: '',
-          fk_warehouse: '',
-          ref: '(PROV{ID})'
+            label: '',
+            description: '',
+            fk_parent: '',
+            type: ctType,
+            color: ''
         })
         alert('Form Submitted successfully')
       } else {
@@ -156,8 +115,8 @@ const AddCategoryForm = () => {
                 <TextField
                   fullWidth
                   label='Ref'
-                  value={formData.ref}
-                  onChange={e => setFormData({ ...formData, ref: e.target.value })}
+                  value={formData.label}
+                  onChange={e => setFormData({ ...formData, label: e.target.value })}
                 />
               </Grid>
             </Grid>
@@ -214,12 +173,12 @@ const AddCategoryForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Autocomplete
-                  options={products}
+                  options={allCategories}
                   getOptionLabel={option => `${option.ref} - ${option.label} - ${option.barcode}`}
-                  renderInput={params => <TextField {...params} label='Product' />}
-                  value={products.find(p => p.id === formData.product) || null}
+                  renderInput={params => <TextField {...params} label='Category' />}
+                  value={allCategories.find(p => p.id === formData.fk_parent) || null}
                   onChange={(event, newValue) => {
-                    setFormData({ ...formData, product: newValue ? newValue.id : '' })
+                    setFormData({ ...formData, fk_parent: newValue ? newValue.id : '' })
                   }}
                 />
               </Grid>

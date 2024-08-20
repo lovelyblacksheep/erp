@@ -15,7 +15,7 @@ const MRP_BOM_ADD = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <AddCategoryForm />
+        <AddCategoryForm ctType={'1'} />
       </Grid>
     </Grid>
   )
