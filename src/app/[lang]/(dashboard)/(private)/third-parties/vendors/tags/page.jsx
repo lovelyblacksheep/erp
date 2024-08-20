@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { styled, useTheme, alpha } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -27,6 +27,8 @@ import { unstable_useTreeItem2 as useTreeItem } from '@mui/x-tree-view/useTreeIt
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider'
 import { Grid, Paper, TextField, Button, Chip } from '@mui/material'
 import { getThirdPartyCategories } from '@/libs/api/third-parties'
+import Link from '@/components/Link'
+import Add from '@mui/icons-material/Add'
 
 // Helper function to determine if a color is light or dark
 const isLightColor = color => {
@@ -88,6 +90,17 @@ const ActionBox = styled(Box)(({ theme }) => ({
   alignItems: 'center'
 }))
 
+
+const getColor = (c) => {
+  if(c[0] === '#') {
+      return c;
+  }
+  else
+  {
+      return `#${c}`;
+  }
+}
+
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(props, ref) {
   const theme = useTheme()
   const { itemId, label, color, children, ...other } = props
@@ -95,7 +108,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(props, ref) {
   const { getRootProps, getContentProps, getIconContainerProps, getLabelProps, getGroupTransitionProps, status } =
     useTreeItem({ itemId, children, label, rootRef: ref })
 
-  const backgroundColor = color ? `#${color}` : '#6e6e6e'
+  const backgroundColor = color ? getColor(color) : '#6e6e6e'
   const isLight = isLightColor(backgroundColor)
   const textColor = isLight ? 'black' : 'white'
 
@@ -158,7 +171,7 @@ export default function Categories() {
 
   React.useEffect(() => {
     const fetchItems = async () => {
-      let response = await getThirdPartyCategories()
+      let response = await getThirdPartyCategories("supplier");
       if (response && response.status === 200) {
         setItems(convertItems(response.data))
       }
@@ -175,12 +188,14 @@ export default function Categories() {
       return acc
     }, {})
 
-    const rootItems = []
+    const rootItems = [];
+
+    let available_Items = Object.keys(itemsById);
 
     data.forEach(item => {
       const newItem = itemsById[item.id]
 
-      if (item.fk_parent) {
+      if (item.fk_parent && available_Items.includes(item.fk_parent)) {
         itemsById[item.fk_parent].childs.push(newItem)
       } else {
         rootItems.push(newItem)
@@ -212,6 +227,9 @@ export default function Categories() {
           />
           <Button variant='contained' color='primary' onClick={handleSearch} startIcon={<SearchIcon />}>
             Search
+          </Button>
+          <Button variant='contained' color='primary' LinkComponent={Link} href='tags/add?type=2' startIcon={<Add />}>
+            Add
           </Button>
         </Box>
       </Paper>

@@ -40,10 +40,11 @@ export async function getThirdParty(id) {
   return result
 }
 
-export async function getThirdPartyCategories() {
+export async function getThirdPartyCategories(type) {
   const result = await axios.get(`${'https://qnerp.com/erp/api/index.php/categories?sortfield=t.rowid&sortorder=ASC&limit=100'}`, {
     params: {
-      DOLAPIKEY: apiKey
+      DOLAPIKEY: apiKey,
+      // type: type
     }
   })
 
