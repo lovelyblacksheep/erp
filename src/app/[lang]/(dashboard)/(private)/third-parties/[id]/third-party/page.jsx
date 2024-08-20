@@ -28,7 +28,6 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { getBom } from '@/libs/api/bom'
 import { getThirdParty } from '@/libs/api/third-parties'
 
-
 const InfoItem = ({ label, value }) => (
   <Box display='flex' justifyContent='space-between' mb={1}>
     <Typography variant='body2' color='text.secondary'>
@@ -293,4 +292,4 @@ const TP_ItemTabThirdParty = () => {
   )
 }
 
-export default TP_ItemTabThirdParty;
+export default TP_ItemTabThirdParty
