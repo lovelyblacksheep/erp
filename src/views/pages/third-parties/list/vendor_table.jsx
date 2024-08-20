@@ -162,11 +162,11 @@ const Vendor_Table = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('name', {
         cell: info => (
-          <Link href={`/third-parties/${info.row.original.id}`} className={styles.link}>
+          <Link href={'/third-parties/' + info.row.original.id} className='text-primary'>
             {info.getValue()}
           </Link>
         ),
-        header: () => <div className='text-center'>Third-party</div>,
+        header: 'Third-party Name',
         size: 150
       }),
       columnHelper.accessor('civility_id', {
