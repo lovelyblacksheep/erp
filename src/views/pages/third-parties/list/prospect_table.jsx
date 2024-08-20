@@ -193,12 +193,11 @@ const Prospects_Table = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('name', {
         cell: info => (
-          <Link href={`/prospects/${info.row.original.id}`} className={styles.link}>
+          <Link href={'/third-parties/' + info.row.original.id} className='text-primary'>
             {info.getValue()}
           </Link>
         ),
-        header: () => <div className='text-center'>Third-party name</div>,
-        size: 150
+        header: 'Third-party Name'
       }),
       columnHelper.accessor('name_alias', {
         cell: info => info.getValue(),

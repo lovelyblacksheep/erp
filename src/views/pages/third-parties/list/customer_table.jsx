@@ -180,12 +180,11 @@ const Customer_Table = ({ onSelectionChange }) => {
       }),
       columnHelper.accessor('name', {
         cell: info => (
-          <Link href={`/thirdparty/${info.row.original.id}`} className={`${styles.link} hover:underline`}>
+          <Link href={'/third-parties/' + info.row.original.id} className='text-primary'>
             {info.getValue()}
           </Link>
         ),
-        header: 'Third-party name',
-        size: 150
+        header: 'Third-party Name'
       }),
       columnHelper.accessor('name_alias', {
         header: 'Alias Name',
