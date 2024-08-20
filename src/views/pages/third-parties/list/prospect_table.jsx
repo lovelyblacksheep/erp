@@ -235,7 +235,14 @@ const Prospects_Table = ({ onSelectionChange }) => {
           })
         },
         header: () => <div className='text-center'>Birth date</div>,
-        size: 150
+        size: 150,
+        filterFn: (row, columnId, filterValue) => {
+          if (!filterValue.from || !filterValue.to) return true
+          const fromDate = filterValue.from.valueOf() / 1000
+          const toDate = filterValue.to.valueOf() / 1000
+          const rowDate = row.getValue(columnId)
+          return rowDate >= fromDate && rowDate <= toDate
+        }
       }),
       columnHelper.accessor('status', {
         cell: info => info.getValue(),
@@ -269,7 +276,8 @@ const Prospects_Table = ({ onSelectionChange }) => {
       const result = await getThirdParties({
         sortfield: 't.rowid',
         sortorder: 'ASC',
-        limit: 100,
+        limit: table.getState().pagination.pageSize,
+        page: table.getState().pagination.pageIndex,
         mode: 2
       })
       setData(result.data)
@@ -308,7 +316,18 @@ const Prospects_Table = ({ onSelectionChange }) => {
                   <th key={header.id} className={classnames('whitespace-nowrap', styles.header)}>
                     {header.isPlaceholder ? null : (
                       <div className='flex flex-col items-center'>
-                        <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                        <div
+                          className={classnames('flex items-center', {
+                            'cursor-pointer select-none': header.column.getCanSort()
+                          })}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {{
+                            asc: <ChevronRight fontSize='1rem' className='-rotate-90' />,
+                            desc: <ChevronRight fontSize='1rem' className='rotate-90' />
+                          }[header.column.getIsSorted()] ?? null}
+                        </div>
                         {header.column.getCanFilter() && (
                           <div>
                             <Filter column={header.column} />
@@ -337,11 +356,11 @@ const Prospects_Table = ({ onSelectionChange }) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component='div'
-        count={table.getPrePaginationRowModel().rows.length}
+        count={-1}
         rowsPerPage={table.getState().pagination.pageSize}
         page={table.getState().pagination.pageIndex}
-        onPageChange={page => table.setPageIndex(page)}
-        onRowsPerPageChange={event => table.setPageSize(Number(event.target.value))}
+        onPageChange={(_, page) => table.setPageIndex(page)}
+        onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
       />
     </Card>
   )

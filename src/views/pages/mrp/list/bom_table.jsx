@@ -37,7 +37,7 @@ import ChevronRight from '@menu/svg/ChevronRight'
 
 // Style Imports
 import styles from '@core/styles/table.module.css'
-import { getThirdParties } from '@/libs/api/third-parties'
+import { getBoms } from '@/libs/api/bom'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -67,7 +67,7 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
   return <TextField {...props} size='small' value={value} onChange={e => setValue(e.target.value)} />
 }
 
-const StatusFilter = ({ column, table }) => {
+const TypeFilter = ({ column, table }) => {
   const columnFilterValue = column.getFilterValue() ?? ''
 
   return (
@@ -79,11 +79,8 @@ const StatusFilter = ({ column, table }) => {
       displayEmpty
     >
       <MenuItem value=''>All</MenuItem>
-      <MenuItem value='Do not contact'>Do not contact</MenuItem>
-      <MenuItem value='Never contacted'>Never contacted</MenuItem>
-      <MenuItem value='To be contacted'>To be contacted</MenuItem>
-      <MenuItem value='Contact in process'>Contact in process</MenuItem>
-      <MenuItem value='Contact done'>Contact done</MenuItem>
+      <MenuItem value='Type1'>Type 1</MenuItem>
+      <MenuItem value='Type2'>Type 2</MenuItem>
     </Select>
   )
 }
@@ -126,9 +123,9 @@ const Filter = ({ column, table }) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
   const columnFilterValue = column.getFilterValue()
 
-  if (column.id === 'status_prospect_label') {
-    return <StatusFilter column={column} table={table} />
-  } else if (column.id === 'birth_date') {
+  if (column.id === 'bomtype') {
+    return <TypeFilter column={column} table={table} />
+  } else if (column.id === 'date_creation') {
     return <DateRangeFilter column={column} />
   } else if (column.id !== 'select') {
     return (
@@ -145,7 +142,7 @@ const Filter = ({ column, table }) => {
   return null
 }
 
-const Prospects_Table = ({ onSelectionChange }) => {
+const BOMTable = ({ onSelectionChange }) => {
   const [columnFilters, setColumnFilters] = useState([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [data, setData] = useState([])
@@ -171,51 +168,66 @@ const Prospects_Table = ({ onSelectionChange }) => {
         ),
         size: 50
       }),
-      columnHelper.accessor('name', {
+      columnHelper.accessor('ref', {
         cell: info => (
-          <Link href={`/prospects/${info.row.original.id}`} className={`${styles.link} hover:underline`}>
+          <Link href={`/bom/${info.getValue()}`} className={`${styles.link} hover:underline`}>
             {info.getValue()}
           </Link>
         ),
-        header: 'Third-party name',
-        size: 150
+        header: 'Ref',
+        size: 80
       }),
-      columnHelper.accessor('name_alias', {
+      columnHelper.accessor('label', {
         cell: info => info.getValue(),
-        header: 'Alias Name',
-        size: 150
-      }),
-      columnHelper.accessor('zip', {
-        cell: info => info.getValue(),
-        header: 'Zip Code',
+        header: 'Label',
         size: 120
       }),
-      columnHelper.accessor('potential', {
+      columnHelper.accessor('bomtype', {
         cell: info => info.getValue(),
-        header: 'Prospect potential',
+        header: 'Type',
+        size: 80
+      }),
+      columnHelper.accessor('product', {
+        cell: info => (
+          <Link href={`/product/${info.getValue()}`} className={`${styles.link} hover:underline`}>
+            {info.getValue()}
+          </Link>
+        ),
+        header: 'Product',
+        size: 120
+      }),
+      columnHelper.accessor('qty', {
+        cell: info => info.getValue(),
+        header: 'Quantity',
+        size: 80
+      }),
+      columnHelper.accessor('description', {
+        cell: info => info.getValue(),
+        header: 'Description',
         size: 150
       }),
-      columnHelper.accessor('status_prospect_label', {
+      columnHelper.accessor('note_public', {
         cell: info => info.getValue(),
-        header: 'Prospect status',
-        size: 150
+        header: 'Note',
+        size: 120
       }),
-      columnHelper.accessor('profession', {
-        cell: info => info.getValue(),
-        header: 'Profession',
-        size: 150
-      }),
-      columnHelper.accessor('birth_date', {
+      columnHelper.accessor('date_creation', {
         cell: info => {
-          const date = new Date(info.getValue() * 1000) // Convert Unix timestamp to milliseconds
+          const date = new Date(info.getValue() * 1000)
           return date.toLocaleString('en-GB', {
             day: '2-digit',
             month: '2-digit',
-            year: 'numeric'
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
           })
         },
-        header: 'Birth date',
-        size: 150,
+        header: 'Creation Date',
+        size: 180,
+        sortingFn: (rowA, rowB) => {
+          return rowA.original.date_creation - rowB.original.date_creation
+        },
         filterFn: (row, columnId, filterValue) => {
           if (!filterValue.from || !filterValue.to) return true
           const fromDate = filterValue.from.valueOf() / 1000
@@ -227,7 +239,7 @@ const Prospects_Table = ({ onSelectionChange }) => {
       columnHelper.accessor('status', {
         cell: info => info.getValue(),
         header: 'Status',
-        size: 120
+        size: 80
       })
     ],
     []
@@ -253,7 +265,7 @@ const Prospects_Table = ({ onSelectionChange }) => {
 
   async function fetchData() {
     try {
-      const result = await getThirdParties({
+      const result = await getBoms({
         limit: table.getState().pagination.pageSize,
         page: table.getState().pagination.pageIndex
       })
@@ -357,4 +369,4 @@ const Prospects_Table = ({ onSelectionChange }) => {
   )
 }
 
-export default Prospects_Table
+export default BOMTable

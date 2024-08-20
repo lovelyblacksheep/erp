@@ -40,6 +40,7 @@ import styles from '@core/styles/table.module.css'
 
 // API Import
 import { getThirdParties } from '@/libs/api/third-parties'
+import { apiKey, apiUrl } from '@/config'
 
 const columnHelper = createColumnHelper()
 
@@ -67,7 +68,7 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
   return <TextField {...props} size='small' value={value} onChange={e => setValue(e.target.value)} />
 }
 
-const DropdownFilter = ({ column, options }) => {
+const StatusFilter = ({ column }) => {
   const columnFilterValue = column.getFilterValue() ?? ''
 
   return (
@@ -79,11 +80,30 @@ const DropdownFilter = ({ column, options }) => {
       displayEmpty
     >
       <MenuItem value=''>All</MenuItem>
-      {options.map(option => (
-        <MenuItem key={option} value={option}>
-          {option}
-        </MenuItem>
-      ))}
+      <MenuItem value='Do not contact'>Do not contact</MenuItem>
+      <MenuItem value='Never contacted'>Never contacted</MenuItem>
+      <MenuItem value='To be contacted'>To be contacted</MenuItem>
+      <MenuItem value='Contact in process'>Contact in process</MenuItem>
+      <MenuItem value='Contact done'>Contact done</MenuItem>
+    </Select>
+  )
+}
+
+const PotentialFilter = ({ column }) => {
+  const columnFilterValue = column.getFilterValue() ?? ''
+
+  return (
+    <Select
+      fullWidth
+      size='small'
+      value={columnFilterValue}
+      onChange={e => column.setFilterValue(e.target.value)}
+      displayEmpty
+    >
+      <MenuItem value=''>All</MenuItem>
+      <MenuItem value='Low'>Low</MenuItem>
+      <MenuItem value='Medium'>Medium</MenuItem>
+      <MenuItem value='High'>High</MenuItem>
     </Select>
   )
 }
@@ -125,8 +145,10 @@ const DateRangeFilter = ({ column }) => {
 const Filter = ({ column, table }) => {
   const columnFilterValue = column.getFilterValue()
 
-  if (['country_id', 'Third-party_type', 'fk_prospectlevel', 'status_prospect_label', 'status'].includes(column.id)) {
-    return <DropdownFilter column={column} options={['Option 1', 'Option 2', 'Option 3']} /> // Replace with actual options
+  if (column.id === 'status_prospect_label') {
+    return <StatusFilter column={column} />
+  } else if (column.id === 'fk_prospectlevel') {
+    return <PotentialFilter column={column} />
   } else if (column.id === 'date_modification') {
     return <DateRangeFilter column={column} />
   } else if (column.id !== 'select') {
@@ -214,12 +236,12 @@ const Customer_Table = ({ onSelectionChange }) => {
               info.row.original.status_prospect_label = newValue
               try {
                 await axios.put(
-                  `https://qnerp.com/erp/api/index.php/thirdparties/${info.row.original.id}/representatives`,
+                  `${apiUrl}/${info.row.original.id}/representatives`,
                   {
                     status_prospect_label: newValue
                   },
                   {
-                    params: { DOLAPIKEY: 'your_api_key_here' }
+                    params: { DOLAPIKEY: apiKey }
                   }
                 )
               } catch (error) {
@@ -262,7 +284,14 @@ const Customer_Table = ({ onSelectionChange }) => {
           })
         },
         header: 'Modif. date',
-        size: 180
+        size: 180,
+        filterFn: (row, columnId, filterValue) => {
+          if (!filterValue.from || !filterValue.to) return true
+          const fromDate = filterValue.from.valueOf() / 1000
+          const toDate = filterValue.to.valueOf() / 1000
+          const rowDate = row.getValue(columnId)
+          return rowDate >= fromDate && rowDate <= toDate
+        }
       }),
       columnHelper.accessor('status', {
         header: 'Status',
@@ -303,15 +332,19 @@ const Customer_Table = ({ onSelectionChange }) => {
       })
       const enhancedData = await Promise.all(
         result.data.map(async item => {
-          const repResponse = await axios.get(
-            `https://qnerp.com/erp/api/index.php/thirdparties/${item.id}/representatives`,
-            {
-              params: { DOLAPIKEY: 'your_api_key_here' }
+          try {
+            const repResponse = await axios.get(`${apiUrl}/${item.id}/representatives`, {
+              params: { DOLAPIKEY: apiKey }
+            })
+            return {
+              ...item,
+              sales_representatives: Array.isArray(repResponse.data)
+                ? repResponse.data.map(rep => rep.lastname).join(', ')
+                : ''
             }
-          )
-          return {
-            ...item,
-            sales_representatives: repResponse.data.map(rep => rep.lastname).join(', ')
+          } catch (error) {
+            console.error(`Error fetching representatives for item ${item.id}:`, error)
+            return { ...item, sales_representatives: '' }
           }
         })
       )
@@ -393,7 +426,7 @@ const Customer_Table = ({ onSelectionChange }) => {
         rowsPerPageOptions={[10, 25, 50, 100]}
         component='div'
         className='border-bs'
-        count={table.getFilteredRowModel().rows.length}
+        count={-1}
         rowsPerPage={table.getState().pagination.pageSize}
         page={table.getState().pagination.pageIndex}
         onPageChange={(_, page) => {
