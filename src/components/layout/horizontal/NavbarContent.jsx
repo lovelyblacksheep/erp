@@ -21,6 +21,8 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 // Util Imports
 import { horizontalLayoutClasses } from '@layouts/utils/layoutClasses'
 import { getLocalizedUrl } from '@/utils/i18n'
+import Customizer from '@/@core/components/customizer'
+import { i18n } from '@/configs/i18n'
 
 // Vars
 const shortcuts = [
@@ -132,6 +134,7 @@ const NavbarContent = () => {
         <NavSearch />
         <LanguageDropdown />
         <ModeDropdown />
+        <Customizer dir={i18n.langDirection[params.lang]} />
         <ShortcutsDropdown shortcuts={shortcuts} />
         <NotificationsDropdown notifications={notifications} />
         <UserDropdown />

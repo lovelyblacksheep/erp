@@ -22,15 +22,16 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import { assetPath } from '@/config'
 
 const ForgotPasswordV2 = ({ mode }) => {
   // Vars
-  const darkImg = '/images/pages/auth-v2-mask-4-dark.png'
-  const lightImg = '/images/pages/auth-v2-mask-4-light.png'
-  const darkIllustration = '/images/illustrations/auth/v2-forgot-password-dark.png'
-  const lightIllustration = '/images/illustrations/auth/v2-forgot-password-light.png'
-  const borderedDarkIllustration = '/images/illustrations/auth/v2-forgot-password-dark-border.png'
-  const borderedLightIllustration = '/images/illustrations/auth/v2-forgot-password-light-border.png'
+  const darkImg = assetPath+'/images/pages/auth-v2-mask-4-dark.png'
+  const lightImg = assetPath+'/images/pages/auth-v2-mask-4-light.png'
+  const darkIllustration = assetPath+'/images/illustrations/auth/v2-forgot-password-dark.png'
+  const lightIllustration = assetPath+'/images/illustrations/auth/v2-forgot-password-light.png'
+  const borderedDarkIllustration = assetPath+'/images/illustrations/auth/v2-forgot-password-dark-border.png'
+  const borderedLightIllustration = assetPath+'/images/illustrations/auth/v2-forgot-password-light-border.png'
 
   // Hooks
   const { settings } = useSettings()

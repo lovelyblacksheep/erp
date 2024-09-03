@@ -5,15 +5,15 @@ import Grid from '@mui/material/Grid'
 import UserDetails from './UserDetails'
 import UserPlan from './UserPlan'
 
-const UserLeftOverview = () => {
+const UserLeftOverview = ({data}) => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <UserDetails />
+        <UserDetails data={data} />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <UserPlan />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }

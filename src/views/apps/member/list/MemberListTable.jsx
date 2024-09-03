@@ -48,70 +48,82 @@ import { getLocalizedUrl } from '@/utils/i18n'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
+import { getBoms } from '@/libs/api/bom'
+import { getMos } from '@/libs/api/mo'
 
 // Styled Components
 const Icon = styled('i')({})
 
 const fuzzyFilter = (row, columnId, value, addMeta) => {
-  // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value)
-
-  // Store the itemRank info
-  addMeta({
-    itemRank
-  })
-
-  // Return if the item should be filtered in/out
+  addMeta({ itemRank })
   return itemRank.passed
 }
 
 const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...props }) => {
-  // States
   const [value, setValue] = useState(initialValue)
 
   useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       onChange(value)
     }, debounce)
 
     return () => clearTimeout(timeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
+  }, [value, onChange, debounce])
 
   return <TextField {...props} value={value} onChange={e => setValue(e.target.value)} size='small' />
 }
 
-// Vars
-const userRoleObj = {
-  admin: { icon: 'ri-vip-crown-line', color: 'error' },
-  author: { icon: 'ri-computer-line', color: 'warning' },
-  editor: { icon: 'ri-edit-box-line', color: 'info' },
-  maintainer: { icon: 'ri-pie-chart-2-line', color: 'success' },
-  subscriber: { icon: 'ri-user-3-line', color: 'primary' }
-}
-
 const userStatusObj = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
+  '1': 'success',
+  '0': 'secondary'
 }
 
-// Column Definitions
 const columnHelper = createColumnHelper()
 
 const UserListTable = ({ tableData }) => {
-  // States
   const [addUserOpen, setAddUserOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[tableData])
-  const [filteredData, setFilteredData] = useState(data)
+  const [data, setData] = useState([])
+  const [mos, setMos] = useState([])
+  const [boms, setBoms] = useState([])
+  const [filteredData, setFilteredData] = useState([])
   const [globalFilter, setGlobalFilter] = useState('')
+  const [isShowingBoms, setIsShowingBoms] = useState(true)
 
-  // Hooks
+  const fetchData = async () => {
+    try {
+      const bomsResult = await getBoms({ limit: 10, page: 0 })
+      const mosResult = await getMos({ limit: 10, page: 0 })
+      setBoms(bomsResult.data)
+      setMos(mosResult.data)
+      setData(bomsResult.data) // Default to Boms data
+      setFilteredData(bomsResult.data) // Default to Boms data
+    } catch (error) {
+      console.error("Error fetching data: ", error)
+    }
+  }
+
   const { lang: locale } = useParams()
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const handleToggleData = () => {
+    if (isShowingBoms) {
+      setData(mos)
+      setFilteredData(mos)
+    } else {
+      setData(boms)
+      setFilteredData(boms)
+    }
+    setIsShowingBoms(!isShowingBoms)
+  }
 
   const columns = useMemo(
     () => [
@@ -137,55 +149,55 @@ const UserListTable = ({ tableData }) => {
           />
         )
       },
-      columnHelper.accessor('fullName', {
-        header: 'User',
+      columnHelper.accessor('ref', {
+        header: 'Ref',
         cell: ({ row }) => (
           <div className='flex items-center gap-3'>
-            {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })}
+            {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
             <div className='flex flex-col'>
               <Typography color='text.primary' className='font-medium'>
-                {row.original.fullName}
+                {row.original.ref}
               </Typography>
-              <Typography variant='body2'>{row.original.username}</Typography>
+              {/* <Typography variant='body2'>{row.original.username}</Typography> */}
             </div>
           </div>
         )
       }),
-      columnHelper.accessor('email', {
-        header: 'Email',
-        cell: ({ row }) => <Typography>{row.original.email}</Typography>
+      columnHelper.accessor('label', {
+        header: 'Label',
+        cell: ({ row }) => <Typography>{row.original.label}</Typography>
       }),
-      columnHelper.accessor('role', {
-        header: 'Role',
+      columnHelper.accessor('qty', {
+        header: 'Quantity',
         cell: ({ row }) => (
           <div className='flex items-center gap-2'>
-            <Icon
+            {/* <Icon
               className={classnames('text-[22px]', userRoleObj[row.original.role].icon)}
               sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-            />
+            /> */}
             <Typography className='capitalize' color='text.primary'>
-              {row.original.role}
+              {row.original.qty}
             </Typography>
           </div>
         )
       }),
-      columnHelper.accessor('currentPlan', {
-        header: 'Plan',
+      columnHelper.accessor('note_public', {
+        header: 'Note',
         cell: ({ row }) => (
           <Typography className='capitalize' color='text.primary'>
-            {row.original.currentPlan}
+            {row.original.note_public}
           </Typography>
         )
       }),
       columnHelper.accessor('status', {
         header: 'Status',
-        cell: ({ row }) => (
+        cell: ({ row, getValue }) => (
           <div className='flex items-center gap-3'>
             <Chip
               variant='tonal'
-              label={row.original.status}
+              color={userStatusObj[`${getValue()}`]}
               size='small'
-              color={userStatusObj[row.original.status]}
+              label={`${getValue()}` === '1' ? 'Active' : 'Not active'}
               className='capitalize'
             />
           </div>
@@ -199,7 +211,7 @@ const UserListTable = ({ tableData }) => {
               <i className='ri-delete-bin-7-line text-textSecondary' />
             </IconButton>
             <IconButton size='small'>
-              <Link href={getLocalizedUrl('/apps/user/view', locale)} className='flex'>
+              <Link href={getLocalizedUrl(`/apps/member/${isShowingBoms ? 'bom' : 'mo'}/`+row.original.id, locale)} className='flex'>
                 <i className='ri-eye-line text-textSecondary' />
               </Link>
             </IconButton>
@@ -221,7 +233,6 @@ const UserListTable = ({ tableData }) => {
         enableSorting: false
       })
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, filteredData]
   )
 
@@ -240,8 +251,7 @@ const UserListTable = ({ tableData }) => {
         pageSize: 10
       }
     },
-    enableRowSelection: true, //enable row selection for all rows
-    // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
+    enableRowSelection: true,
     globalFilterFn: fuzzyFilter,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -254,18 +264,14 @@ const UserListTable = ({ tableData }) => {
     getFacetedMinMaxValues: getFacetedMinMaxValues()
   })
 
-  const getAvatar = params => {
-    const { avatar, fullName } = params
-
-    if (avatar) {
-      return <CustomAvatar src={avatar} skin='light' size={34} />
-    } else {
-      return (
-        <CustomAvatar skin='light' size={34}>
-          {getInitials(fullName)}
-        </CustomAvatar>
-      )
-    }
+  const getAvatar = ({ avatar, fullName }) => {
+    return avatar ? (
+      <CustomAvatar src={avatar} skin='light' size={34} />
+    ) : (
+      <CustomAvatar skin='light' size={34}>
+        {getInitials(fullName || "")}
+      </CustomAvatar>
+    )
   }
 
   return (
@@ -274,104 +280,50 @@ const UserListTable = ({ tableData }) => {
         <CardHeader title='Filters' className='pbe-4' />
         <TableFilters setData={setFilteredData} tableData={data} />
         <Divider />
-        <div className='flex justify-between gap-4 p-5 flex-col items-start sm:flex-row sm:items-center'>
-          <Button
-            color='secondary'
-            variant='outlined'
-            startIcon={<i className='ri-upload-2-line' />}
-            className='max-sm:is-full'
-          >
-            Export
+        <div className='flex justify-between gap-4 p-6'>
+          <Typography variant='h6'>
+            Showing {isShowingBoms ? 'Bill Of Materials' : 'Manufacturing Orders'}
+          </Typography>
+          <Button variant='contained' onClick={handleToggleData}>
+            Switch to {isShowingBoms ? 'Mos' : 'Boms'}
           </Button>
-          <div className='flex items-center gap-x-4 max-sm:gap-y-4 flex-col max-sm:is-full sm:flex-row'>
-            <DebouncedInput
-              value={globalFilter ?? ''}
-              onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search User'
-              className='max-sm:is-full'
-            />
-            <Button variant='contained' onClick={() => setAddUserOpen(!addUserOpen)} className='max-sm:is-full'>
-              Add New User
-            </Button>
+        </div>
+        <div className='overflow-auto'>
+          <div className={classnames('table-container', tableStyles.mainTable)}>
+            <table className={classnames('table', tableStyles.table)}>
+              <thead>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map(header => (
+                      <th key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map(row => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-        <div className='overflow-x-auto'>
-          <table className={tableStyles.table}>
-            <thead>
-              {table.getHeaderGroups().map(headerGroup => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <th key={header.id}>
-                      {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            className={classnames({
-                              'flex items-center': header.column.getIsSorted(),
-                              'cursor-pointer select-none': header.column.getCanSort()
-                            })}
-                            onClick={header.column.getToggleSortingHandler()}
-                          >
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {{
-                              asc: <i className='ri-arrow-up-s-line text-xl' />,
-                              desc: <i className='ri-arrow-down-s-line text-xl' />
-                            }[header.column.getIsSorted()] ?? null}
-                          </div>
-                        </>
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            {table.getFilteredRowModel().rows.length === 0 ? (
-              <tbody>
-                <tr>
-                  <td colSpan={table.getVisibleFlatColumns().length} className='text-center'>
-                    No data available
-                  </td>
-                </tr>
-              </tbody>
-            ) : (
-              <tbody>
-                {table
-                  .getRowModel()
-                  .rows.slice(0, table.getState().pagination.pageSize)
-                  .map(row => {
-                    return (
-                      <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
-                        {row.getVisibleCells().map(cell => (
-                          <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                        ))}
-                      </tr>
-                    )
-                  })}
-              </tbody>
-            )}
-          </table>
-        </div>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
           component='div'
-          className='border-bs'
-          count={table.getFilteredRowModel().rows.length}
-          rowsPerPage={table.getState().pagination.pageSize}
+          count={data?.length || 0}
           page={table.getState().pagination.pageIndex}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' }
-          }}
-          onPageChange={(_, page) => {
-            table.setPageIndex(page)
-          }}
-          onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
+          rowsPerPage={table.getState().pagination.pageSize}
+          onPageChange={(e, page) => table.setPageIndex(page)}
+          onRowsPerPageChange={e => table.setPageSize(parseInt(e.target.value, 10))}
+          rowsPerPageOptions={[10, 25, 50]}
         />
       </Card>
-      <AddUserDrawer
-        open={addUserOpen}
-        handleClose={() => setAddUserOpen(!addUserOpen)}
-        userData={data}
-        setData={setData}
-      />
     </>
   )
 }

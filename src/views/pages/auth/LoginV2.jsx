@@ -32,18 +32,19 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import { assetPath } from '@/config'
 
 const LoginV2 = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
 
   // Vars
-  const darkImg = '/images/pages/auth-v2-mask-1-dark.png'
-  const lightImg = '/images/pages/auth-v2-mask-1-light.png'
-  const darkIllustration = '/images/illustrations/auth/v2-login-dark.png'
-  const lightIllustration = '/images/illustrations/auth/v2-login-light.png'
-  const borderedDarkIllustration = '/images/illustrations/auth/v2-login-dark-border.png'
-  const borderedLightIllustration = '/images/illustrations/auth/v2-login-light-border.png'
+  const darkImg = assetPath+'/images/pages/auth-v2-mask-1-dark.png'
+  const lightImg = assetPath+'/images/pages/auth-v2-mask-1-light.png'
+  const darkIllustration = assetPath+'/images/illustrations/auth/v2-login-dark.png'
+  const lightIllustration = assetPath+'/images/illustrations/auth/v2-login-light.png'
+  const borderedDarkIllustration = assetPath+'/images/illustrations/auth/v2-login-dark-border.png'
+  const borderedLightIllustration = assetPath+'/images/illustrations/auth/v2-login-light-border.png'
 
   // Hooks
   const { lang: locale } = useParams()

@@ -5,12 +5,12 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/en/dashboards/crm',
+        destination: '/en/dashboards/statistics',
         permanent: true,
         locale: false
       },
       {
-        source: '/:lang(en|fr|ar)',
+        source: '/:lang(en|ar)',
         destination: '/:lang/dashboards/crm',
         permanent: true,
         locale: false
@@ -22,6 +22,9 @@ const nextConfig = {
         locale: false
       }
     ]
+  },
+  eslint: {
+    ignoreDuringBuilds: true
   }
 }
 

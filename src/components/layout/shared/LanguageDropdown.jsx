@@ -33,10 +33,10 @@ const languageData = [
     langCode: 'en',
     langName: 'English'
   },
-  {
-    langCode: 'fr',
-    langName: 'French'
-  },
+  // {
+  //   langCode: 'fr',
+  //   langName: 'French'
+  // },
   {
     langCode: 'ar',
     langName: 'Arabic'

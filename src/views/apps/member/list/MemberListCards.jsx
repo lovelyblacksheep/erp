@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid'
 
 // Component Imports
 import HorizontalWithSubtitle from '@components/card-statistics/HorizontalWithSubtitle'
+import { useEffect, useState } from 'react'
 
 // Vars
 const data = [
@@ -44,7 +45,29 @@ const data = [
   }
 ]
 
-const UserListCards = () => {
+const UserListCards = ({series}) => {
+
+  const [data, setData] = useState([]);
+  
+  useEffect(() => {
+    let k = [];
+    series.map((ser, i) => {
+      let ttile = i === 0 ? "Bill of Materials" : i === 1 ? "Manufacturing orders" : "Others";
+      k.push({
+        title: ttile,
+        stats: `${ser}`,
+        avatarIcon: 'ri-user-search-line',
+        avatarColor: 'success',
+        trend: null,
+        trendNumber: '',
+        subtitle: 'Total'
+      })
+    })
+    console.log("S :: ", series)
+    setData(k);
+  }, [series]);
+
+
   return (
     <Grid container spacing={6}>
       {data.map((item, i) => (

@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Next Imports
 import { useParams, useRouter } from 'next/navigation'
@@ -28,6 +28,8 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import { getUser } from '@/libs/api/user'
+import { assetPath } from '@/config'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -51,6 +53,9 @@ const UserDropdown = () => {
   const { data: session } = useSession()
   const { settings } = useSettings()
   const { lang: locale } = useParams()
+
+  const [user, setUser] = useState(null);
+
 
   const handleDropdownOpen = () => {
     !open ? setOpen(true) : setOpen(false)
@@ -80,6 +85,18 @@ const UserDropdown = () => {
     }
   }
 
+
+  const fetchUser = async () => {
+    let u = await getUser();
+    if(u.status === 200) {
+      setUser(u.data);
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <>
       <Badge
@@ -91,8 +108,8 @@ const UserDropdown = () => {
       >
         <Avatar
           ref={anchorRef}
-          alt={session?.user?.name || ''}
-          src={session?.user?.image || ''}
+          alt={(user && session?.user) ? user.name : ''}
+          src={(user && session?.user) ? assetPath+session.user.image || user.photo : ''}
           onClick={handleDropdownOpen}
           className='cursor-pointer bs-[38px] is-[38px]'
         />
@@ -119,30 +136,26 @@ const UserDropdown = () => {
               <ClickAwayListener onClickAway={e => handleDropdownClose(e)}>
                 <MenuList>
                   <div className='flex items-center plb-2 pli-4 gap-2' tabIndex={-1}>
-                    <Avatar alt={session?.user?.name || ''} src={session?.user?.image || ''} />
+                    <Avatar alt={(user && session?.user) ? user.name : ''} src={(user && session?.user) ? assetPath+session.user.image || user.photo : ''} />
                     <div className='flex items-start flex-col'>
                       <Typography variant='body2' className='font-medium' color='text.primary'>
-                        {session?.user?.name || ''}
+                        {user ? `${user.firstname} ${user.lastname}` : ''}
                       </Typography>
-                      <Typography variant='caption'>{session?.user?.email || ''}</Typography>
+                      <Typography variant='caption'>{user ? user.email : ''}</Typography>
                     </div>
                   </div>
                   <Divider className='mlb-1' />
                   <MenuItem className='gap-3 pli-4' onClick={e => handleDropdownClose(e, '/pages/user-profile')}>
                     <i className='ri-user-3-line' />
-                    <Typography color='text.primary'>My Profile</Typography>
+                    <Typography color='text.primary'>My profile</Typography>
                   </MenuItem>
-                  <MenuItem className='gap-3 pli-4' onClick={e => handleDropdownClose(e, '/pages/account-settings')}>
-                    <i className='ri-settings-4-line' />
-                    <Typography color='text.primary'>Settings</Typography>
-                  </MenuItem>
-                  <MenuItem className='gap-3 pli-4' onClick={e => handleDropdownClose(e, '/pages/pricing')}>
-                    <i className='ri-money-dollar-circle-line' />
-                    <Typography color='text.primary'>Pricing</Typography>
+                  <MenuItem className='gap-3 pli-4' onClick={e => handleDropdownClose(e, '/pages/user-profile')}>
+                    <i className='ri-user-3-line' />
+                    <Typography color='text.primary'>Business card</Typography>
                   </MenuItem>
                   <MenuItem className='gap-3 pli-4' onClick={e => handleDropdownClose(e, '/pages/faq')}>
                     <i className='ri-question-line' />
-                    <Typography color='text.primary'>FAQ</Typography>
+                    <Typography color='text.primary'>Company & Other info</Typography>
                   </MenuItem>
                   <div className='flex items-center plb-1.5 pli-4'>
                     <Button

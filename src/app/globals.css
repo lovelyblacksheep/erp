@@ -116,6 +116,8 @@ ul:not([class]) {
   font-size: 1.5rem;
 }
 
+
+
 /* Fix width issue for the input-otp component */
 input[autocomplete='one-time-code'][data-input-otp='true'] {
   inline-size: 100% !important;
@@ -130,4 +132,8 @@ code {
   color: var(--mui-palette-info-main);
   background-color: rgb(var(--mui-palette-info-mainChannel) / 0.08);
   border: 0;
+}
+
+.light-logo {
+  display: none;
 }
