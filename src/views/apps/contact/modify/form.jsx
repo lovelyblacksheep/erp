@@ -738,7 +738,7 @@ const ModifyTpForm = () => {
             return (
                 <Accordion key={`${i}`} expanded={expanded === `panel${i}`} onChange={handleExpandChange(`panel${i}`)}>
                 <AccordionSummary>
-                <Typography>{step.title}</Typography>
+                <Typography style={{color: 'var(--mui-palette-primary-main)'}} variant='h5'>{step.title}</Typography>
                 </AccordionSummary>
                 <Divider />
                 <AccordionDetails className='pbs-5'>
