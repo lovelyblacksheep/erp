@@ -41,6 +41,7 @@ import { useSettings } from '@core/hooks/useSettings'
 
 // Style Imports
 import styles from './styles.module.css'
+import { IconButton } from '@mui/material'
 
 const getLocalePath = (pathName, locale) => {
   if (!pathName) return '/'
@@ -149,321 +150,334 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
   }
 
   return (
-    !breakpointReached && (
-      <div
-        className={classnames('customizer', styles.customizer, {
-          [styles.show]: isOpen,
-          [styles.smallScreen]: isMobileScreen
-        })}
-      >
+    <>
+      <IconButton style={{
+      }} onClick={handleToggle} className='text-textPrimary'>
+        <i className='ri-settings-5-line' />
+      </IconButton>
+      {!breakpointReached && (
         <div
+          className={classnames('customizer', styles.customizer, {
+            [styles.show]: isOpen,
+            [styles.smallScreen]: isMobileScreen
+          })}
+        >
+          {/* <div
           className={classnames('customizer-toggler flex items-center justify-center cursor-pointer', styles.toggler)}
           onClick={handleToggle}
         >
           <i className='ri-settings-5-line text-[22px]' />
-        </div>
-        <div className={classnames('customizer-header flex items-center justify-between', styles.header)}>
-          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-            <h4 className={styles.customizerTitle}>Theme Customizer</h4>
-            <p className={styles.customizerSubtitle}>Customize & Preview in Real Time</p>
-          </div>
-          <div className='flex gap-4'>
-            <div onClick={resetSettings} className='relative flex cursor-pointer'>
-              <i className='ri-refresh-line text-actionActive' />
-              <div className={classnames(styles.dotStyles, { [styles.show]: isSettingsChanged })} />
+        </div> */}
+          {/* <IconButton style={{
+              position: 'absolute',
+              right: 620,
+              top: 12
+        }} onClick={handleToggle} className='text-textPrimary'>
+        <i className='ri-settings-5-line' />
+      </IconButton> */}
+          <div className={classnames('customizer-header flex items-center justify-between', styles.header)}>
+            <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+              <h4 className={styles.customizerTitle}>Theme Customizer</h4>
+              <p className={styles.customizerSubtitle}>Customize & Preview in Real Time</p>
             </div>
-            <i className='ri-close-line text-actionActive cursor-pointer' onClick={handleToggle} />
+            <div className='flex gap-4'>
+              <div onClick={resetSettings} className='relative flex cursor-pointer'>
+                <i className='ri-refresh-line text-actionActive' />
+                <div className={classnames(styles.dotStyles, { [styles.show]: isSettingsChanged })} />
+              </div>
+              <i className='ri-close-line text-actionActive cursor-pointer' onClick={handleToggle} />
+            </div>
           </div>
-        </div>
-        <ScrollWrapper
-          {...(isBelowLgScreen
-            ? { className: 'bs-full overflow-y-auto overflow-x-hidden' }
-            : { options: { wheelPropagation: false, suppressScrollX: true } })}
-        >
-          <div className={classnames('customizer-body flex flex-col', styles.customizerBody)}>
-            <div className='theming-section flex flex-col gap-6'>
-              <Chip variant='tonal' label='Theming' size='small' color='primary' className='self-start rounded-sm' />
-              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                <p className='font-medium'>Primary Color</p>
-                <div className='flex items-center justify-between'>
-                  {primaryColorConfig.map(item => (
+          <ScrollWrapper
+            {...(isBelowLgScreen
+              ? { className: 'bs-full overflow-y-auto overflow-x-hidden' }
+              : { options: { wheelPropagation: false, suppressScrollX: true } })}
+          >
+            <div className={classnames('customizer-body flex flex-col', styles.customizerBody)}>
+              <div className='theming-section flex flex-col gap-6'>
+                <Chip variant='tonal' label='Theming' size='small' color='primary' className='self-start rounded-sm' />
+                <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                  <p className='font-medium'>Primary Color</p>
+                  <div className='flex items-center justify-between'>
+                    {primaryColorConfig.map(item => (
+                      <div
+                        key={item.main}
+                        className={classnames(styles.primaryColorWrapper, {
+                          [styles.active]: settings.primaryColor === item.main
+                        })}
+                        onClick={() => handleChange('primaryColor', item.main)}
+                      >
+                        <div className={styles.primaryColor} style={{ backgroundColor: item.main }} />
+                      </div>
+                    ))}
                     <div
-                      key={item.main}
+                      ref={anchorRef}
                       className={classnames(styles.primaryColorWrapper, {
-                        [styles.active]: settings.primaryColor === item.main
+                        [styles.active]: !isColorFromPrimaryConfig
                       })}
-                      onClick={() => handleChange('primaryColor', item.main)}
+                      onClick={() => setIsMenuOpen(prev => !prev)}
                     >
-                      <div className={styles.primaryColor} style={{ backgroundColor: item.main }} />
+                      <div
+                        className={classnames(styles.primaryColor, 'flex items-center justify-center')}
+                        style={{
+                          backgroundColor: !isColorFromPrimaryConfig
+                            ? settings.primaryColor
+                            : 'var(--mui-palette-action-selected)',
+                          color: isColorFromPrimaryConfig
+                            ? 'var(--mui-palette-text-primary)'
+                            : 'var(--mui-palette-primary-contrastText)'
+                        }}
+                      >
+                        <i className='ri-palette-line text-xl'></i>
+                      </div>
                     </div>
-                  ))}
-                  <div
-                    ref={anchorRef}
-                    className={classnames(styles.primaryColorWrapper, {
-                      [styles.active]: !isColorFromPrimaryConfig
-                    })}
-                    onClick={() => setIsMenuOpen(prev => !prev)}
-                  >
-                    <div
-                      className={classnames(styles.primaryColor, 'flex items-center justify-center')}
-                      style={{
-                        backgroundColor: !isColorFromPrimaryConfig
-                          ? settings.primaryColor
-                          : 'var(--mui-palette-action-selected)',
-                        color: isColorFromPrimaryConfig
-                          ? 'var(--mui-palette-text-primary)'
-                          : 'var(--mui-palette-primary-contrastText)'
-                      }}
+                    <Popper
+                      transition
+                      open={isMenuOpen}
+                      disablePortal
+                      anchorEl={anchorRef.current}
+                      placement='bottom-end'
+                      className='z-[1]'
                     >
-                      <i className='ri-palette-line text-xl'></i>
-                    </div>
-                  </div>
-                  <Popper
-                    transition
-                    open={isMenuOpen}
-                    disablePortal
-                    anchorEl={anchorRef.current}
-                    placement='bottom-end'
-                    className='z-[1]'
-                  >
-                    {({ TransitionProps }) => (
-                      <Fade {...TransitionProps} style={{ transformOrigin: 'right top' }}>
-                        <Paper elevation={6} className={styles.colorPopup}>
-                          <ClickAwayListener onClickAway={handleMenuClose}>
-                            <div>
-                              <DebouncedColorPicker
-                                settings={settings}
-                                isColorFromPrimaryConfig={isColorFromPrimaryConfig}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Fade>
-                    )}
-                  </Popper>
-                </div>
-              </div>
-              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                <p className='font-medium'>Mode</p>
-                <div className='flex items-center justify-between'>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, styles.modeWrapper, {
-                        [styles.active]: settings.mode === 'light'
-                      })}
-                      onClick={() => handleChange('mode', 'light')}
-                    >
-                      <i className='ri-sun-line text-[30px]' />
-                    </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('mode', 'light')}>
-                      Light
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, styles.modeWrapper, {
-                        [styles.active]: settings.mode === 'dark'
-                      })}
-                      onClick={() => handleChange('mode', 'dark')}
-                    >
-                      <i className='ri-moon-clear-line text-[30px]' />
-                    </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('mode', 'dark')}>
-                      Dark
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, styles.modeWrapper, {
-                        [styles.active]: settings.mode === 'system'
-                      })}
-                      onClick={() => handleChange('mode', 'system')}
-                    >
-                      <i className='ri-computer-line text-[30px]' />
-                    </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('mode', 'system')}>
-                      System
-                    </p>
+                      {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} style={{ transformOrigin: 'right top' }}>
+                          <Paper elevation={6} className={styles.colorPopup}>
+                            <ClickAwayListener onClickAway={handleMenuClose}>
+                              <div>
+                                <DebouncedColorPicker
+                                  settings={settings}
+                                  isColorFromPrimaryConfig={isColorFromPrimaryConfig}
+                                  handleChange={handleChange}
+                                />
+                              </div>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Fade>
+                      )}
+                    </Popper>
                   </div>
                 </div>
-              </div>
-              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                <p className='font-medium'>Skin</p>
-                <div className='flex items-center gap-4'>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.skin === 'default' })}
-                      onClick={() => handleChange('skin', 'default')}
-                    >
-                      <SkinDefault />
+                <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                  <p className='font-medium'>Mode</p>
+                  <div className='flex items-center justify-between'>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, styles.modeWrapper, {
+                          [styles.active]: settings.mode === 'light'
+                        })}
+                        onClick={() => handleChange('mode', 'light')}
+                      >
+                        <i className='ri-sun-line text-[30px]' />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('mode', 'light')}>
+                        Light
+                      </p>
                     </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('skin', 'default')}>
-                      Default
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.skin === 'bordered' })}
-                      onClick={() => handleChange('skin', 'bordered')}
-                    >
-                      <SkinBordered />
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, styles.modeWrapper, {
+                          [styles.active]: settings.mode === 'dark'
+                        })}
+                        onClick={() => handleChange('mode', 'dark')}
+                      >
+                        <i className='ri-moon-clear-line text-[30px]' />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('mode', 'dark')}>
+                        Dark
+                      </p>
                     </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('skin', 'bordered')}>
-                      Bordered
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {settings.mode === 'dark' ||
-              (settings.mode === 'system' && isSystemDark) ||
-              settings.layout === 'horizontal' ? null : (
-                <div className='flex items-center justify-between'>
-                  <label className='font-medium cursor-pointer' htmlFor='customizer-semi-dark'>
-                    Semi Dark
-                  </label>
-                  <Switch
-                    id='customizer-semi-dark'
-                    checked={settings.semiDark === true}
-                    onChange={() => handleChange('semiDark', !settings.semiDark)}
-                  />
-                </div>
-              )}
-            </div>
-            <hr className={styles.hr} />
-            <div className='layout-section flex flex-col gap-6'>
-              <Chip variant='tonal' label='Layout' size='small' color='primary' className='self-start rounded-sm' />
-              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                <p className='font-medium'>Layouts</p>
-                <div className='flex items-center justify-between'>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'vertical' })}
-                      onClick={() => handleChange('layout', 'vertical')}
-                    >
-                      <LayoutVertical />
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, styles.modeWrapper, {
+                          [styles.active]: settings.mode === 'system'
+                        })}
+                        onClick={() => handleChange('mode', 'system')}
+                      >
+                        <i className='ri-computer-line text-[30px]' />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('mode', 'system')}>
+                        System
+                      </p>
                     </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('layout', 'vertical')}>
-                      Vertical
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'collapsed' })}
-                      onClick={() => handleChange('layout', 'collapsed')}
-                    >
-                      <LayoutCollapsed />
-                    </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('layout', 'collapsed')}>
-                      Collapsed
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'horizontal' })}
-                      onClick={() => handleChange('layout', 'horizontal')}
-                    >
-                      <LayoutHorizontal />
-                    </div>
-                    <p className={styles.itemLabel} onClick={() => handleChange('layout', 'horizontal')}>
-                      Horizontal
-                    </p>
                   </div>
                 </div>
-              </div>
-              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                <p className='font-medium'>Content</p>
-                <div className='flex items-center gap-4'>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, {
-                        [styles.active]: settings.contentWidth === 'compact'
-                      })}
-                      onClick={() =>
-                        updateSettings({
-                          navbarContentWidth: 'compact',
-                          contentWidth: 'compact',
-                          footerContentWidth: 'compact'
-                        })
-                      }
-                    >
-                      <ContentCompact />
-                    </div>
-                    <p
-                      className={styles.itemLabel}
-                      onClick={() =>
-                        updateSettings({
-                          navbarContentWidth: 'compact',
-                          contentWidth: 'compact',
-                          footerContentWidth: 'compact'
-                        })
-                      }
-                    >
-                      Compact
-                    </p>
-                  </div>
-                  <div className='flex flex-col items-start gap-0.5'>
-                    <div
-                      className={classnames(styles.itemWrapper, { [styles.active]: settings.contentWidth === 'wide' })}
-                      onClick={() =>
-                        updateSettings({ navbarContentWidth: 'wide', contentWidth: 'wide', footerContentWidth: 'wide' })
-                      }
-                    >
-                      <ContentWide />
-                    </div>
-                    <p
-                      className={styles.itemLabel}
-                      onClick={() =>
-                        updateSettings({ navbarContentWidth: 'wide', contentWidth: 'wide', footerContentWidth: 'wide' })
-                      }
-                    >
-                      Wide
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {!disableDirection && (
-                <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
-                  <p className='font-medium'>Direction</p>
+                <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                  <p className='font-medium'>Skin</p>
                   <div className='flex items-center gap-4'>
-                    <Link href={getLocalePath(pathName, 'en')}>
-                      <div className='flex flex-col items-start gap-0.5'>
-                        <div
-                          className={classnames(styles.itemWrapper, {
-                            [styles.active]: direction === 'ltr'
-                          })}
-                        >
-                          <DirectionLtr />
-                        </div>
-                        <p className={styles.itemLabel}>
-                          Left to Right <br />
-                          (English)
-                        </p>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.skin === 'default' })}
+                        onClick={() => handleChange('skin', 'default')}
+                      >
+                        <SkinDefault />
                       </div>
-                    </Link>
-                    <Link href={getLocalePath(pathName, 'ar')}>
-                      <div className='flex flex-col items-start gap-0.5'>
-                        <div
-                          className={classnames(styles.itemWrapper, {
-                            [styles.active]: direction === 'rtl'
-                          })}
-                        >
-                          <DirectionRtl />
-                        </div>
-                        <p className={styles.itemLabel}>
-                          Right to Left <br />
-                          (Arabic)
-                        </p>
+                      <p className={styles.itemLabel} onClick={() => handleChange('skin', 'default')}>
+                        Default
+                      </p>
+                    </div>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.skin === 'bordered' })}
+                        onClick={() => handleChange('skin', 'bordered')}
+                      >
+                        <SkinBordered />
                       </div>
-                    </Link>
+                      <p className={styles.itemLabel} onClick={() => handleChange('skin', 'bordered')}>
+                        Bordered
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
+                {settings.mode === 'dark' ||
+                  (settings.mode === 'system' && isSystemDark) ||
+                  settings.layout === 'horizontal' ? null : (
+                  <div className='flex items-center justify-between'>
+                    <label className='font-medium cursor-pointer' htmlFor='customizer-semi-dark'>
+                      Semi Dark
+                    </label>
+                    <Switch
+                      id='customizer-semi-dark'
+                      checked={settings.semiDark === true}
+                      onChange={() => handleChange('semiDark', !settings.semiDark)}
+                    />
+                  </div>
+                )}
+              </div>
+              <hr className={styles.hr} />
+              <div className='layout-section flex flex-col gap-6'>
+                <Chip variant='tonal' label='Layout' size='small' color='primary' className='self-start rounded-sm' />
+                <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                  <p className='font-medium'>Layouts</p>
+                  <div className='flex items-center justify-between'>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'vertical' })}
+                        onClick={() => handleChange('layout', 'vertical')}
+                      >
+                        <LayoutVertical />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('layout', 'vertical')}>
+                        Vertical
+                      </p>
+                    </div>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'collapsed' })}
+                        onClick={() => handleChange('layout', 'collapsed')}
+                      >
+                        <LayoutCollapsed />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('layout', 'collapsed')}>
+                        Collapsed
+                      </p>
+                    </div>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.layout === 'horizontal' })}
+                        onClick={() => handleChange('layout', 'horizontal')}
+                      >
+                        <LayoutHorizontal />
+                      </div>
+                      <p className={styles.itemLabel} onClick={() => handleChange('layout', 'horizontal')}>
+                        Horizontal
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                  <p className='font-medium'>Content</p>
+                  <div className='flex items-center gap-4'>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, {
+                          [styles.active]: settings.contentWidth === 'compact'
+                        })}
+                        onClick={() =>
+                          updateSettings({
+                            navbarContentWidth: 'compact',
+                            contentWidth: 'compact',
+                            footerContentWidth: 'compact'
+                          })
+                        }
+                      >
+                        <ContentCompact />
+                      </div>
+                      <p
+                        className={styles.itemLabel}
+                        onClick={() =>
+                          updateSettings({
+                            navbarContentWidth: 'compact',
+                            contentWidth: 'compact',
+                            footerContentWidth: 'compact'
+                          })
+                        }
+                      >
+                        Compact
+                      </p>
+                    </div>
+                    <div className='flex flex-col items-start gap-0.5'>
+                      <div
+                        className={classnames(styles.itemWrapper, { [styles.active]: settings.contentWidth === 'wide' })}
+                        onClick={() =>
+                          updateSettings({ navbarContentWidth: 'wide', contentWidth: 'wide', footerContentWidth: 'wide' })
+                        }
+                      >
+                        <ContentWide />
+                      </div>
+                      <p
+                        className={styles.itemLabel}
+                        onClick={() =>
+                          updateSettings({ navbarContentWidth: 'wide', contentWidth: 'wide', footerContentWidth: 'wide' })
+                        }
+                      >
+                        Wide
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {!disableDirection && (
+                  <div className='flex flex-col gap-2' style={{ width: "fit-content", margin: "0 auto" }}>
+                    <p className='font-medium'>Direction</p>
+                    <div className='flex items-center gap-4'>
+                      <Link href={getLocalePath(pathName, 'en')}>
+                        <div className='flex flex-col items-start gap-0.5'>
+                          <div
+                            className={classnames(styles.itemWrapper, {
+                              [styles.active]: direction === 'ltr'
+                            })}
+                          >
+                            <DirectionLtr />
+                          </div>
+                          <p className={styles.itemLabel}>
+                            Left to Right <br />
+                            (English)
+                          </p>
+                        </div>
+                      </Link>
+                      <Link href={getLocalePath(pathName, 'ar')}>
+                        <div className='flex flex-col items-start gap-0.5'>
+                          <div
+                            className={classnames(styles.itemWrapper, {
+                              [styles.active]: direction === 'rtl'
+                            })}
+                          >
+                            <DirectionRtl />
+                          </div>
+                          <p className={styles.itemLabel}>
+                            Right to Left <br />
+                            (Arabic)
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </ScrollWrapper>
-      </div>
-    )
+          </ScrollWrapper>
+        </div>
+      )}
+    </>
   )
 }
 
