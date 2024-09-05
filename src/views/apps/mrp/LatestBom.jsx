@@ -110,7 +110,7 @@ const LatestBomTable = () => {
             return (
                 <Typography
                   component={Link}
-                  href={getLocalizedUrl(`/apps/member/bom/${row.id}/bom`, locale)}
+                  href={getLocalizedUrl(`/apps/member/bom/${row.id}/`, locale)}
                   color='primary'
                 >{`${row.original.ref}`}</Typography>
               )

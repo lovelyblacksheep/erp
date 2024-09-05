@@ -80,7 +80,7 @@ const UserDetails = ({data}) => {
           <div>
             <Typography variant='h5'>Details</Typography>
             <Divider className='mlb-4' />
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
               <div className='flex items-center flex-wrap gap-x-1.5'>
                 <Typography color='text.primary' className='font-medium'>
                   Description:

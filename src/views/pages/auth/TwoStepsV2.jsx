@@ -108,7 +108,7 @@ const TwoStepsV2 = ({ mode }) => {
             </Typography>
           </div>
           <Form noValidate autoComplete='off' className='flex flex-col gap-5'>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
               <Typography>Type your 6 digit security code</Typography>
               <OTPInput
                 onChange={setOtp}

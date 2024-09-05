@@ -36,7 +36,7 @@ const FinanceApp = () => {
               tracking and expenses.
             </Typography>
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
             <div className='flex items-center justify-between'>
               <Typography variant='body2' className='font-medium' color='text.primary'>
                 Progress

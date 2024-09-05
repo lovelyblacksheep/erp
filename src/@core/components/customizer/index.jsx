@@ -163,7 +163,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
           <i className='ri-settings-5-line text-[22px]' />
         </div>
         <div className={classnames('customizer-header flex items-center justify-between', styles.header)}>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
             <h4 className={styles.customizerTitle}>Theme Customizer</h4>
             <p className={styles.customizerSubtitle}>Customize & Preview in Real Time</p>
           </div>
@@ -183,7 +183,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
           <div className={classnames('customizer-body flex flex-col', styles.customizerBody)}>
             <div className='theming-section flex flex-col gap-6'>
               <Chip variant='tonal' label='Theming' size='small' color='primary' className='self-start rounded-sm' />
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <p className='font-medium'>Primary Color</p>
                 <div className='flex items-center justify-between'>
                   {primaryColorConfig.map(item => (
@@ -244,7 +244,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                   </Popper>
                 </div>
               </div>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <p className='font-medium'>Mode</p>
                 <div className='flex items-center justify-between'>
                   <div className='flex flex-col items-start gap-0.5'>
@@ -288,7 +288,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <p className='font-medium'>Skin</p>
                 <div className='flex items-center gap-4'>
                   <div className='flex flex-col items-start gap-0.5'>
@@ -333,7 +333,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
             <hr className={styles.hr} />
             <div className='layout-section flex flex-col gap-6'>
               <Chip variant='tonal' label='Layout' size='small' color='primary' className='self-start rounded-sm' />
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <p className='font-medium'>Layouts</p>
                 <div className='flex items-center justify-between'>
                   <div className='flex flex-col items-start gap-0.5'>
@@ -371,7 +371,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <p className='font-medium'>Content</p>
                 <div className='flex items-center gap-4'>
                   <div className='flex flex-col items-start gap-0.5'>
@@ -423,7 +423,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                 </div>
               </div>
               {!disableDirection && (
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                   <p className='font-medium'>Direction</p>
                   <div className='flex items-center gap-4'>
                     <Link href={getLocalePath(pathName, 'en')}>

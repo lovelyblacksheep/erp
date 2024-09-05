@@ -102,7 +102,7 @@ const ProductInventory = () => {
                     Confirm
                   </Button>
                 </div>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                   <Typography color='text.primary'>Product in stock now: 54</Typography>
                   <Typography color='text.primary'>Product in transit: 390</Typography>
                   <Typography color='text.primary'>Last time restocked: 24th June, 2022</Typography>

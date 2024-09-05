@@ -35,7 +35,7 @@ const TotalVisits = () => {
       </CardContent>
       <CardContent className='flex flex-col gap-4'>
         <div className='flex items-center justify-between'>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
             <div className='flex items-center gap-x-2'>
               <CustomAvatar size={24} variant='rounded' skin='light' className='rounded-md' color='warning'>
                 <i className='ri-pie-chart-2-line text-base' />

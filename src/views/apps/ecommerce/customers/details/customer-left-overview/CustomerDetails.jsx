@@ -53,7 +53,7 @@ const CustomerDetails = ({ customerData }) => {
         <div className='flex flex-col gap-4'>
           <Typography variant='h5'>Details</Typography>
           <Divider />
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
             <div className='flex items-center gap-1'>
               <Typography color='text.primary' className='font-medium'>
                 Username:

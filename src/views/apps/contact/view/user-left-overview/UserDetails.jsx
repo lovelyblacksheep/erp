@@ -15,6 +15,7 @@ import Link from '@/components/Link'
 import { getLocalizedUrl } from '@/utils/i18n'
 import { useParams } from 'next/navigation'
 import EditableAvatar from '@/@core/components/mui/EditableAvatar'
+import { useTheme } from '@emotion/react'
 
 // Vars
 const userData = {
@@ -32,6 +33,9 @@ const userData = {
 }
 
 const UserDetails = ({ data }) => {
+
+  const theme = useTheme();
+
   // Vars
   const buttonProps = (children, color, variant) => ({
     children,
@@ -81,37 +85,37 @@ const UserDetails = ({ data }) => {
           <div>
             <Typography variant='h5'>Details</Typography>
             <Divider className='mlb-4' />
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
               <div className='flex items-center flex-wrap gap-x-1.5'>
-                <i className="ri-phone-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
+                <i className="ri-phone-line" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--mui-palette-primary-main)' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Phone:
                 </Typography>
                 <Typography>{data.phone || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
-                <i className="ri-restart-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
+                <i className="ri-restart-line" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--mui-palette-primary-main)' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Fax:
                 </Typography>
                 <Typography>{data.fax || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
-                <i className="ri-mail-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
+                <i className="ri-mail-line" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--mui-palette-primary-main)' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Email:
                 </Typography>
                 <Typography>{data.email || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
-                <i className="ri-map-pin-user-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
+                <i className="ri-map-pin-user-line" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--mui-palette-primary-main)' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Address:
                 </Typography>
                 <Typography>{data.address || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
-                <i className="ri-map-pin-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
+                <i className="ri-map-pin-line" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--mui-palette-primary-main)' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Country:
                 </Typography>

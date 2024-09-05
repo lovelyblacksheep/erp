@@ -35,7 +35,7 @@ const UserPlan = () => {
               </Typography>
             </div>
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
             <div className='flex items-center gap-2'>
               <i className='ri-circle-fill text-[10px]' />
               <Typography component='span'>10 Users</Typography>

@@ -185,7 +185,7 @@ const StepCart = ({ handleNext }) => {
             <Typography className='font-medium' color='text.primary'>
               Price Details
             </Typography>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
               <div className='flex items-center flex-wrap justify-between'>
                 <Typography color='text.primary'>Bag Total</Typography>
                 <Typography>$1198.00</Typography>

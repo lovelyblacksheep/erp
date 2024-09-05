@@ -110,7 +110,7 @@ const LatestMoTable = () => {
             return (
                 <Typography
                   component={Link}
-                  href={getLocalizedUrl(`/apps/member/bom/${row.id}/bom`, locale)}
+                  href={getLocalizedUrl(`/apps/member/mo/${row.id}/`, locale)}
                   color='primary'
                 >{`${row.original.ref}`}</Typography>
               )

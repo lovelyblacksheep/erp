@@ -50,7 +50,7 @@ const AssignmentProgress = () => {
               </Typography>
             </div>
             <div className='flex justify-between items-center is-full gap-4'>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <Typography className='font-medium' color='text.primary'>
                   {item.title}
                 </Typography>

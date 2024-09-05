@@ -118,7 +118,7 @@ const Payment = ({ data }) => {
         <Grid container>
           <Grid item md={12} lg={7}>
             <CardContent className='flex flex-col max-sm:gap-y-5 gap-y-8 sm:p-8 border-be lg:border-be-0 lg:border-e bs-full'>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <Typography variant='h4'>Checkout</Typography>
                 <Typography>
                   All plans include 40+ advanced tools and features to boost your product. Choose the best plan to fit
@@ -211,7 +211,7 @@ const Payment = ({ data }) => {
           </Grid>
           <Grid item md={12} lg={5}>
             <CardContent className='flex flex-col gap-8 sm:p-8'>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
                 <Typography variant='h4'>Order Summary</Typography>
                 <Typography>
                   It can help you manage and service orders before, during, and after fulfillment.

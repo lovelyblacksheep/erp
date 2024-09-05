@@ -79,7 +79,7 @@ const PlanUpgrade = ({ serverMode }) => {
             </div>
           </div>
         </div>
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
           <Typography color='text.primary' className='font-medium'>
             Payment details
           </Typography>

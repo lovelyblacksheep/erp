@@ -33,7 +33,7 @@ const Questions = () => {
       <div className={classnames('pbs-10 md:pbs-16', frontCommonStyles.layoutSpacing)}>
         <Grid container spacing={6}>
           <Grid item xs={12} lg={8}>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
               <Breadcrumbs aria-label='breadcrumb'>
                 <Link className='hover:text-primary' href='/front-pages/help-center'>
                   Help Center

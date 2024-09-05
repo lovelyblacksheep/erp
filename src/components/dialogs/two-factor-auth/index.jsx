@@ -93,7 +93,7 @@ const AppDialog = handleAuthDialogClose => {
         <IconButton className='absolute block-start-4 inline-end-4' onClick={handleAuthDialogClose}>
           <i className='ri-close-line text-textSecondary' />
         </IconButton>
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2' style={{width: "fit-content", margin: "0 auto"}}>
           <Typography variant='h5'>Authenticator Apps</Typography>
           <Typography>
             Using an authenticator app like Google Authenticator, Microsoft Authenticator, Authy, or 1Password, scan the
