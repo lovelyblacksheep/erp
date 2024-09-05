@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Tabs, Tab, Grid, Typography, TextField, Box } from '@mui/material'
+import { Tabs, Tab, Grid, Typography, TextField, Box, Card, CardContent } from '@mui/material'
 import { styled } from '@mui/system'
 
 import {
@@ -49,6 +49,7 @@ const TicketsTp = ({ data }) => {
   return (
     <>
       <Grid container justifyContent='space-between' alignItems='center' mb={2}>
+        <Card>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -129,6 +130,7 @@ const TicketsTp = ({ data }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        </Card>
       </Grid>
     </>
   )
@@ -195,8 +197,9 @@ const TP_ItemTabWebAccess = () => {
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
-        <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}>
-
+        {/* <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}> */}
+        <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+        <CardContent className='flex flex-col gap-6'>
           {/* Main Content Section */}
           <Grid container spacing={2} p={6}>
             {/* Left Column */}
@@ -262,7 +265,8 @@ const TP_ItemTabWebAccess = () => {
               </Box>
             </Grid>
           </Grid>
-        </Paper>
+        </CardContent>
+        </Card>
         <Grid
           display={'flex'}
           justifyContent='space-between'

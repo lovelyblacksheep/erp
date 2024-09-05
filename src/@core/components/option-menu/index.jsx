@@ -34,7 +34,7 @@ const IconButtonWrapper = props => {
 const MenuItemWrapper = ({ children, option }) => {
   if (option.href) {
     return (
-      <Box component={Link} href={option.href} {...option.linkProps}>
+      <Box component={Link} href={option.href} {...option.linkProps} display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'} gap={'4px'}>
         {children}
       </Box>
     )
@@ -106,6 +106,7 @@ const OptionMenu = props => {
                     } else {
                       return (
                         <MenuItem
+                        style={{minWidth: 120, padding: 8}}
                           key={index}
                           {...option.menuItemProps}
                           {...(option.href && { className: 'p-0' })}

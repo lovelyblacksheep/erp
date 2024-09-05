@@ -17,9 +17,9 @@ import TP_ItemTabNotes from './notes/page'
 
 const tabs = [
   {
-    label: 'Third-party',
+    label: 'Contact data',
     href: 'overview',
-    icon: 'ri-user-6-line' // Assuming 'Third-party' refers to 'vender'
+    icon: 'ri-user-3-line' // Assuming 'Third-party' refers to 'vender'
   },
   {
     label: 'Contacts/Addresses',

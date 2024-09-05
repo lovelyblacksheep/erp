@@ -295,9 +295,30 @@ export default function Categories() {
 
   const [loading, setLoading] = React.useState(true);
 
+  const theme = useTheme()
+
+  const headingStyle = {
+    display: 'flex',
+    alignItems: 'center',
+  }
+  
+
+  const iconStyle = {
+    fontSize: 34, // Adjust size as needed
+    marginRight: 16, // Margin between icon and text
+      color: theme.palette.primary.main, // Primary color for the icon
+  }
+
+  const textStyle = {
+    fontWeight: 'bold',
+    fontSize: '2rem', // Adjust size as needed
+      color: theme.palette.primary.main, // Primary color for the text
+  }
+
+
   React.useEffect(() => {
     const fetchItems = async () => {
-      let response = await getThirdPartyCategories('customer')
+      let response = await getThirdPartyCategories()
       if (response && response.status === 200) {
         setLoading(false);
         setOItems(convertItems(response.data))
@@ -488,12 +509,12 @@ export default function Categories() {
   return (
     <>
       <Grid container spacing={6}>
-        <Grid item xs={12} display={'flex'} justifyContent={'space-between'}>
-          <Typography variant='h4' className='flex items-center gap-2'>
-            <i className='ri-contacts-line text-primary text-3xl' /> Tags/categories area
-          </Typography>
-          <Button variant='contained' LinkComponent={Link} href='categories/add' startIcon={<Add />}>Add</Button>
-        </Grid>
+      <Grid item xs={12}>
+  <div style={headingStyle}>
+    <i className="ri-contacts-line" style={iconStyle}></i>
+    <Typography style={textStyle}>Tags/Category</Typography>
+  </div>
+</Grid>
         <Grid item xs={12}>
           <Box display='flex' justifyContent='flex-end' alignItems='center' mb={2}>
 
@@ -505,10 +526,10 @@ export default function Categories() {
               <Grid width={'100%'} height={'auto'} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} gap={4} marginBottom={0} px={4} py={6}>
                 <Grid width={'100%'} display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'} gap={4}>
                   <Box>
-                    <Button size='small' variant="outlined" startIcon={<Expand />} onClick={handleExpandAll}>Expand all</Button>
+                    <Button size='small' variant="contained" startIcon={<Expand />} onClick={handleExpandAll}>Expand all</Button>
                   </Box>
                   <Box>
-                    <Button size='small' variant="outlined" startIcon={<CollapseIcon />} onClick={handleCollapseAll} sx={{ mr: 1 }}>
+                    <Button size='small' variant="contained" startIcon={<CollapseIcon />} onClick={handleCollapseAll} sx={{ mr: 1 }}>
                       Collpase all
                     </Button>
                   </Box>

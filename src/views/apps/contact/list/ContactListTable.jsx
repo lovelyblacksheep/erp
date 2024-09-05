@@ -49,6 +49,7 @@ import { getLocalizedUrl } from '@/utils/i18n'
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
 import { getThirdParties } from '@/libs/api/third-parties'
+import { Menu, MenuItem } from '@mui/material'
 
 // Styled Components
 const Icon = styled('i')({})
@@ -99,6 +100,47 @@ const userStatusObj = {
 
 // Column Definitions
 const columnHelper = createColumnHelper()
+
+const ExportButton = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleExport = (type) => {
+    console.log(`Exporting as ${type}`);
+    // Add your export logic here
+    handleClose();
+  };
+
+  return (
+    <>
+      <Button
+        color='secondary'
+        variant='outlined'
+        startIcon={<i className='ri-upload-2-line' />}
+        className='max-sm:is-full'
+        onClick={handleClick}
+      >
+        Export
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => handleExport('print')}>Print</MenuItem>
+        <MenuItem onClick={() => handleExport('excel')}>Excel</MenuItem>
+        <MenuItem onClick={() => handleExport('pdf')}>PDF</MenuItem>
+      </Menu>
+    </>
+  );
+};
 
 const ContactListTable = ({type}) => {
   // States
@@ -293,14 +335,15 @@ const ContactListTable = ({type}) => {
         <TableFilters typeObject={type} setData={setFilteredData} tableData={data} />
         <Divider />
         <div className='flex justify-between gap-4 p-5 flex-col items-start sm:flex-row sm:items-center'>
-          <Button
+          {/* <Button
             color='secondary'
             variant='outlined'
             startIcon={<i className='ri-upload-2-line' />}
             className='max-sm:is-full'
           >
             Export
-          </Button>
+          </Button> */}
+          <ExportButton />
           <div className='flex items-center gap-x-4 max-sm:gap-y-4 flex-col max-sm:is-full sm:flex-row'>
             <DebouncedInput
               value={globalFilter ?? ''}
@@ -325,8 +368,8 @@ const ContactListTable = ({type}) => {
             <thead className={tableStyles.tableHead}>
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <th key={header.id}>
+                  {headerGroup.headers.map((header, i) => (
+                    <th key={header.id} className={('p-2')} style={i === 0 ? {textAlign: "left"} : {}}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}

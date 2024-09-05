@@ -14,6 +14,7 @@ import CustomAvatar from '@core/components/mui/Avatar'
 import Link from '@/components/Link'
 import { getLocalizedUrl } from '@/utils/i18n'
 import { useParams } from 'next/navigation'
+import EditableAvatar from '@/@core/components/mui/EditableAvatar'
 
 // Vars
 const userData = {
@@ -30,7 +31,7 @@ const userData = {
   useAsBillingAddress: true
 }
 
-const UserDetails = ({data}) => {
+const UserDetails = ({ data }) => {
   // Vars
   const buttonProps = (children, color, variant) => ({
     children,
@@ -46,9 +47,9 @@ const UserDetails = ({data}) => {
         <CardContent className='flex flex-col pbs-12 gap-6'>
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col items-center justify-center gap-4'>
-              <CustomAvatar
+              <EditableAvatar
                 alt='user-profile'
-                src={data.logo || data.name || '/images/avatars/1.png'}
+                src={data.logo}
                 variant='rounded'
                 className='rounded-lg'
                 size={120}
@@ -82,30 +83,35 @@ const UserDetails = ({data}) => {
             <Divider className='mlb-4' />
             <div className='flex flex-col gap-2'>
               <div className='flex items-center flex-wrap gap-x-1.5'>
+                <i className="ri-phone-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Phone:
                 </Typography>
                 <Typography>{data.phone || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
+                <i className="ri-restart-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Fax:
                 </Typography>
                 <Typography>{data.fax || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
+                <i className="ri-mail-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Email:
                 </Typography>
                 <Typography>{data.email || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
+                <i className="ri-map-pin-user-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Address:
                 </Typography>
                 <Typography>{data.address || "Not provided"}</Typography>
               </div>
               <div className='flex items-center flex-wrap gap-x-1.5'>
+                <i className="ri-map-pin-line" style={{ fontSize: '16px', marginRight: '8px' }}></i>
                 <Typography color='text.primary' className='font-medium'>
                   Country:
                 </Typography>
@@ -120,7 +126,7 @@ const UserDetails = ({data}) => {
               dialog={EditUserInfo}
               dialogProps={{ data: userData }}
             /> */}
-            <Button component={Link} href={getLocalizedUrl('/apps/contact/'+data.id+'/modify', locale)} variant='outlined'>
+            <Button component={Link} href={getLocalizedUrl('/apps/contact/' + data.id + '/modify', locale)} variant='contained' startIcon={<i class="ri-edit-line"></i>}>
               Edit
             </Button>
             {/* <OpenDialogOnElementClick

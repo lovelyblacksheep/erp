@@ -84,7 +84,7 @@ export async function getThirdPartyCategories(type) {
     {
       params: {
         DOLAPIKEY: apiKey,
-        type: type,
+        // type: type,
         include_childs: true
       }
     }

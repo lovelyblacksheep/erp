@@ -57,7 +57,7 @@ const UserListCards = ({series}) => {
         title: ttile,
         stats: `${ser}`,
         avatarIcon: 'ri-user-search-line',
-        avatarColor: 'success',
+        avatarColor: 'primary',
         trend: null,
         trendNumber: '',
         subtitle: 'Total'

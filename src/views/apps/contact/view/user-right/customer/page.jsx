@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Tabs, Tab, Grid, Typography, TextField, Box } from '@mui/material'
+import { Tabs, Tab, Grid, Typography, TextField, Box, Card, CardContent } from '@mui/material'
 import { styled } from '@mui/system'
 
 import {
@@ -53,6 +53,7 @@ function ProposalTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -85,6 +86,7 @@ function ProposalTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -102,6 +104,7 @@ function SalesTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -134,6 +137,7 @@ function SalesTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -151,6 +155,7 @@ function ShipmentsTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -183,6 +188,7 @@ function ShipmentsTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -200,6 +206,7 @@ function ContractsTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -232,6 +239,7 @@ function ContractsTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -249,6 +257,7 @@ function InterventionTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -281,6 +290,7 @@ function InterventionTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -308,6 +318,7 @@ function InvoicesTable({data}) {
 
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table>
         <TableBody>
@@ -340,6 +351,7 @@ function InvoicesTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   )
 }
 
@@ -495,8 +507,9 @@ const TP_ItemTabCustomer = () => {
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
-        <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}>
-
+        {/* <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}> */}
+        <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+        <CardContent className='flex flex-col gap-6'>
           {/* Main Content Section */}
           <Grid container spacing={2} p={6}>
             {/* Left Column */}
@@ -562,7 +575,8 @@ const TP_ItemTabCustomer = () => {
               </Box>
             </Grid>
           </Grid>
-        </Paper>
+        </CardContent>
+        </Card>
 
         <Grid container spacing={6}>
           <Grid item xs={12} sm={6} md={3}>

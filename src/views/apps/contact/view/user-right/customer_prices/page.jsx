@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Tabs, Tab, Grid, Typography, TextField, Box } from '@mui/material'
+import { Tabs, Tab, Grid, Typography, TextField, Box, Card, CardContent } from '@mui/material'
 import { styled } from '@mui/system'
 
 import {
@@ -63,6 +63,7 @@ const CustomerProductsPrices = ({ data }) => {
             </Typography>
           </Box>
         </Grid>
+        <Card>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -143,6 +144,7 @@ const CustomerProductsPrices = ({ data }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        </Card>
       </Grid>
     </>
   )
@@ -209,8 +211,9 @@ const TP_ItemTabCustomerPrices = () => {
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
-        <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}>
-
+        {/* <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}> */}
+        <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+        <CardContent className='flex flex-col gap-6'>
           {/* Main Content Section */}
           <Grid container spacing={2} p={6}>
             {/* Left Column */}
@@ -276,7 +279,8 @@ const TP_ItemTabCustomerPrices = () => {
               </Box>
             </Grid>
           </Grid>
-        </Paper>
+        </CardContent>
+        </Card>
         <Grid container justifyContent='flex-end' columnGap={4} alignItems='center'>
           <Button variant='contained' color='primary'>
             Add price by Customer

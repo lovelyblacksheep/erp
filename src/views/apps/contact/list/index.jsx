@@ -10,8 +10,33 @@ import { useEffect, useState } from 'react'
 import { apiKey, apiUrl } from '@/config';
 import { getThirdParties } from '@/libs/api/contacts';
 import axios from 'axios';
+import { Typography } from '@mui/material';
+import { useTheme } from '@emotion/react';
+
+// Styles for icon and text alignment
+const headingStyle = {
+  display: 'flex',
+  alignItems: 'center',
+}
+
+
 
 const ContactList = ({}) => {
+
+  const theme = useTheme()
+
+  const iconStyle = {
+    fontSize: 34, // Adjust size as needed
+    marginRight: 16, // Margin between icon and text
+      color: theme.palette.primary.main, // Primary color for the icon
+  }
+
+  const textStyle = {
+    fontWeight: 'bold',
+    fontSize: '2rem', // Adjust size as needed
+      color: theme.palette.primary.main, // Primary color for the text
+  }
+
   const [series, setSeries] = useState([0, 0, 0, 0]) // Initial series state
   const [type, setTypes] = useState({
     "prospect": [],
@@ -106,6 +131,12 @@ const ContactList = ({}) => {
 
   return (
     <Grid container spacing={6}>
+      <Grid item xs={12}>
+  <div style={headingStyle}>
+    <i className="ri-contacts-line" style={iconStyle}></i>
+    <Typography style={textStyle}>Contacts</Typography>
+  </div>
+</Grid>
       <Grid item xs={12}>
         <ContactListCards series={series} type={type} />
       </Grid>

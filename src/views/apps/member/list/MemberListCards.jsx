@@ -56,8 +56,8 @@ const UserListCards = ({series}) => {
       k.push({
         title: ttile,
         stats: `${ser}`,
-        avatarIcon: 'ri-user-search-line',
-        avatarColor: 'success',
+        avatarIcon: 'ri-building-4-fill',
+        avatarColor: 'primary',
         trend: null,
         trendNumber: '',
         subtitle: 'Total'

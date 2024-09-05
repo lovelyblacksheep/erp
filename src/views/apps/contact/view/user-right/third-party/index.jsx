@@ -17,7 +17,9 @@ import {
     IconButton,
     Button,
     Select,
-    MenuItem
+    MenuItem,
+    CardContent,
+    Card
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -228,8 +230,8 @@ const TP_ItemTabThirdParty = () => {
     return (
         <>
             <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
-                <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}>
-
+                <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+                    <CardContent className='flex flex-col gap-6'>
                     {/* Main Content Section */}
                     <Grid container spacing={2} p={6}>
                         {/* Left Column */}
@@ -264,7 +266,9 @@ const TP_ItemTabThirdParty = () => {
                             <InfoItem label='Link to member' value={thirdPartyData.link_to_member} />
                         </Grid>
                     </Grid>
-                </Paper>
+                
+                    </CardContent>
+                </Card>
 
                 {`${thirdPartyData.status}` === '9' ? <Grid container justifyContent='flex-end' columnGap={4} alignItems='center'>
                     {/* <Button variant='contained' color='primary' onClick={handleReopen}>
@@ -324,6 +328,7 @@ const TP_ItemTabThirdParty = () => {
                         <Typography variant='h5' gutterBottom>
                             Linked files
                         </Typography>
+                        <Card>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
@@ -360,6 +365,7 @@ const TP_ItemTabThirdParty = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        </Card>
                         <Box width={'100%'} mt={2}>
                             <Grid width={'100%'} display={'flex'} flexDirection={'row'} columnGap={4} alignItems={'center'}>
                                 <Typography>Doc template</Typography>
@@ -387,6 +393,7 @@ const TP_ItemTabThirdParty = () => {
                                 </IconButton>
                             </Grid>
                         </Grid>
+                        <Card>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
@@ -425,6 +432,7 @@ const TP_ItemTabThirdParty = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        </Card>
                     </Box>
                 </Grid>
             </Grid>

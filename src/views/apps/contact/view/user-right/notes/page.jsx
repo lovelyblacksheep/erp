@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Grid, Typography, TextField, Box, Container, IconButton, Button, Paper } from '@mui/material'
+import { Grid, Typography, TextField, Box, Container, IconButton, Button, Paper, CardContent, Card } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import { apiKey, apiUrl } from '@/config'
 
@@ -104,7 +104,7 @@ const TP_ItemTabNotes = () => {
           </Box>
         </>
       ) : (
-        <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', bgcolor: '#f5f5f5' }}>
+        <Paper elevation={1} sx={{ p: 6}} border={1}>
           <Typography variant='body1' color='text.primary'>
             {noteValue || `No ${noteType} note available`}
           </Typography>
@@ -115,14 +115,16 @@ const TP_ItemTabNotes = () => {
 
   return (
     <Grid item xs={12} display='flex' flexDirection='column' rowGap={4}>
-      <Box p={4} border={1} borderColor='grey.300' borderRadius={1}>
-
+      {/* <Box p={4} border={1} borderColor='grey.300' borderRadius={1}> */}
+      <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+      <CardContent className='flex flex-col gap-6'>
         {/* Main Content Section */}
         <Container maxWidth='md' disableGutters>
           {renderNoteSection('public', publicNote, setPublicNote)}
           {renderNoteSection('private', privateNote, setPrivateNote)}
         </Container>
-      </Box>
+      </CardContent>
+      </Card>
     </Grid>
   )
 }

@@ -75,13 +75,13 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem> */}
         </SubMenu>
 
-        <SubMenu label={"Members"} icon={<i className='ri-group-2-line' />}>
+        <SubMenu label={"MRP"} icon={<i class="ri-box-3-line" />}>
           <MenuItem href={`/${locale}/apps/member/statistics`}>{'Statistics'}</MenuItem>
           <MenuItem href={`/${locale}/apps/member/list`}>{dictionary['navigation'].list}</MenuItem>
           {/* <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem> */}
         </SubMenu>
 
-        <SubMenu label={"Contacts"} icon={<i className='ri-user-3-line' />}>
+        <SubMenu label={"Contacts"} icon={<i className='ri-contacts-line' />}>
           <MenuItem href={`/${locale}/apps/contact/statistics`}>{'Statistics'}</MenuItem>
           <MenuItem href={`/${locale}/apps/contact/list`}>{dictionary['navigation'].list}</MenuItem>
           <MenuItem href={`/${locale}/apps/contact/tag`}>{'Tag/Category'}</MenuItem>

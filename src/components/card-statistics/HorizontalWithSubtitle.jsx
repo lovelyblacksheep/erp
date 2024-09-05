@@ -17,10 +17,12 @@ const HorizontalWithSubtitle = props => {
     <Card>
       <CardContent className='flex justify-between gap-1'>
         <div className='flex flex-col gap-1 flex-grow'>
-          <Typography color='text.primary'>{title}</Typography>
+          <Typography color='text.primary' variant='h4' style={{ fontWeight: 'bold' }}>
+            {title}
+          </Typography>
           <div className='flex items-center gap-2 flex-wrap'>
             <Typography variant='h4'>{stats}</Typography>
-            {trend  && <Typography color={trend === 'negative' ? 'error.main' : 'success.main'}>
+            {trend && <Typography color={trend === 'negative' ? 'error.main' : 'success.main'}>
               {`(${trend === 'negative' ? '-' : '+'}${trendNumber})`}
             </Typography>}
           </div>

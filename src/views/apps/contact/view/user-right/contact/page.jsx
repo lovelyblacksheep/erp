@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Tabs, Tab, Grid, Typography, TextField, Box } from '@mui/material'
+import { Tabs, Tab, Grid, Typography, TextField, Box, CardContent, Card } from '@mui/material'
 import { styled } from '@mui/system'
 
 import {
@@ -104,7 +104,8 @@ const ContactAddresses = ({ data }) => {
             </Typography>
           </Box>
         </Grid>
-        <TableContainer component={Paper}>
+        <Card>
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -189,6 +190,7 @@ const ContactAddresses = ({ data }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        </Card>
       </Grid>
     </>
   )
@@ -255,8 +257,8 @@ const TP_ItemTabContact = () => {
   return (
     <>
       <Grid item xs={12} display={'flex'} flexDirection={'column'} rowGap={8}>
-        <Paper p={6} border={1} borderColor='grey.300' borderRadius={1}>
-
+      <Card p={6} border={1} borderColor='grey.300' borderRadius={1}>
+      <CardContent className='flex flex-col gap-6'>
           {/* Main Content Section */}
           <Grid container spacing={2} p={6}>
             {/* Left Column */}
@@ -322,7 +324,8 @@ const TP_ItemTabContact = () => {
               </Box>
             </Grid>
           </Grid>
-        </Paper>
+        </CardContent>
+        </Card>
         <ContactAddresses data={productLines} />
       </Grid>
     </>
