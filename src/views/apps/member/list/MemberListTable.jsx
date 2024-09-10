@@ -155,7 +155,12 @@ const UserListTable = ({ tableData }) => {
           <div className='flex items-center gap-3'>
             {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
             <div className='flex flex-col'>
-              <Typography color='text.primary' className='font-medium'>
+              <Typography
+                component={Link}
+                href={getLocalizedUrl(`/apps/member/${isShowingBoms ? 'bom' : 'mo'}/` + row.original.id, locale)}
+                color='text.primary'
+                className='font-medium'
+              >
                 {row.original.ref}
               </Typography>
               {/* <Typography variant='body2'>{row.original.username}</Typography> */}

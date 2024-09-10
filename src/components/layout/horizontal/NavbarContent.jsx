@@ -134,7 +134,7 @@ const NavbarContent = () => {
         <NavSearch />
         <LanguageDropdown />
         <ModeDropdown />
-        {/* <Customizer dir={i18n.langDirection[params.lang]} /> */}
+        <Customizer />
         <ShortcutsDropdown shortcuts={shortcuts} />
         <NotificationsDropdown notifications={notifications} />
         <UserDropdown />
