@@ -79,8 +79,8 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
 }
 
 const userStatusObj = {
-  '1': 'success',
-  '0': 'secondary'
+  1: 'success',
+  0: 'secondary'
 }
 
 const columnHelper = createColumnHelper()
@@ -104,7 +104,7 @@ const UserListTable = ({ tableData }) => {
       setData(bomsResult.data) // Default to Boms data
       setFilteredData(bomsResult.data) // Default to Boms data
     } catch (error) {
-      console.error("Error fetching data: ", error)
+      console.error('Error fetching data: ', error)
     }
   }
 
@@ -211,7 +211,10 @@ const UserListTable = ({ tableData }) => {
               <i className='ri-delete-bin-7-line text-textSecondary' />
             </IconButton>
             <IconButton size='small'>
-              <Link href={getLocalizedUrl(`/apps/member/${isShowingBoms ? 'bom' : 'mo'}/`+row.original.id, locale)} className='flex'>
+              <Link
+                href={getLocalizedUrl(`/apps/member/${isShowingBoms ? 'bom' : 'mo'}/` + row.original.id, locale)}
+                className='flex'
+              >
                 <i className='ri-eye-line text-textSecondary' />
               </Link>
             </IconButton>
@@ -269,7 +272,7 @@ const UserListTable = ({ tableData }) => {
       <CustomAvatar src={avatar} skin='light' size={34} />
     ) : (
       <CustomAvatar skin='light' size={34}>
-        {getInitials(fullName || "")}
+        {getInitials(fullName || '')}
       </CustomAvatar>
     )
   }
@@ -281,12 +284,22 @@ const UserListTable = ({ tableData }) => {
         <TableFilters setData={setFilteredData} tableData={data} />
         <Divider />
         <div className='flex justify-between gap-4 p-6'>
-          <Typography variant='h6'>
-            Showing {isShowingBoms ? 'Bill Of Materials' : 'Manufacturing Orders'}
-          </Typography>
-          <Button variant='contained' onClick={handleToggleData}>
-            Switch to {isShowingBoms ? 'Mos' : 'Boms'}
-          </Button>
+          <Typography variant='h6'>Showing {isShowingBoms ? 'Bill Of Materials' : 'Manufacturing Orders'}</Typography>
+          <div>
+            <Button variant='contained' onClick={handleToggleData} className='mr-6'>
+              Switch to {isShowingBoms ? 'Mos' : 'Boms'}
+            </Button>
+            <Button
+              // onClick={() => setAddUserOpen(true)}
+              component={Link}
+              href={getLocalizedUrl('/apps/member/' + 'add', locale)}
+              variant='contained'
+              className='max-sm:is-full'
+              startIcon={<i className='ri-user-add-line' />}
+            >
+              Add New
+            </Button>
+          </div>
         </div>
         <div className='overflow-auto'>
           <div className={classnames('table-container', tableStyles.mainTable)}>
