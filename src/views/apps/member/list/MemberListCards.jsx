@@ -45,14 +45,13 @@ const data = [
   }
 ]
 
-const UserListCards = ({series}) => {
+const UserListCards = ({ series }) => {
+  const [data, setData] = useState([])
 
-  const [data, setData] = useState([]);
-  
   useEffect(() => {
-    let k = [];
+    let k = []
     series.map((ser, i) => {
-      let ttile = i === 0 ? "Bill of Materials" : i === 1 ? "Manufacturing orders" : "Others";
+      let ttile = i === 0 ? 'Bill of Materials' : i === 1 ? 'Manufacturing orders' : 'Others'
       k.push({
         title: ttile,
         stats: `${ser}`,
@@ -63,15 +62,14 @@ const UserListCards = ({series}) => {
         subtitle: 'Total'
       })
     })
-    console.log("S :: ", series)
-    setData(k);
-  }, [series]);
-
+    console.log('S :: ', series)
+    setData(k)
+  }, [series])
 
   return (
     <Grid container spacing={6}>
       {data.map((item, i) => (
-        <Grid key={i} item xs={12} sm={6} md={3}>
+        <Grid key={i} item xs={12} sm={6} md={4}>
           <HorizontalWithSubtitle {...item} />
         </Grid>
       ))}
